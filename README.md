@@ -5,6 +5,9 @@
 
 Special tools to increase the immersion in your roleplaying game.
 
+##Installation
+In the setup screen, use the URL https://raw.githubusercontent.com/elizeuangelo/fvtt-module-narrator-tools/master/module.json to install the module.
+
 ## How to Use
 
 You issue commands through the chatbox, wich do the following:
