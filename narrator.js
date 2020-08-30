@@ -88,5 +88,5 @@ Hooks.on("setup", () => {
     Hooks.on("renderChatMessage", Narrator.renderChatMessage.bind(Narrator)); // This hook changes the chat message in case its a narration + triggers
 })
 Hooks.on("ready", () => {
-    $(document.getElementById('chat-log')).on("click", ".message", Narrator._onNarratorChatClick.bind(Narrator));
+    $(document.getElementById('chat-log')).on("click", ".message.narrator-chat", Narrator._onNarratorChatClick.bind(Narrator));
 })
