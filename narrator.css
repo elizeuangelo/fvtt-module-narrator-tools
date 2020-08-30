@@ -1,0 +1,61 @@
+#chat-log .narrator-chat {
+  background: #333;
+  text-shadow: -1px -1px 0 #000 , 1px -1px 0 #000 , -1px 1px 0 #000 , 1px 1px 0 #000;
+  color: white;
+  margin: 2px;
+  padding: 10px;
+  border: 2px solid #191813d6;
+}
+
+#chat-log .narrator-chat .message-content {
+  text-align: center;
+  font-style: italic;
+}
+
+#chat-log .narrator-chat .message-metadata {
+  color: white;
+}
+
+.narrator {
+  position: absolute;
+  height: 400px;
+  top: calc(50% - 200px);
+  left: 0px;
+  display: flex;
+  width: calc(100% - 305px);
+  pointer-events: none;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+}
+  
+.narrator-bg {
+  max-height: 400px;
+  width: 100%;
+  transition: height 0.5s ease-in-out;
+  background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.66) 40%, rgba(0, 0, 0, 0.66) 60%, transparent 100%);
+}
+
+.narrator-box {
+  position: absolute;
+  max-height: 310px;
+  overflow-y: hidden;
+}
+  
+.narrator-content {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  width: calc(100% - 8em);
+  margin: 0px 4em;
+  text-align: center;
+  z-index: 1;
+  font-size: 28px;
+  font-weight: bold;
+  text-shadow: 3px 3px 2px black;
+  flex-wrap: wrap;
+  color: white;
+  transition: opacity 0.5s ease-in-out;
+}
