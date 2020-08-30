@@ -1,7 +1,7 @@
 # Foundry VTT - Narrator
-![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/elizeuangelo/fvtt-module-narrator?style=for-the-badge) 
-![GitHub Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator/latest/total?style=for-the-badge)
-![GitHub All Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator/total?style=for-the-badge&label=Downloads+total) 
+![GitHub release (latest SemVer)](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator-tools/total) 
+![GitHub Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator-tools/latest/total)
+![GitHub All Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator-tools/total?label=Downloads+total) 
 
 Special tools to increase the immersion in your roleplaying game.
 
