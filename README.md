@@ -11,6 +11,8 @@ You issue commands through the chatbox, wich do the following:
 
 `/narrate [message]` - displays a limited duration message in the canvas
 
+![img](https://cdn.discordapp.com/attachments/542495303929036824/749690042531709008/narrator-tools.gif)
+
 ## License
 This module is made by elizeuangelo and it is licensed under a Creative Commons Attribution 4.0 International License.
 
