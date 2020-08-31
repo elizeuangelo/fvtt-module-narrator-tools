@@ -7,13 +7,15 @@ Chatcommands:
 class NarratorTools {
 
     constructor() {
-        this.narrator = $(`<div id="narrator" class="narrator"><div class="narrator-bg"></div><div class="narrator-box"><div class="narrator-content"></div></div></div>`);
+        this.narrator = $(`<div id="narrator" class="narrator"><div class="narrator-frame"></div><div class="narrator-bg"></div><div class="narrator-box"><div class="narrator-content"></div></div></div>`);
+        this.narratorFrame = this.narrator.find(".narrator-frame");
         this.narratorBG = this.narrator.find(".narrator-bg");
         this.narratorContent = this.narrator.find(".narrator-content");
+        this.scenery = false;
         $('body').append(this.narrator);
     }
 
-    chatMessage(message, content, data) {
+    _chatMessage(message, content, data) {
         if (!game.user.isGM) { return; }
         const narrate = new RegExp("^(\/narrate) ([^]*)", 'i')
         const commands = {
@@ -33,7 +35,7 @@ class NarratorTools {
         }
     }
 
-    renderChatMessage(message, html, data) {
+    _renderChatMessage(message, html, data) {
         if (html.find(".narrator-span").length) {
             html[0].classList.add('narrator-chat')
             html.find(".message-sender").text("");
@@ -57,7 +59,7 @@ class NarratorTools {
         this.narratorBG.height(height+90);
         this.narratorContent.stop();
         this.narratorContent[0].style.top = "0px";
-        this.narrator[0].style.opacity = "1";
+        this.narratorBG[0].style.opacity = "1";
         this.narratorContent[0].style.opacity = "1";
         let scroll = this.narratorContent.height()-310;
         clearTimeout(this.narratorScrollTimeout);
@@ -69,7 +71,8 @@ class NarratorTools {
     }
 
     narratorClose() {
-        this.narrator[0].style.opacity = "0";
+        this.narratorBG[0].style.opacity = "0";
+        this.narratorContent[0].style.opacity = "0";
     }
 
     _onNarratorChatClick(event) {
@@ -80,12 +83,33 @@ class NarratorTools {
         else tip.slideUp(200);
     }
 
+    _getSceneControlButtons(buttons) {
+        let tokenButton = buttons.find(b => b.name === "token");
+
+        if (tokenButton && game.user.isGM) {
+            tokenButton.tools.push({
+                name: "scenery",
+                title: "NT.ButtonTitle",
+                icon: "fas fa-theater-masks",
+                visible: game.user.isGM,
+                toggle: true,
+                active: this.scenery,
+                onClick: () => {
+                    this.scenery = !this.scenery;
+                    this.narratorFrame[0].style.opacity = this.scenery ? 1 : 0;
+                }
+            });
+        }
+
+    }
+
 }
 
 Hooks.on("setup", () => {
     Narrator = new NarratorTools();
-    Hooks.on("chatMessage", Narrator.chatMessage.bind(Narrator)); // This hook spans the chatmsg
-    Hooks.on("renderChatMessage", Narrator.renderChatMessage.bind(Narrator)); // This hook changes the chat message in case its a narration + triggers
+    Hooks.on("chatMessage", Narrator._chatMessage.bind(Narrator)); // This hook spans the chatmsg
+    Hooks.on("renderChatMessage", Narrator._renderChatMessage.bind(Narrator)); // This hook changes the chat message in case its a narration + triggers
+    Hooks.on('getSceneControlButtons', Narrator._getSceneControlButtons.bind(Narrator));
 })
 Hooks.on("ready", () => {
     $(document.getElementById('chat-log')).on("click", ".message.narrator-chat", Narrator._onNarratorChatClick.bind(Narrator));

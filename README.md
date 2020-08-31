@@ -10,11 +10,13 @@ In the setup screen, use the URL https://raw.githubusercontent.com/elizeuangelo/
 
 ## How to Use
 
-You issue commands through the chatbox, wich do the following:
+These are the current features:
 
-`/narrate [message]` - displays a limited duration message in the canvas
+- `/narrate [message]` - displays a limited duration message in the canvas and chat;
 
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/749702068310114304/narrator-tools.gif)
+
+- New Scenery Tool - dims the canvas and apply vignette.
 
 ## License
 This module is made by elizeuangelo and it is licensed under a Creative Commons Attribution 4.0 International License.
