@@ -10,6 +10,7 @@ class NarratorTools {
         this.narrator = $(`<div id="narrator" class="narrator"><div class="narrator-frame"></div><div class="narrator-bg"></div><div class="narrator-box"><div class="narrator-content"></div></div></div>`);
         this.narratorFrame = this.narrator.find(".narrator-frame");
         this.narratorBG = this.narrator.find(".narrator-bg");
+        this.narratorBOX = this.narrator.find(".narrator-box");
         this.narratorContent = this.narrator.find(".narrator-content");
         this.scenery = false;
         $('body').append(this.narrator);
@@ -59,6 +60,7 @@ class NarratorTools {
         this.narratorBG.height(height+90);
         this.narratorContent.stop();
         this.narratorContent[0].style.top = "0px";
+        this.narratorBOX[0].style.paddingRight = `${$(document.getElementById('sidebar')).width()+7}px`;
         this.narratorBG[0].style.opacity = "1";
         this.narratorContent[0].style.opacity = "1";
         let scroll = this.narratorContent.height()-310;
@@ -97,10 +99,20 @@ class NarratorTools {
                 onClick: () => {
                     this.scenery = !this.scenery;
                     this.narratorFrame[0].style.opacity = this.scenery ? 1 : 0;
+                    game.socket.emit("module.narrator-tools", { "command": "scenery", "value": this.scenery } );
                 }
             });
         }
+    }
 
+    _onSignal(data) {
+        let commands = {
+            scenery: function () {
+                Narrator.scenery = data.value;
+                Narrator.narratorFrame[0].style.opacity = Narrator.scenery ? 1 : 0;
+            },
+        }
+        commands[data.command]();
     }
 
 }
@@ -113,4 +125,5 @@ Hooks.on("setup", () => {
 })
 Hooks.on("ready", () => {
     $(document.getElementById('chat-log')).on("click", ".message.narrator-chat", Narrator._onNarratorChatClick.bind(Narrator));
+    game.socket.on("module.narrator-tools", Narrator._onSignal.bind(Narrator))
 })
