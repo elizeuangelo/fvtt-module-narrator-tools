@@ -20,7 +20,7 @@
   position: absolute;
   height: 100%;
   display: flex;
-  width: 100%;
+  width: calc(100% - 305px);
   pointer-events: none;
   z-index: 1;
   justify-content: center;
