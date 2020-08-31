@@ -42,14 +42,14 @@
   position: absolute;
   max-height: 310px;
   overflow-y: hidden;
+  width: 66%;
+  padding: 0px 4em;
 }
   
 .narrator-content {
   position: relative;
   top: 0px;
   left: 0px;
-  width: calc(100% - 8em);
-  margin: 0px 4em;
   text-align: center;
   z-index: 1;
   font-size: 28px;
