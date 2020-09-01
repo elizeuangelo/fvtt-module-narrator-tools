@@ -16,7 +16,6 @@ The module currently adds chat commands and a new tool on the token toolbox (the
 
 - `/desc (or /describe, or /description) [message]` - displays a descriptive message in chat only
 - `/narrate (or /narration) [message]` - displays a limited duration message in the canvas and chat
-
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/750483802719125634/narrator-tools_2.jpg)
 
 ### Token Toolbox
