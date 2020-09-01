@@ -10,13 +10,17 @@ In the setup screen, use the URL https://raw.githubusercontent.com/elizeuangelo/
 
 ## How to Use
 
-These are the current features:
+The module currently adds chat commands and a new tool on the token toolbox (the button menu on the left).
 
-- `/narrate [message]` - displays a limited duration message in the canvas and chat;
+### New Chat Commands
+
+- `/desc (or /describe, or /description) [message]` - displays a descriptive message in chat only
+- `/narrate (or /narration) [message]` - displays a limited duration message in the canvas and chat
 
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/749702068310114304/narrator-tools.gif)
 
-- New Scenery Tool - dims the canvas and apply vignette.
+### Token Toolbox
+- New Scenery Tool - dims the canvas and apply vignette
 
 ## License
 This module is made by elizeuangelo and it is licensed under a Creative Commons Attribution 4.0 International License.

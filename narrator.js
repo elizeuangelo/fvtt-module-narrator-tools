@@ -18,9 +18,11 @@ class NarratorTools {
 
     _chatMessage(message, content, data) {
         if (!game.user.isGM) { return; }
-        const narrate = new RegExp("^(\/narrate) ([^]*)", 'i')
+        const narrate = new RegExp("^(\\/narrat(?:e|ion)) ([^]*)", 'i');
+        const description = new RegExp("^(\\/desc(?:ription)?(?:ribe)?) ([^]*)", 'i');
         const commands = {
-            "narrate": narrate
+            "narrate": narrate,
+            "description": description
         }
         // Iterate over patterns, finding the first match
         let c, rgx, match;
@@ -28,7 +30,7 @@ class NarratorTools {
             match = content.match(rgx); 
             if ( match ) {
                 const chatData = {
-                    content: (`<span class="narrator-span">${match[2]}</span>`)
+                    content: (`<span class="narrator-span${c == 'narrate' ? ' narration' : ' description' }">${match[2]}</span>`)
                 };
                 ChatMessage.create(chatData, {});
                 return false;
@@ -38,18 +40,23 @@ class NarratorTools {
 
     _renderChatMessage(message, html, data) {
         if (html.find(".narrator-span").length) {
-            html[0].classList.add('narrator-chat')
             html.find(".message-sender").text("");
             html.find(".message-metadata")[0].style.display = "none";
-            const timestamp = new Date().getTime();
-            if (message.data.timestamp+2000 > timestamp) {
-                const content = $(message.data.content)[0].textContent;
-                let duration = content.length * 80;
-                duration = Math.clamped(2000, duration, 21000);
-                clearTimeout(this.narratorCloseTimeout);
-                this.narratorContent[0].style.opacity = "0";
-                this.narratorOpenTimeout = setTimeout(this.narratorOpen.bind(this, content, duration), 500);
-                this.narratorCloseTimeout = setTimeout(this.narratorClose.bind(this), duration + 3000);
+            html[0].classList.add('narrator-chat');
+            if (html.find(".narration").length) {
+                html[0].classList.add('narrator-narrative');
+                const timestamp = new Date().getTime();
+                if (message.data.timestamp+2000 > timestamp) {
+                    const content = $(message.data.content)[0].textContent;
+                    let duration = content.length * 80;
+                    duration = Math.clamped(2000, duration, 20000) + 3500;
+                    clearTimeout(this.narratorCloseTimeout);
+                    this.narratorContent[0].style.opacity = "0";
+                    this.narratorOpenTimeout = setTimeout(this.narratorOpen.bind(this, content, duration), 500);
+                    this.narratorCloseTimeout = setTimeout(this.narratorClose.bind(this), duration);
+                }
+            } else {
+                html[0].classList.add('narrator-description');
             }
         }
     }
@@ -57,7 +64,7 @@ class NarratorTools {
     narratorOpen(content, duration) {
         this.narratorContent.text(content);
         let height = Math.min(this.narratorContent.height(),310)
-        this.narratorBG.height(height+Math.max(90,height));
+        this.narratorBG.height(height*3);
         this.narratorContent.stop();
         this.narratorContent[0].style.top = "0px";
         this.narratorBOX[0].style.paddingRight = `${$(document.getElementById('sidebar')).width()+7}px`;
@@ -67,8 +74,8 @@ class NarratorTools {
         clearTimeout(this.narratorScrollTimeout);
         if (scroll > 0) {
             this.narratorScrollTimeout = setTimeout(() => {
-                this.narratorContent.animate({ top: -scroll }, duration - 1000, 'linear');
-            }, 2000);
+                this.narratorContent.animate({ top: -scroll }, duration - 5500, 'linear');
+            }, 3000);
         }
     }
 

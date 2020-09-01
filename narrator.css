@@ -1,4 +1,4 @@
-#chat-log .narrator-chat {
+#chat-log .narrator-narrative {
   background: #333;
   text-shadow: -1px -1px 0 #000 , 1px -1px 0 #000 , -1px 1px 0 #000 , 1px 1px 0 #000;
   color: white;
@@ -7,9 +7,22 @@
   border: 2px solid #191813d6;
 }
 
-#chat-log .narrator-chat .message-content {
+#chat-log .narrator-description {
+  background: #4b4a44;
+  text-shadow: -1px -1px 0 #000 , 1px -1px 0 #000 , -1px 1px 0 #000 , 1px 1px 0 #000;
+  color: white;
+  margin: 2px;
+  padding: 10px;
+  border: 2px solid #191813d6;
+}
+
+#chat-log .narrator-chat {
   text-align: center;
   font-style: italic;
+}
+
+#chat-log .narrator-span {
+  white-space: pre-line;
 }
 
 #chat-log .narrator-chat .message-metadata {
@@ -59,7 +72,7 @@
   font-size: 28px;
   font-weight: bold;
   text-shadow: 3px 3px 2px black;
-  flex-wrap: wrap;
   color: white;
   transition: opacity 0.5s ease-in-out;
+  white-space: pre-line;
 }
