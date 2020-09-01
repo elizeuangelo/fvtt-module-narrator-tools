@@ -57,7 +57,7 @@ class NarratorTools {
     narratorOpen(content, duration) {
         this.narratorContent.text(content);
         let height = Math.min(this.narratorContent.height(),310)
-        this.narratorBG.height(height+90);
+        this.narratorBG.height(height+Math.max(90,height));
         this.narratorContent.stop();
         this.narratorContent[0].style.top = "0px";
         this.narratorBOX[0].style.paddingRight = `${$(document.getElementById('sidebar')).width()+7}px`;
@@ -99,7 +99,7 @@ class NarratorTools {
                 onClick: () => {
                     this.scenery = !this.scenery;
                     this.narratorFrame[0].style.opacity = this.scenery ? 1 : 0;
-                    game.socket.emit("module.narrator-tools", { "command": "scenery", "value": this.scenery } );
+                    game.socket.emit("module.narrator-tools", { "command": "scenery", "value": this.scenery });
                 }
             });
         }
@@ -111,6 +111,11 @@ class NarratorTools {
                 Narrator.scenery = data.value;
                 Narrator.narratorFrame[0].style.opacity = Narrator.scenery ? 1 : 0;
             },
+            update: function () {
+                if (game.user.isGM) {
+                    game.socket.emit("module.narrator-tools", { "command": "scenery", "value": Narrator.scenery });
+                };
+            }
         }
         commands[data.command]();
     }
@@ -125,5 +130,8 @@ Hooks.on("setup", () => {
 })
 Hooks.on("ready", () => {
     $(document.getElementById('chat-log')).on("click", ".message.narrator-chat", Narrator._onNarratorChatClick.bind(Narrator));
-    game.socket.on("module.narrator-tools", Narrator._onSignal.bind(Narrator))
+    game.socket.on("module.narrator-tools", Narrator._onSignal.bind(Narrator));
+    if (!game.user.isGM) {
+        game.socket.emit("module.narrator-tools", { "command": "update" } );
+    }
 })

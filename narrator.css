@@ -38,7 +38,6 @@
 }
   
 .narrator-bg {
-  max-height: 400px;
   width: 100%;
   transition: 0.5s ease-in-out;
   background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.66) 40%, rgba(0, 0, 0, 0.66) 60%, transparent 100%);
