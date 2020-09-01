@@ -14,7 +14,7 @@ These are the current features:
 
 - `/narrate [message]` - displays a limited duration message in the canvas and chat;
 
-![img](https://cdn.discordapp.com/attachments/542495303929036824/749702068310114304/narrator-tools.gif)
+[Imgur](https://i.imgur.com/3Ak9Aod.mp4)
 
 - New Scenery Tool - dims the canvas and apply vignette.
 
