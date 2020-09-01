@@ -21,6 +21,7 @@ The module currently adds chat commands and a new tool on the token toolbox (the
 
 ### Token Toolbox
 - New Scenery Tool - dims the canvas and apply vignette
+![img](https://cdn.discordapp.com/attachments/542495303929036824/750424196806475866/Example_narrator_tools.jpg)
 
 ## License
 This module is made by elizeuangelo and it is licensed under a Creative Commons Attribution 4.0 International License.
