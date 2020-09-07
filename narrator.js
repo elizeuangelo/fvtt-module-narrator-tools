@@ -7,12 +7,16 @@ Chatcommands:
 class NarratorTools {
 
     constructor() {
-        this.narrator = $(`<div id="narrator" class="narrator"><div class="narrator-frame"></div><div class="narrator-bg"></div><div class="narrator-box"><div class="narrator-content"></div></div></div>`);
+        this.narrator = $(`<div id="narrator" class="narrator"><div class="narrator-frame"><div class="narrator-frameBG"></div><div class="narrator-box"><div class="narrator-content"></div></div></div><div class="narrator-sidebarBG"></div><div class="narrator-bg"></div></div>`);
         this.narratorFrame = this.narrator.find(".narrator-frame");
+        this.narratorFrameBG = this.narrator.find(".narrator-frameBG");
+        this.narratorSidebarBG = this.narrator.find(".narrator-sidebarBG");
         this.narratorBG = this.narrator.find(".narrator-bg");
         this.narratorBOX = this.narrator.find(".narrator-box");
         this.narratorContent = this.narrator.find(".narrator-content");
         this.scenery = false;
+        this.sidebarCollapse = $('body').find('.app.collapsed').length;
+        this._resizeElements();
         $('body').append(this.narrator);
     }
 
@@ -30,7 +34,7 @@ class NarratorTools {
             match = content.match(rgx); 
             if ( match ) {
                 const chatData = {
-                    content: (`<span class="narrator-span${c == 'narrate' ? ' narration' : ' description' }">${match[2]}</span>`)
+                    content: (`<span class="narrator-span${c == 'narrate' ? ' narration' : ' description' }">${match[2].replace(/\\n/g,'\n')}</span>`)
                 };
                 ChatMessage.create(chatData, {});
                 return false;
@@ -67,7 +71,6 @@ class NarratorTools {
         this.narratorBG.height(height*3);
         this.narratorContent.stop();
         this.narratorContent[0].style.top = "0px";
-        this.narratorBOX[0].style.paddingRight = `${$(document.getElementById('sidebar')).width()+7}px`;
         this.narratorBG[0].style.opacity = "1";
         this.narratorContent[0].style.opacity = "1";
         let scroll = this.narratorContent.height()-310;
@@ -82,6 +85,11 @@ class NarratorTools {
     narratorClose() {
         this.narratorBG[0].style.opacity = "0";
         this.narratorContent[0].style.opacity = "0";
+    }
+
+    updateScenery() {
+        this.narratorFrameBG[0].style.opacity = this.scenery ? 1 : 0;
+        this.narratorSidebarBG[0].style.opacity = this.scenery ? 1 : 0;
     }
 
     _onNarratorChatClick(event) {
@@ -105,7 +113,7 @@ class NarratorTools {
                 active: this.scenery,
                 onClick: () => {
                     this.scenery = !this.scenery;
-                    this.narratorFrame[0].style.opacity = this.scenery ? 1 : 0;
+                    this.updateScenery();
                     game.socket.emit("module.narrator-tools", { "command": "scenery", "value": this.scenery });
                 }
             });
@@ -116,7 +124,7 @@ class NarratorTools {
         let commands = {
             scenery: function () {
                 Narrator.scenery = data.value;
-                Narrator.narratorFrame[0].style.opacity = Narrator.scenery ? 1 : 0;
+                Narrator.updateScenery();
             },
             update: function () {
                 if (game.user.isGM) {
@@ -127,6 +135,17 @@ class NarratorTools {
         commands[data.command]();
     }
 
+    _sidebarCollapse(sidebar, collapse) {
+        this.sidebarCollapse = collapse;
+        this._resizeElements();
+    }
+
+    _resizeElements() {
+        const sidebarWidth = this.sidebarCollapse ? 0 : 305 ;
+        this.narratorSidebarBG.width(sidebarWidth);
+        this.narratorFrame.width(`calc(100% - ${sidebarWidth}px)`);
+    }
+
 }
 
 Hooks.on("setup", () => {
@@ -134,6 +153,7 @@ Hooks.on("setup", () => {
     Hooks.on("chatMessage", Narrator._chatMessage.bind(Narrator)); // This hook spans the chatmsg
     Hooks.on("renderChatMessage", Narrator._renderChatMessage.bind(Narrator)); // This hook changes the chat message in case its a narration + triggers
     Hooks.on('getSceneControlButtons', Narrator._getSceneControlButtons.bind(Narrator));
+    Hooks.on("sidebarCollapse", Narrator._sidebarCollapse.bind(Narrator))
 })
 Hooks.on("ready", () => {
     $(document.getElementById('chat-log')).on("click", ".message.narrator-chat", Narrator._onNarratorChatClick.bind(Narrator));
