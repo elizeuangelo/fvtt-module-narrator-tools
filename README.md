@@ -18,14 +18,21 @@ In the setup screen, use the URL https://raw.githubusercontent.com/elizeuangelo/
 The module currently adds chat commands and a new tool on the token toolbox (the button menu on the left).
 
 ### New Chat Commands
-
 - `/desc (or /describe, or /description) [message]` - displays a descriptive message in chat only
 - `/narrate (or /narration) [message]` - displays a limited duration message in the canvas and chat
+
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/750483802719125634/narrator-tools_2.jpg)
 
 ### Token Toolbox
 - New Scenery Tool - dims the canvas and apply vignette
+
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/750424196806475866/Example_narrator_tools.jpg)
+
+### Journal Macros
+- Chat commands now work in the Journal with the aid of macros, using a macro in the beggining of a paragraph reads the entire paragraph
+
+![img](https://cdn.discordapp.com/attachments/542495303929036824/754461926381191178/unknown.png)
+![img](https://cdn.discordapp.com/attachments/542495303929036824/754462102856663120/unknown.png)
 
 ## License
 This module is made by elizeuangelo and it is licensed under a Creative Commons Attribution 4.0 International License.
