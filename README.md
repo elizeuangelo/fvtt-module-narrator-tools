@@ -29,7 +29,7 @@ The module currently adds chat commands and a new tool on the token toolbox (the
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/750424196806475866/Example_narrator_tools.jpg)
 
 ### Journal Macros
-- Chat commands now work in the Journal with the aid of macros, using a macro in the beggining of a paragraph reads the entire paragraph once you click the button
+- Chat commands now work in the Journal with the aid of macros, using a macro in the beggining of a paragraph reads the entire paragraph
 
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/754461926381191178/unknown.png)
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/754462102856663120/unknown.png)
