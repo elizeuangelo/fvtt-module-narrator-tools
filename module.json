@@ -2,18 +2,45 @@
     "name": "narrator-tools",
     "title": "Narrator Tools",
     "description": "Special tools to increase the immersion in your roleplaying game.",
-    "version": "0.22",
+    "version": "0.23",
     "author": ["elizeuangelo"],
     "scripts": ["./narrator.js"],
     "styles": ["./narrator.css"],
     "languages": [{
+        "lang": "de",
+        "name": "Deutsch",
+        "path": "./lang/de.json"
+      }, {
         "lang": "en",
         "name": "English",
-        "path": "langs/en.json"
+        "path": "./lang/en.json"
+      }, {
+        "lang": "es",
+        "name": "Español (España)",
+        "path": "./lang/es-ES.json"
+      }, {
+        "lang": "fr",
+        "name": "Français",
+        "path": "./lang/fr.json"
+      }, {
+        "lang": "ja",
+        "name": "日本語",
+        "path": "./lang/ja.json"
+      }, {
+        "lang": "pt-BR",
+        "name": "Português (Brasil)",
+        "path": "./lang/pt-BR.json"
+      }],
+    "packs": [{
+        "name": "narrator-macros",
+        "label": "Narrator Tools - Macros",
+        "path": "./packs/narrator-macros.db",
+        "module": "narrator-tools",
+        "entity": "Macro"
       }],
     "url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools",
     "manifest": "https://raw.githubusercontent.com/elizeuangelo/fvtt-module-narrator-tools/master/module.json",
-    "download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.22/v0.22.zip",
+    "download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.23/v0.23.zip",
     "minimumCoreVersion": "0.6.0",
     "compatibleCoreVersion": "0.7.0",
     "socket": true

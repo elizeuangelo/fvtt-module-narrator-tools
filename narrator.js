@@ -16,6 +16,7 @@ class NarratorTools {
         this.narratorContent = this.narrator.find(".narrator-content");
         this.scenery = false;
         this.sidebarCollapse = $('body').find('.app.collapsed').length;
+        this.msgtype = 0;
         this._resizeElements();
         $('body').append(this.narrator);
     }
@@ -33,13 +34,18 @@ class NarratorTools {
         for ( [c, rgx] of Object.entries(commands) ) {
             match = content.match(rgx); 
             if ( match ) {
-                const chatData = {
-                    content: (`<span class="narrator-span${c == 'narrate' ? ' narration' : ' description' }">${match[2].replace(/\\n/g,'\n')}</span>`)
-                };
-                ChatMessage.create(chatData, {});
+                this.createSpecialChatMessage(c, match[2]);
                 return false;
             }
         }
+    }
+
+    createSpecialChatMessage(type, message) {
+        const chatData = {
+            content: (`<span class="narrator-span${type == 'narrate' ? ' narration' : ' description' }">${message.replace(/\\n/g,'\n')}</span>`),
+            type: this.msgtype
+        };
+        ChatMessage.create(chatData, {});
     }
 
     _renderChatMessage(message, html, data) {
@@ -153,7 +159,7 @@ Hooks.on("setup", () => {
     Hooks.on("chatMessage", Narrator._chatMessage.bind(Narrator)); // This hook spans the chatmsg
     Hooks.on("renderChatMessage", Narrator._renderChatMessage.bind(Narrator)); // This hook changes the chat message in case its a narration + triggers
     Hooks.on('getSceneControlButtons', Narrator._getSceneControlButtons.bind(Narrator));
-    Hooks.on("sidebarCollapse", Narrator._sidebarCollapse.bind(Narrator))
+    Hooks.on("sidebarCollapse", Narrator._sidebarCollapse.bind(Narrator));
 })
 Hooks.on("ready", () => {
     $(document.getElementById('chat-log')).on("click", ".message.narrator-chat", Narrator._onNarratorChatClick.bind(Narrator));

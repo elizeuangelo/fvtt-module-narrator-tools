@@ -29,6 +29,11 @@
   color: white;
 }
 
+.narrator-chat a.entity-link, .narrator-chat a.inline-roll {
+  background: none;
+  border: 1px solid #707098;
+}
+
 .narrator {
   position: absolute;
   height: 100%;
