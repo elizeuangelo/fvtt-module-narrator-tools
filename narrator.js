@@ -43,7 +43,11 @@ class NarratorTools {
     createSpecialChatMessage(type, message) {
         const chatData = {
             content: (`<span class="narrator-span${type == 'narrate' ? ' narration' : ' description' }">${message.replace(/\\n/g,'\n')}</span>`),
-            type: this.msgtype
+            type: this.msgtype,
+            speaker: {
+                alias: game.i18n.localize("NT.Narrator"),
+                scene: game.user.viewedScene
+              }
         };
         ChatMessage.create(chatData, {});
     }

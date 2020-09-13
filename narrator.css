@@ -85,7 +85,8 @@
   position: absolute;
   max-height: 310px;
   overflow-y: hidden;
-  width: 66%;
+  width: 50%;
+  max-width: 800px;
 }
   
 .narrator-content {
