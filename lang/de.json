@@ -1,4 +1,11 @@
 {
-    "NT.ButtonTitle": "Szenario",
-    "NT.Narrator": "Erzähler"
+	"NT.ButtonTitle": "Landschaft",
+	"NT.Narrator": "Erzähler",
+	"NT.CfgName": "Konfigurieren",
+	"NT.Title": "Erzähler Werkzeuge",
+	"NT.CfgLabel": "die Einstellungen",
+	"NT.NarrationNav": "Erzählung",
+	"NT.AppearanceHint": "Konfigurieren Sie das Erscheinungsbild der Erzählung.",
+	"NT.FontSize": "Schriftgröße",
+	"NT.FontSizeExample": "28px"
 }

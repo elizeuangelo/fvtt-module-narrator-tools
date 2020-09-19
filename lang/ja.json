@@ -1,4 +1,11 @@
 {
-    "NT.ButtonTitle": "シーン",
-    "NT.Narrator": "語り手"
+	"NT.ButtonTitle": "風景",
+	"NT.Narrator": "ナレーター",
+	"NT.CfgName": "構成、設定",
+	"NT.Title": "ナレーターツール",
+	"NT.CfgLabel": "設定",
+	"NT.NarrationNav": "ナレーション",
+	"NT.AppearanceHint": "ナレーションの外観を構成します。",
+	"NT.FontSize": "フォントサイズ",
+	"NT.FontSizeExample": "28px"
 }

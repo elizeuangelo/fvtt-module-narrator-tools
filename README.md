@@ -28,11 +28,10 @@ The module currently adds chat commands and a new tool on the token toolbox (the
 
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/750424196806475866/Example_narrator_tools.jpg)
 
-### Journal Macros
-- Chat commands now work in the Journal with the aid of macros, using a macro in the beggining of a paragraph reads the entire paragraph
+### Journal Context Menu
+- Chat commands are now usable in the Journal with a simple right-click! Select the text you want to narrate and give the command. Simple and easy.
 
-![img](https://cdn.discordapp.com/attachments/542495303929036824/754461926381191178/unknown.png)
-![img](https://cdn.discordapp.com/attachments/542495303929036824/754462102856663120/unknown.png)
+![img](https://cdn.discordapp.com/attachments/542495303929036824/756978823077298177/unknown.png)
 
 ## License
 This module is made by elizeuangelo and it is licensed under a Creative Commons Attribution 4.0 International License.

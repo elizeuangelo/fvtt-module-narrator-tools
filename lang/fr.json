@@ -1,4 +1,11 @@
 {
-    "NT.ButtonTitle": "Scénario",
-    "NT.Narrator": "Conteur"
+	"NT.ButtonTitle": "Paysage",
+	"NT.Narrator": "Narrateur",
+	"NT.CfgName": "Configurer",
+	"NT.Title": "Outils du narrateur",
+	"NT.CfgLabel": "Paramètres",
+	"NT.NarrationNav": "Narration",
+	"NT.AppearanceHint": "Configurez l'apparence de la narration.",
+	"NT.FontSize": "Taille de police",
+	"NT.FontSizeExample": "28px"
 }

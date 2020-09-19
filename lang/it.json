@@ -1,0 +1,11 @@
+{
+	"NT.ButtonTitle": "Scenario",
+	"NT.Narrator": "Narratore",
+	"NT.CfgName": "Configura",
+	"NT.Title": "Strumenti dell'Assistente vocale",
+	"NT.CfgLabel": "impostazioni",
+	"NT.NarrationNav": "Narrazione",
+	"NT.AppearanceHint": "Configura l'aspetto della narrazione.",
+	"NT.FontSize": "Dimensione del font",
+	"NT.FontSizeExample": "28px"
+}
