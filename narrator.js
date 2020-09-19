@@ -272,4 +272,5 @@ Hooks.on("ready", () => {
             {'icon': 'comment-dots', 'name': 'Narrate',  action: () => Narrator.createSpecialChatMessage('narrate', NarratorTools.getSelectionHtml())  }
         ]
     });
+    NarratorTools.loadFont(game.settings.get('narrator-tools', 'WebFont'));
 })
