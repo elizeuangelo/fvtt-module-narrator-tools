@@ -41,8 +41,14 @@ class NarratorTools {
     }
 
     createSpecialChatMessage(type, message) {
+        let csspatches="";
+        if(typeof game.modules.get('pathfinder-ui') !='undefined'){
+            if(game.modules.get('pathfinder-ui').active){
+                csspatches +='pathfinder-ui-fix'
+            }
+        }      
         const chatData = {
-            content: (`<span class="narrator-span${type == 'narrate' ? ' narration' : ' description' }">${message.replace(/\\n|<br>/g,'\n')}</span>`),
+            content: (`<span class="narrator-span${type == 'narrate' ? ' narration' : ' description' } ${csspatches}">${message.replace(/\\n|<br>/g,'\n')}</span>`),
             type: this.msgtype,
             speaker: {
                 alias: game.i18n.localize("NT.Narrator"),

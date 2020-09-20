@@ -1,7 +1,7 @@
 #chat-log .narrator-narrative {
   background: #333;
   text-shadow: -1px -1px 0 #000 , 1px -1px 0 #000 , -1px 1px 0 #000 , 1px 1px 0 #000;
-  color: white !important;
+  color: white;
   margin: 2px;
   padding: 10px;
   border: 2px solid #191813d6;
@@ -10,7 +10,7 @@
 #chat-log .narrator-description {
   background: #4b4a44;
   text-shadow: -1px -1px 0 #000 , 1px -1px 0 #000 , -1px 1px 0 #000 , 1px 1px 0 #000;
-  color: white !important;
+  color: white;
   margin: 2px;
   padding: 10px;
   border: 2px solid #191813d6;
@@ -105,4 +105,9 @@
   color: white;
   transition: opacity 0.5s ease-in-out;
   white-space: pre-line;
+}
+
+.pathfinder-ui-fix {
+  text-shadow: -1px -1px 0 #fff , 1px -1px 0 #fff , -1px 1px 0 #fff , 1px 1px 0 #fff;
+  color: black;  
 }
