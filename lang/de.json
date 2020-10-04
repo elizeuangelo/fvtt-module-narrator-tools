@@ -4,8 +4,10 @@
 	"NT.CfgName": "Konfigurieren",
 	"NT.Title": "Erzähler Werkzeuge",
 	"NT.CfgLabel": "die Einstellungen",
-	"NT.NarrationNav": "Erzählung",
+	"NT.NarrationNav": "Erzählstil",
 	"NT.AppearanceHint": "Konfigurieren Sie das Erscheinungsbild der Erzählung.",
 	"NT.FontSize": "Schriftgröße",
-	"NT.FontSizeExample": "28px"
+	"NT.OthersNav": "Verhalten",
+	"NT.OthersHint": "Konfigurieren Sie das Verhalten des Moduls.",
+	"NT.Pause": "Automatische Szenenaktualisierungen beim Anhalten"
 }

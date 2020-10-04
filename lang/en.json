@@ -1,11 +1,13 @@
 {
-    "NT.ButtonTitle": "Scenery",
-    "NT.Narrator": "Narrator",
-    "NT.CfgName": "Configure",
-    "NT.Title": "Narrator Tools",
-    "NT.CfgLabel": "Settings",
-    "NT.NarrationNav": "Narration",
-    "NT.AppearanceHint": "Configure the narration's appearance.",
-    "NT.FontSize": "Font size",
-    "NT.FontSizeExample": "28px"
+	"NT.ButtonTitle": "Scenery",
+	"NT.Narrator": "Narrator",
+	"NT.CfgName": "Configure",
+	"NT.Title": "Narrator Tools",
+	"NT.CfgLabel": "Settings",
+	"NT.NarrationNav": "Narration Style",
+	"NT.AppearanceHint": "Configure the narration's appearance.",
+	"NT.FontSize": "Font size",
+	"NT.OthersNav": "Behavior",
+	"NT.OthersHint": "Configure the module's behavior.",
+	"NT.Pause": "Automatic scenery updates when pausing"
 }

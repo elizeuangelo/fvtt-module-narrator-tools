@@ -1,17 +1,25 @@
 <form autocomplete="off">
-    <!-- BACKGROUND AND APPEARANCE -->
+	<!-- BACKGROUND AND APPEARANCE -->
 	<h3 class="form-header"><i class="far fa-image"></i> {{localize "NT.NarrationNav"}}</h3>
 	<p class="notes">{{localize "NT.AppearanceHint"}}</p>
 
-    <div class="form-group">
-        <label>{{localize "NT.FontSize"}}</label>
-    <input type="text" name="FontSize" placeholder="28px" value="{{FontSize}}"/>
-    </div>
+	<div class="form-group">
+		<label>{{localize "NT.FontSize"}}</label>
+		<input type="text" name="FontSize" placeholder="28px" value="{{FontSize}}" />
+	</div>
 
-    <div class="form-group">
-			<label>Google Fonts</label>
-        <input type="text" name="WebFont" placeholder="Dancing Script" value="{{WebFont}}"/>
-    </div>
+	<div class="form-group">
+		<label>Google Fonts</label>
+		<input type="text" name="WebFont" placeholder="Dancing Script" value="{{WebFont}}" />
+	</div>
 
-    <button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{localize "Save Changes"}}</button>
+	<h3 class="form-header"><i class="fas fa-microchip"></i> {{localize "NT.OthersNav"}}</h3>
+	<p class="notes">{{localize "NT.OthersHint"}}</p>
+
+	<div class="form-group">
+		<label>{{localize "NT.Pause"}}</label>
+		<input type="checkbox" name="Pause" {{checked Pause}} />
+	</div>
+
+	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{localize "Save Changes"}}</button>
 </form>

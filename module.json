@@ -1,48 +1,72 @@
 {
-    "name": "narrator-tools",
-    "title": "Narrator Tools",
-    "description": "Special tools to increase the immersion in your roleplaying game.",
-    "version": "0.31",
-    "author": ["elizeuangelo"],
-    "scripts": ["./narrator.js", "./context-menu.min.js"],
-    "styles": ["./narrator.css", "./context-menu.min.css"],
-    "languages": [{
-        "lang": "de",
-        "name": "Deutsch",
-        "path": "./lang/de.json"
-      }, {
-        "lang": "en",
-        "name": "English",
-        "path": "./lang/en.json"
-      }, {
-        "lang": "es",
-        "name": "Español (España)",
-        "path": "./lang/es-ES.json"
-      }, {
-        "lang": "fr",
-        "name": "Français",
-        "path": "./lang/fr.json"
-      }, {
-        "lang": "it",
-        "name": "Italian",
-        "path": "./lang/it.json"
-      }, {
-        "lang": "ja",
-        "name": "日本語",
-        "path": "./lang/ja.json"
-      }, {
-        "lang": "ko",
-        "name": "한국어",
-        "path": "./lang/ko.json"
-      }, {
-        "lang": "pt-BR",
-        "name": "Português (Brasil)",
-        "path": "./lang/pt-BR.json"
-      }],
-    "url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools",
-    "manifest": "https://raw.githubusercontent.com/elizeuangelo/fvtt-module-narrator-tools/master/module.json",
-    "download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.31/v0.31.zip",
-    "minimumCoreVersion": "0.6.0",
-    "compatibleCoreVersion": "0.7.0",
-    "socket": true
+	"name": "narrator-tools",
+	"title": "Narrator Tools",
+	"description": "Special tools to increase the immersion in your roleplaying game.",
+	"version": "0.32",
+	"author": ["elizeuangelo"],
+	"scripts": ["./narrator.js", "./context-menu.min.js"],
+	"styles": ["./narrator.css", "./context-menu.min.css"],
+	"languages": [
+		{
+			"lang": "cn",
+			"name": "简体中文",
+			"path": "./lang/cn.json"
+		},
+		{
+			"lang": "de",
+			"name": "Deutsch",
+			"path": "./lang/de.json"
+		},
+		{
+			"lang": "en",
+			"name": "English",
+			"path": "./lang/en.json"
+		},
+		{
+			"lang": "es",
+			"name": "Español (España)",
+			"path": "./lang/es-ES.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "./lang/fr.json"
+		},
+		{
+			"lang": "it",
+			"name": "Italian",
+			"path": "./lang/it.json"
+		},
+		{
+			"lang": "ja",
+			"name": "日本語",
+			"path": "./lang/ja.json"
+		},
+		{
+			"lang": "ko",
+			"name": "한국어",
+			"path": "./lang/ko.json"
+		},
+		{
+			"lang": "pl",
+			"name": "Polski",
+			"path": "./lang/pl.json"
+		},
+		{
+			"lang": "ru",
+			"name": "русский",
+			"path": "./lang/ru.json"
+		},
+		{
+			"lang": "th",
+			"name": "ไทย",
+			"path": "./lang/th.json"
+		}
+	],
+	"url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools",
+	"manifest": "https://raw.githubusercontent.com/elizeuangelo/fvtt-module-narrator-tools/master/module.json",
+	"download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.32/v0.32.zip",
+	"minimumCoreVersion": "0.6.0",
+	"compatibleCoreVersion": "0.7.3",
+	"socket": true
 }

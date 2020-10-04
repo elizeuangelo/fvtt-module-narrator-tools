@@ -1,11 +1,13 @@
 {
-	"NT.ButtonTitle": "風景",
-	"NT.Narrator": "ナレーター",
-	"NT.CfgName": "構成、設定",
-	"NT.Title": "ナレーターツール",
+	"NT.ButtonTitle": "シーン背景",
+	"NT.Narrator": "字幕",
+	"NT.CfgName": "設定",
+	"NT.Title": "字幕ツール",
 	"NT.CfgLabel": "設定",
 	"NT.NarrationNav": "ナレーション",
-	"NT.AppearanceHint": "ナレーションの外観を構成します。",
-	"NT.FontSize": "フォントサイズ",
-	"NT.FontSizeExample": "28px"
+	"NT.AppearanceHint": "字幕の見た目を設定します。",
+	"NT.FontSize": "文字の大きさ",
+	"NT.OthersNav": "動作",
+	"NT.OthersHint": "モジュールの動作を構成します。",
+	"NT.Pause": "一時停止時の自動シーナリー更新"
 }

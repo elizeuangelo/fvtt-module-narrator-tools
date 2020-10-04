@@ -4,8 +4,10 @@
 	"NT.CfgName": "Configurar",
 	"NT.Title": "Ferramentas do Narrador",
 	"NT.CfgLabel": "Configurações",
-	"NT.NarrationNav": "Narração",
+	"NT.NarrationNav": "Estilo da Narração",
 	"NT.AppearanceHint": "Configure a aparência da narração.",
 	"NT.FontSize": "Tamanho da fonte",
-	"NT.FontSizeExample": "28px"
+	"NT.OthersNav": "Comportamento",
+	"NT.OthersHint": "Configure o comportamento do módulo.",
+	"NT.Pause": "Cenário atualiza automaticamente ao pausar"
 }

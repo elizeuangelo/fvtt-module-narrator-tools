@@ -4,8 +4,10 @@
 	"NT.CfgName": "구성",
 	"NT.Title": "내레이터 도구",
 	"NT.CfgLabel": "설정",
-	"NT.NarrationNav": "화법",
+	"NT.NarrationNav": "내레이션 스타일",
 	"NT.AppearanceHint": "내레이션의 모양을 구성합니다.",
 	"NT.FontSize": "글꼴 크기",
-	"NT.FontSizeExample": "28px"
+	"NT.OthersNav": "행동",
+	"NT.OthersHint": "모듈의 동작을 구성합니다.",
+	"NT.Pause": "일시 중지시 자동 풍경 업데이트"
 }

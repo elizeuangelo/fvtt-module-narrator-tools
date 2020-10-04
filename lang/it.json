@@ -4,8 +4,10 @@
 	"NT.CfgName": "Configura",
 	"NT.Title": "Strumenti dell'Assistente vocale",
 	"NT.CfgLabel": "impostazioni",
-	"NT.NarrationNav": "Narrazione",
+	"NT.NarrationNav": "Stile di narrazione",
 	"NT.AppearanceHint": "Configura l'aspetto della narrazione.",
 	"NT.FontSize": "Dimensione del font",
-	"NT.FontSizeExample": "28px"
+	"NT.OthersNav": "Comportamento",
+	"NT.OthersHint": "Configura il comportamento del modulo.",
+	"NT.Pause": "Aggiornamenti automatici dello scenario durante la pausa"
 }

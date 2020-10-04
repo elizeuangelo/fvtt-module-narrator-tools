@@ -1,113 +1,114 @@
 #chat-log .narrator-narrative {
-  background: #333;
-  text-shadow: -1px -1px 0 #000 , 1px -1px 0 #000 , -1px 1px 0 #000 , 1px 1px 0 #000;
-  color: white;
-  margin: 2px;
-  padding: 10px;
-  border: 2px solid #191813d6;
+	background: #333;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	color: white;
+	margin: 2px;
+	padding: 10px;
+	border: 2px solid #191813d6;
 }
 
 #chat-log .narrator-description {
-  background: #4b4a44;
-  text-shadow: -1px -1px 0 #000 , 1px -1px 0 #000 , -1px 1px 0 #000 , 1px 1px 0 #000;
-  color: white;
-  margin: 2px;
-  padding: 10px;
-  border: 2px solid #191813d6;
+	background: #4b4a44;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	color: white;
+	margin: 2px;
+	padding: 10px;
+	border: 2px solid #191813d6;
 }
 
 #chat-log .narrator-chat {
-  text-align: center;
-  font-style: italic;
+	text-align: center;
+	font-style: italic;
 }
 
 #chat-log .narrator-span {
-  white-space: pre-line;
+	white-space: pre-line;
 }
 
 #chat-log .narrator-span p {
-  margin: -0.2rem;
+	margin: -0.2rem;
 }
 
 #chat-log .narrator-chat .message-metadata {
-  color: white;
+	color: white;
 }
 
-.narrator-chat a.entity-link, .narrator-chat a.inline-roll {
-  background: none;
-  border: 1px solid #707098;
+.narrator-chat a.entity-link,
+.narrator-chat a.inline-roll {
+	background: none;
+	border: 1px solid #707098;
 }
 
 .narrator {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  pointer-events: none;
-  z-index: 1;
-  align-items: center;
-  display: flex;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	pointer-events: none;
+	z-index: 1;
+	align-items: center;
+	display: flex;
 }
 
 .narrator-frame {
-  height: 100%;
-  width: 100%;
-  left: 0;
-  transition: 0.5s ease-in-out;
-  justify-content: center;
-  align-items: center;
-  display: flex;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	transition: 0.5s ease-in-out;
+	justify-content: center;
+	align-items: center;
+	display: flex;
 }
 
 .narrator-frameBG {
-  height: 100%;
-  width: 100%;
-  left: 0;
-  transition: 0.5s ease-in-out;
-  box-shadow: inset 0 0 2000px 100px black;
-  background: rgba(0, 0, 0, 0.2);
-  opacity: 0;
+	height: 100%;
+	width: 100%;
+	left: 0;
+	transition: 0.5s ease-in-out;
+	box-shadow: inset 0 0 2000px 100px black;
+	background: rgba(0, 0, 0, 0.2);
+	opacity: 0;
 }
 
 .narrator-sidebarBG {
-  height: 100%;
-  width: 305px;
-  right: 0;
-  transition: 0.5s ease-in-out;
-  box-shadow: inset 0 0 2000px 100px black;
-  background: black;
-  opacity: 0;
+	height: 100%;
+	width: 305px;
+	right: 0;
+	transition: 0.5s ease-in-out;
+	box-shadow: inset 0 0 2000px 100px black;
+	background: black;
+	opacity: 0;
 }
-  
+
 .narrator-bg {
-  position: absolute;
-  width: 100%;
-  transition: 0.5s ease-in-out;
-  background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.66) 40%, rgba(0, 0, 0, 0.66) 60%, transparent 100%);
+	position: absolute;
+	width: 100%;
+	transition: 0.5s ease-in-out;
+	background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.66) 40%, rgba(0, 0, 0, 0.66) 60%, transparent 100%);
 }
 
 .narrator-box {
-  position: absolute;
-  max-height: 310px;
-  overflow-y: hidden;
-  width: 50%;
-  max-width: 800px;
+	position: absolute;
+	max-height: 310px;
+	overflow-y: hidden;
+	width: 50%;
+	max-width: 800px;
 }
-  
+
 .narrator-content {
-  position: relative;
-  top: 0px;
-  left: 0px;
-  text-align: center;
-  z-index: 1;
-  font-size: 28px;
-  font-weight: bold;
-  text-shadow: 3px 3px 2px black;
-  color: white;
-  transition: opacity 0.5s ease-in-out;
-  white-space: pre-line;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	text-align: center;
+	z-index: 1;
+	font-size: 28px;
+	font-weight: bold;
+	text-shadow: 3px 3px 2px black;
+	color: white;
+	transition: opacity 0.5s ease-in-out;
+	white-space: pre-line;
 }
 
 .pathfinder-ui-fix {
-  text-shadow: -1px -1px 0 #fff , 1px -1px 0 #fff , -1px 1px 0 #fff , 1px 1px 0 #fff;
-  color: black;  
+	text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+	color: black;
 }

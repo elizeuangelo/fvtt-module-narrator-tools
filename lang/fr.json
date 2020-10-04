@@ -3,9 +3,11 @@
 	"NT.Narrator": "Narrateur",
 	"NT.CfgName": "Configurer",
 	"NT.Title": "Outils du narrateur",
-	"NT.CfgLabel": "Paramètres",
-	"NT.NarrationNav": "Narration",
+	"NT.CfgLabel": "Réglages",
+	"NT.NarrationNav": "Style de narration",
 	"NT.AppearanceHint": "Configurez l'apparence de la narration.",
 	"NT.FontSize": "Taille de police",
-	"NT.FontSizeExample": "28px"
+	"NT.OthersNav": "Comportement",
+	"NT.OthersHint": "Configurez le comportement du module.",
+	"NT.Pause": "Mises à jour automatiques des scènes lors de la pause"
 }

@@ -1,0 +1,13 @@
+{
+	"NT.ButtonTitle": "风景",
+	"NT.Narrator": "解说员",
+	"NT.CfgName": "配置",
+	"NT.Title": "讲述人工具",
+	"NT.CfgLabel": "设定值",
+	"NT.NarrationNav": "叙述风格",
+	"NT.AppearanceHint": "配置旁白的外观。",
+	"NT.FontSize": "字体大小",
+	"NT.OthersNav": "行为",
+	"NT.OthersHint": "配置模块的行为。",
+	"NT.Pause": "暂停时自动更新风景"
+}
