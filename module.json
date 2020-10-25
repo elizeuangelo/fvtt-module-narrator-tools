@@ -79,6 +79,6 @@
 	"manifest": "https://raw.githubusercontent.com/elizeuangelo/fvtt-module-narrator-tools/master/module.json",
 	"download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.33/v0.33.zip",
 	"minimumCoreVersion": "0.6.0",
-	"compatibleCoreVersion": "0.7.3",
+	"compatibleCoreVersion": "0.7.5",
 	"socket": true
 }
