@@ -9,7 +9,7 @@
 	"NT.FontSize": "文字の大きさ",
 	"NT.OthersNav": "動作",
 	"NT.OthersHint": "モジュールの動作を構成します。",
-    "NT.Pause": "一時停止時の自動シーナリー更新",
-    "NT.DurationMultiplier": "ナレーションの長さ",
+	"NT.Pause": "一時停止時の自動シーナリー更新",
+	"NT.DurationMultiplier": "ナレーションの長さ",
 	"NT.UIDuration": "UIコントロールを使用する"
 }
