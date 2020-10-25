@@ -9,5 +9,7 @@
 	"NT.FontSize": "Font size",
 	"NT.OthersNav": "Behavior",
 	"NT.OthersHint": "Configure the module's behavior.",
-	"NT.Pause": "Automatic scenery updates when pausing"
+    	"NT.Pause": "Automatic Scenery control when game is Paused",
+   	"NT.DurationMultiplier": "Duration of the Narration",
+   	"NT.UIDuration": "Use UI Controls"
 }

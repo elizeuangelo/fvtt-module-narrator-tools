@@ -9,5 +9,7 @@
 	"NT.FontSize": "Rozmiar czcionki",
 	"NT.OthersNav": "Zachowanie",
 	"NT.OthersHint": "Skonfiguruj zachowanie modułu.",
-	"NT.Pause": "Automatyczne aktualizacje scenerii podczas pauzy"
+	"NT.Pause": "Automatyczna kontrola scenerii, gdy gra jest wstrzymana",
+	"NT.DurationMultiplier": "Czas trwania narracji",
+	"NT.UIDuration": "Użyj elementów sterujących interfejsu użytkownika"
 }

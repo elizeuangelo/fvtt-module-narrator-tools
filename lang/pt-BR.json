@@ -4,10 +4,12 @@
 	"NT.CfgName": "Configurar",
 	"NT.Title": "Ferramentas do Narrador",
 	"NT.CfgLabel": "Configurações",
-	"NT.NarrationNav": "Estilo da Narração",
+	"NT.NarrationNav": "Estilo de Narração",
 	"NT.AppearanceHint": "Configure a aparência da narração.",
 	"NT.FontSize": "Tamanho da fonte",
 	"NT.OthersNav": "Comportamento",
 	"NT.OthersHint": "Configure o comportamento do módulo.",
-	"NT.Pause": "Cenário atualiza automaticamente ao pausar"
+	"NT.Pause": "Controle automático de cenário quando o jogo está pausado",
+	"NT.DurationMultiplier": "Duração da narração",
+	"NT.UIDuration": "Use controles de interface do usuário"
 }

@@ -9,5 +9,7 @@
 	"NT.FontSize": "Schriftgröße",
 	"NT.OthersNav": "Verhalten",
 	"NT.OthersHint": "Konfigurieren Sie das Verhalten des Moduls.",
-	"NT.Pause": "Automatische Szenenaktualisierungen beim Anhalten"
+	"NT.Pause": "Automatische Landschaftssteuerung bei Spielpause",
+	"NT.DurationMultiplier": "Dauer der Erzählung",
+	"NT.UIDuration": "Verwenden Sie UI-Steuerelemente"
 }

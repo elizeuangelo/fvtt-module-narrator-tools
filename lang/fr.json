@@ -9,5 +9,7 @@
 	"NT.FontSize": "Taille de police",
 	"NT.OthersNav": "Comportement",
 	"NT.OthersHint": "Configurez le comportement du module.",
-	"NT.Pause": "Mises à jour automatiques des scènes lors de la pause"
+	"NT.Pause": "Contrôle automatique du paysage lorsque le jeu est en pause",
+	"NT.DurationMultiplier": "Durée de la narration",
+	"NT.UIDuration": "Utiliser les contrôles de l'interface utilisateur"
 }

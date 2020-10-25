@@ -9,5 +9,7 @@
 	"NT.FontSize": "Dimensione del font",
 	"NT.OthersNav": "Comportamento",
 	"NT.OthersHint": "Configura il comportamento del modulo.",
-	"NT.Pause": "Aggiornamenti automatici dello scenario durante la pausa"
+	"NT.Pause": "Controllo automatico dello scenario quando il gioco è in pausa",
+	"NT.DurationMultiplier": "Durata della narrazione",
+	"NT.UIDuration": "Usa i controlli dell'interfaccia utente"
 }

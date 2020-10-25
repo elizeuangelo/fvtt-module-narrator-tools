@@ -9,5 +9,7 @@
 	"NT.FontSize": "글꼴 크기",
 	"NT.OthersNav": "행동",
 	"NT.OthersHint": "모듈의 동작을 구성합니다.",
-	"NT.Pause": "일시 중지시 자동 풍경 업데이트"
+	"NT.Pause": "게임이 일시 중지되었을 때 자동 풍경 제어",
+	"NT.DurationMultiplier": "내레이션 기간",
+	"NT.UIDuration": "UI 컨트롤 사용"
 }
