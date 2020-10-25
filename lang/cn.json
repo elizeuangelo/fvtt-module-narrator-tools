@@ -9,7 +9,7 @@
 	"NT.FontSize": "字体大小",
 	"NT.OthersNav": "行为",
 	"NT.OthersHint": "设定该模块的行为",
-    "NT.Pause": "游戏暂停时自动切换观景模式。",
-    "NT.DurationMultiplier": "叙述时间",
+	"NT.Pause": "游戏暂停时自动切换观景模式。",
+	"NT.DurationMultiplier": "叙述时间",
 	"NT.UIDuration": "使用UI控件"
 }
