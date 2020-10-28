@@ -94,8 +94,6 @@ class NarratorTools {
 	}
 
 	narratorOpen(content, duration) {
-		this.narratorContent[0].style.fontFamily = `${game.settings.get('narrator-tools', 'WebFont')}`;
-		this.narratorContent[0].style.fontSize = `${game.settings.get('narrator-tools', 'FontSize')}`;
 		this.narratorContent.text(content);
 		const durationMulti = game.settings.get('narrator-tools', 'DurationMultiplier');
 		let height = Math.min(this.narratorContent.height(), 310);
@@ -121,6 +119,20 @@ class NarratorTools {
 	updateScenery() {
 		this.narratorFrameBG[0].style.opacity = this.scenery ? 1 : 0;
 		this.narratorSidebarBG[0].style.opacity = this.scenery ? 1 : 0;
+	}
+
+	_updateContentStyle() {
+		const style = game.settings.get('narrator-tools', 'TextCSS');
+		if (style) {
+			const opacity = this.narratorContent[0].style.opacity;
+			this.narratorContent[0].style = style;
+			this.narratorContent[0].style.opacity = opacity;
+			return;
+		}
+		this.narratorContent[0].style.fontFamily = `${game.settings.get('narrator-tools', 'WebFont')}`;
+		this.narratorContent[0].style.fontSize = `${game.settings.get('narrator-tools', 'FontSize')}`;
+		this.narratorContent[0].style.color = `${game.settings.get('narrator-tools', 'TextColor')}`;
+		this.narratorContent[0].style.textShadow = `${game.settings.get('narrator-tools', 'TextShadow')}`;
 	}
 
 	setScenery(state) {
@@ -171,6 +183,9 @@ class NarratorTools {
 			scenery: function () {
 				Narrator.scenery = data.value;
 				Narrator.updateScenery();
+			},
+			style: function () {
+				Narrator._updateContentStyle();
 			},
 			update: function () {
 				if (game.user.isGM) {
@@ -254,6 +269,9 @@ class NarratorConfig extends FormApplication {
 		return {
 			FontSize: game.settings.get('narrator-tools', 'FontSize'),
 			WebFont: game.settings.get('narrator-tools', 'WebFont'),
+			TextColor: game.settings.get('narrator-tools', 'TextColor'),
+			TextShadow: game.settings.get('narrator-tools', 'TextShadow'),
+			TextCSS: game.settings.get('narrator-tools', 'TextCSS'),
 			Pause: game.settings.get('narrator-tools', 'Pause'),
 			DurationMultiplier: game.settings.get('narrator-tools', 'DurationMultiplier'),
 		};
@@ -263,6 +281,10 @@ class NarratorConfig extends FormApplication {
 		for (let [k, v] of Object.entries(formData)) {
 			game.settings.set('narrator-tools', k, v);
 		}
+		setTimeout(() => {
+			Narrator._updateContentStyle();
+			game.socket.emit('module.narrator-tools', { command: 'style' });
+		}, 200);
 	}
 }
 
@@ -301,6 +323,27 @@ Hooks.on('setup', () => {
 		type: String,
 		onChange: (value) => NarratorTools.loadFont(value),
 	});
+	game.settings.register('narrator-tools', 'TextColor', {
+		name: 'Text Color',
+		scope: 'world',
+		config: false,
+		default: '',
+		type: String,
+	});
+	game.settings.register('narrator-tools', 'TextShadow', {
+		name: 'Text Shadow',
+		scope: 'world',
+		config: false,
+		default: '',
+		type: String,
+	});
+	game.settings.register('narrator-tools', 'TextCSS', {
+		name: 'TextCSS',
+		scope: 'world',
+		config: false,
+		default: '',
+		type: String,
+	});
 	game.settings.register('narrator-tools', 'Pause', {
 		name: 'Pause',
 		scope: 'world',
@@ -338,4 +381,5 @@ Hooks.on('ready', () => {
 		],
 	});
 	NarratorTools.loadFont(game.settings.get('narrator-tools', 'WebFont'));
+	Narrator._updateContentStyle();
 });
