@@ -2,6 +2,7 @@
 This module allows for narration tools wich are intended to increase Foundrys core funcionality.
 Chatcommands:
 /narrate [message]
+/describe [message]
 */
 
 class NarratorTools {
@@ -360,7 +361,9 @@ Hooks.on('setup', () => {
 	});
 });
 Hooks.on('ready', () => {
-	$(document.getElementById('chat-log')).on('click', '.message.narrator-chat', Narrator._onNarratorChatClick.bind(Narrator));
+	$(document.getElementById('chat-log'))
+		.on('click', '.message.narrator-chat', Narrator._onNarratorChatClick.bind(Narrator))
+		.on('click', '.narrator-span', () => false);
 	game.socket.on('module.narrator-tools', Narrator._onSignal.bind(Narrator));
 	if (!game.user.isGM) {
 		game.socket.emit('module.narrator-tools', { command: 'update' });

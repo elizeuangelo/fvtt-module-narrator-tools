@@ -23,6 +23,11 @@
 
 #chat-log .narrator-span {
 	white-space: pre-line;
+	user-select: text;
+}
+
+#chat-log .narrator-span::selection {
+	background: yellow;
 }
 
 #chat-log .narrator-span p {
@@ -108,7 +113,12 @@
 	white-space: pre-line;
 }
 
-.pathfinder-ui-fix {
+#chat-log .pathfinder-ui-fix {
 	text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
 	color: black;
+}
+
+#chat-log .pathfinder-ui-fix::selection {
+	background: darkgray;
+	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
