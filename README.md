@@ -12,6 +12,8 @@
 
 Special tools to increase the immersion in your roleplaying game.
 
+[Wiki for Programmers](https://github.com/elizeuangelo/fvtt-module-narrator-tools/wiki)
+
 ## Installation
 
 In the setup screen, use the URL https://raw.githubusercontent.com/elizeuangelo/fvtt-module-narrator-tools/master/module.json to install the module.
