@@ -170,7 +170,28 @@ const NarratorTools = {
 		};
 		this._fitSidebar();
 		$('body').append(this._element);
-
+		// Game Settings
+		// The shared state of the Narrator Tools application, emitted by the DM across all players
+		// Q:   Why use a setting instead of sockets?
+		// A:   So there is memory. The screen will only update with the DM present and remain in that state.
+		//      For instance, the DM might leave the game with a message on screen.
+		//      There should be no concurrency between sockets and this config,
+		//      so we eliminated sockets altogether.
+		game.settings.register('narrator-tools', 'sharedState', {
+			name: 'NT.state',
+			scope: 'world',
+			config: false,
+			default: {
+				/**Displays information about whats happening on screen */
+				narration: {
+					display: false,
+					message: '',
+					paused: false,
+				},
+				/**If the background scenery is on or off */
+				scenery: false,
+			},
+		});
 		// Register the application menu
 		game.settings.registerMenu('narrator-tools', 'settingsMenu', {
 			name: 'NT.CfgName',
@@ -249,7 +270,7 @@ const NarratorTools = {
 		this.elements.content[0].style.top = '0px';
 		this.elements.BG[0].style.opacity = '1';
 		this.elements.content[0].style.opacity = '1';
-		let scroll = height - 310;
+		let scroll = this.narratorContent.height() - 310;
 		clearTimeout(this._timeouts.narrationScrolls);
 		if (scroll > 0) {
 			this._timeouts.narrationScrolls = setTimeout(() => {
