@@ -454,6 +454,17 @@ const NarratorTools = {
 			}
 		}
 	},
+	/**The shared state of the Narrator Tools application, emitted by the DM across all players */
+	sharedState: {
+		/**Displays information about whats happening on screen */
+		narration: {
+			display: false,
+			message: '',
+			paused: false,
+		},
+		/**If the background scenery is on or off */
+		scenery: false,
+	},
 };
 /* -------------------------------------------- */
 Hooks.on('setup', () => NarratorTools._setup());
