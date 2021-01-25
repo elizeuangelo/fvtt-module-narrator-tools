@@ -58,7 +58,7 @@
 	height: 100%;
 	width: 100%;
 	left: 0;
-	transition: 0.5s ease-in-out;
+	transition: 0.1s ease-in-out;
 	justify-content: center;
 	align-items: center;
 	display: flex;
@@ -78,7 +78,7 @@
 	height: 100%;
 	width: 305px;
 	right: 0;
-	transition: 0.5s ease-in-out;
+	transition: 0.1s ease-in-out;
 	box-shadow: inset 0 0 2000px 100px black;
 	background: black;
 	opacity: 0;
@@ -113,12 +113,19 @@
 	white-space: pre-line;
 }
 
-#chat-log .pathfinder-ui-fix {
+/* Fixes for modules compatibility */
+/* Pathfinder-UI && Dnd-UI modules*/
+#chat-log .sasmira-uis-fix {
 	text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
 	color: black;
 }
 
-#chat-log .pathfinder-ui-fix::selection {
+#chat-log .sasmira-uis-fix::selection {
 	background: darkgray;
 	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+/* Moerill's FVTT Markdown Editor*/
+.journal-sheet .editor-preview-active p {
+	user-select: text;
 }
