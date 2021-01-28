@@ -270,7 +270,7 @@ const NarratorTools = {
 		this.elements.content[0].style.top = '0px';
 		this.elements.BG[0].style.opacity = '1';
 		this.elements.content[0].style.opacity = '1';
-		let scroll = this.narratorContent.height() - 310;
+		let scroll = this.elements.content.height() - 310;
 		clearTimeout(this._timeouts.narrationScrolls);
 		if (scroll > 0) {
 			this._timeouts.narrationScrolls = setTimeout(() => {
