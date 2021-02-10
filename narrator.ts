@@ -1,4 +1,3 @@
-'use strict';
 /**
  * Narrator Tools configuration menu
  */
@@ -16,7 +15,7 @@ class NarratorMenu extends FormApplication {
 	 * Get all game settings related to the form, to display them
 	 * @param _options
 	 */
-	async getData(_options) {
+	async getData(_options: any) {
 		return {
 			FontSize: game.settings.get('narrator-tools', 'FontSize'),
 			WebFont: game.settings.get('narrator-tools', 'WebFont'),
@@ -32,7 +31,7 @@ class NarratorMenu extends FormApplication {
 	 * @param _event
 	 * @param formData The form data to be saved
 	 */
-	async _updateObject(_event, formData) {
+	async _updateObject(_event: Event, formData: { [key: string]: any }) {
 		for (let [k, v] of Object.entries(formData)) {
 			game.settings.set('narrator-tools', k, v);
 		}
@@ -42,6 +41,7 @@ class NarratorMenu extends FormApplication {
 		}, 200);
 	}
 }
+
 /* -------------------------------------------- */
 /**
  * Primary object used by the Narrator Tools module
@@ -56,7 +56,7 @@ const NarratorTools = {
 	 * @param content   Message to be identified
 	 * @param _data
 	 */
-	_chatMessage(_message, content, _data) {
+	_chatMessage(_message: string, content: string, _data: Object) {
 		if (!game.user.isGM) return;
 		const narrate = new RegExp('^(\\/narrat(?:e|ion)) ([^]*)', 'i');
 		const description = new RegExp('^(\\/desc(?:ription)?(?:ribe)?) ([^]*)', 'i');
@@ -65,7 +65,7 @@ const NarratorTools = {
 			description: description,
 		};
 		// Iterate over patterns, finding the first match
-		let c, rgx, match;
+		let c: string, rgx: RegExp, match: RegExpMatchArray | null;
 		for ([c, rgx] of Object.entries(commands)) {
 			match = content.match(rgx);
 			if (match) {
@@ -75,8 +75,9 @@ const NarratorTools = {
 		}
 	},
 	/**Hook function wich creates the scenery button */
-	_createSceneryButton(buttons) {
-		let tokenButton = buttons.find((b) => b.name === 'token');
+	_createSceneryButton(buttons: any) {
+		let tokenButton = buttons.find((b: any) => b.name === 'token');
+
 		if (tokenButton && game.user.isGM) {
 			tokenButton.tools.push({
 				name: 'scenery',
@@ -85,7 +86,7 @@ const NarratorTools = {
 				visible: game.user.isGM,
 				toggle: true,
 				active: this.sharedState.scenery,
-				onClick: (toggle) => {
+				onClick: (toggle: boolean) => {
 					this.scenery(toggle);
 				},
 			});
@@ -100,7 +101,7 @@ const NarratorTools = {
 	 * Hides the journals context menu
 	 * @param _e
 	 */
-	_hideContextMenu(_e) {
+	_hideContextMenu(_e: Event) {
 		NarratorTools._menu.hide();
 		document.removeEventListener('click', NarratorTools._hideContextMenu);
 	},
@@ -108,7 +109,7 @@ const NarratorTools = {
 	 * Loads a specific font from the Google Fonts web page
 	 * @param font Google font to load
 	 */
-	_loadFont(font) {
+	_loadFont(font: string) {
 		$('#narratorWebFont').remove();
 		if (font == '') return;
 		const linkRel = $(
@@ -117,7 +118,7 @@ const NarratorTools = {
 		$('head').append(linkRel);
 	},
 	//@ts-ignore
-	_menu: null,
+	_menu: null as ContextMenuNT | null,
 	_pause() {
 		if (game.user.isGM && game.settings.get('narrator-tools', 'Pause')) {
 			NarratorTools.scenery(game.paused);
@@ -125,14 +126,14 @@ const NarratorTools = {
 	},
 	/**Initialization routine for 'ready' hook */
 	_ready() {
-		$(document.getElementById('chat-log')).on('click', '.message.narrator-chat', NarratorTools._onClickMessage.bind(NarratorTools));
+		$(document.getElementById('chat-log') as HTMLElement).on('click', '.message.narrator-chat', NarratorTools._onClickMessage.bind(NarratorTools));
 		game.socket.on('module.narrator-tools', NarratorTools._onMessage.bind(NarratorTools));
 		if (!game.user.isGM) {
 			game.socket.emit('module.narrator-tools', { command: 'update' });
 		}
 		//@ts-ignore
 		NarratorTools._menu = new ContextMenuNT({
-			theme: 'default',
+			theme: 'default', // or 'blue'
 			items: [
 				{
 					icon: 'comment',
@@ -170,6 +171,7 @@ const NarratorTools = {
 		};
 		this._fitSidebar();
 		$('body').append(this._element);
+
 		// Game Settings
 		// The shared state of the Narrator Tools application, emitted by the DM across all players
 		// Q:   Why use a setting instead of sockets?
@@ -214,7 +216,7 @@ const NarratorTools = {
 			config: false,
 			default: '',
 			type: String,
-			onChange: (value) => NarratorTools._loadFont(value),
+			onChange: (value: string) => NarratorTools._loadFont(value),
 		});
 		game.settings.register('narrator-tools', 'TextColor', {
 			name: 'Text Color',
@@ -261,7 +263,7 @@ const NarratorTools = {
 	 * @param content   Message displayed
 	 * @param duration  Duration
 	 */
-	_narrationOpen(content, duration) {
+	_narrationOpen(content: string, duration: number) {
 		this.elements.content.text(content);
 		const durationMulti = game.settings.get('narrator-tools', 'DurationMultiplier');
 		const height = Math.min(this.elements.content.height() ?? 0, 310);
@@ -270,7 +272,7 @@ const NarratorTools = {
 		this.elements.content[0].style.top = '0px';
 		this.elements.BG[0].style.opacity = '1';
 		this.elements.content[0].style.opacity = '1';
-		let scroll = this.elements.content.height() - 310;
+		let scroll = height - 310;
 		clearTimeout(this._timeouts.narrationScrolls);
 		if (scroll > 0) {
 			this._timeouts.narrationScrolls = setTimeout(() => {
@@ -287,10 +289,10 @@ const NarratorTools = {
 	 * Behavior when a chat message is clicked
 	 * @param event The event wich triggered the handler
 	 */
-	_onClickMessage(event) {
-		if (event && event.target.classList.contains('narrator-chat')) {
+	_onClickMessage(event: Event) {
+		if (event && (event.target as HTMLElement).classList.contains('narrator-chat')) {
 			//@ts-ignore
-			const roll = $(event.currentTarget);
+			const roll: JQuery = $(event.currentTarget);
 			const tip = roll.find('.message-metadata');
 			if (!tip.is(':visible')) tip.slideDown(200);
 			else tip.slideUp(200);
@@ -300,8 +302,8 @@ const NarratorTools = {
 	 * Process any received messages from the socket
 	 * @param data Command and value to be addressed by the corresponding function
 	 */
-	_onMessage(data) {
-		const commands = {
+	_onMessage(data: { command: string; value: any }) {
+		const commands: { [key: string]: Function } = {
 			scenery: function () {
 				NarratorTools.sharedState.scenery = data.value;
 				NarratorTools._updateScenery();
@@ -323,7 +325,7 @@ const NarratorTools = {
 	 * @param html HTML element of the message
 	 * @param _data
 	 */
-	_renderChatMessage(message, html, _data) {
+	_renderChatMessage(message: any, html: JQuery<HTMLElement>, _data: any) {
 		if (html.find('.narrator-span').length) {
 			html.find('.message-sender').text('');
 			html.find('.message-metadata')[0].style.display = 'none';
@@ -349,7 +351,7 @@ const NarratorTools = {
 	 * @param _journalSheet
 	 * @param html
 	 */
-	_renderJournalSheet(_journalSheet, html) {
+	_renderJournalSheet(_journalSheet: any, html: JQuery<HTMLElement>) {
 		let editor = '.editor-content';
 		// Identifies if there is a Easy MDE Container
 		const MDEContainer = html.find('.EasyMDEContainer').length;
@@ -404,26 +406,26 @@ const NarratorTools = {
 	/**Shortcut object for creating chat messages */
 	chatMessage: {
 		/**
-		 * Create a 'narration' chat message
+		 * Creates a 'narration' chat message
 		 * @param message
 		 */
-		narrate(message) {
+		narrate(message: string) {
 			return NarratorTools.createChatMessage('narrate', message);
 		},
 		/**
-		 * Create a 'description' chat message
+		 * Creates a 'description' chat message
 		 * @param message
 		 */
-		describe(message) {
+		describe(message: string) {
 			return NarratorTools.createChatMessage('describe', message);
 		},
 	},
 	/**
-	 * Create a chat message of the specified type
+	 * Creates a chat message of the specified type
 	 * @param type     'narrate' for narrations or anything else for descriptions
 	 * @param message
 	 */
-	createChatMessage(type, message) {
+	createChatMessage(type: string, message: string) {
 		// Patch the chat appearance to conform with specific modules
 		let csspatches = '';
 		if (game.modules.get('pathfinder-ui') !== undefined && game.modules.get('pathfinder-ui').active) {
@@ -445,27 +447,27 @@ const NarratorTools = {
 		ChatMessage.create(chatData, {});
 	},
 	/**Shortcuts for easy access of the elements of the module */
-	elements: {},
+	elements: {} as { [key: string]: JQuery<HTMLElement> },
 	/**
 	 * Returns the calculated duration a string of length size would have
 	 * @param length    The lenght of the string
 	 */
-	messageDuration(length) {
+	messageDuration(length: number) {
 		//@ts-ignore
 		return (Math.clamped(2000, length * 80, 20000) + 3000) * game.settings.get('narrator-tools', 'DurationMultiplier') + 500;
 	},
 	/**
 	 * Set the background scenery and calls all clients
-	 * @param state True to turn on the scenery, false to turn off
+	 * @param state True to turn on the scenery, false to turn it off
 	 */
-	scenery(state) {
+	scenery(state: boolean) {
 		if (game.user.isGM) {
 			this.sharedState.scenery = state ?? !this.sharedState.scenery;
 			this._updateScenery();
 			game.socket.emit('module.narrator-tools', { command: 'scenery', value: this.sharedState.scenery });
 			const btn = $('.control-tool[title=Scenery]')[0].classList.contains('active');
 			//@ts-ignore
-			const tool = ui.controls.controls[0].tools.find((tool) => tool.name === 'scenery');
+			const tool = ui.controls.controls[0].tools.find((tool: any) => tool.name === 'scenery');
 			if (this.sharedState.scenery) {
 				$('.control-tool[title=Scenery]')[0].classList.add('active');
 				tool.active = true;
@@ -487,6 +489,7 @@ const NarratorTools = {
 		scenery: false,
 	},
 };
+
 /* -------------------------------------------- */
 Hooks.on('setup', () => NarratorTools._setup());
 Hooks.on('ready', () => NarratorTools._ready());
@@ -495,4 +498,4 @@ Hooks.on('renderChatMessage', NarratorTools._renderChatMessage.bind(NarratorTool
 Hooks.on('getSceneControlButtons', NarratorTools._createSceneryButton.bind(NarratorTools));
 Hooks.on('sidebarCollapse', NarratorTools._fitSidebar.bind(NarratorTools));
 Hooks.on('renderJournalSheet', NarratorTools._renderJournalSheet.bind(NarratorTools));
-Hooks.on('pauseGame', (_pause) => NarratorTools._pause());
+Hooks.on('pauseGame', (_pause: boolean) => NarratorTools._pause());
