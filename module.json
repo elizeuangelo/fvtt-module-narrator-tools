@@ -77,6 +77,7 @@
 			"entity": "Macro"
 		}
 	],
+	"socket": true,
 	"url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools",
 	"manifest": "https://raw.githubusercontent.com/elizeuangelo/fvtt-module-narrator-tools/master/module.json",
 	"download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.43/v0.43.zip",
