@@ -24,8 +24,8 @@
 		},
 		{
 			"lang": "es",
-			"name": "Español (España)",
-			"path": "./lang/es-ES.json"
+			"name": "Español",
+			"path": "./lang/es.json"
 		},
 		{
 			"lang": "fr",
