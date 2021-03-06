@@ -8,7 +8,7 @@
 ##### Crypto
 
 [![Donate](https://img.shields.io/badge/bitcoin-gold.svg)](https://blockchair.com/bitcoin/address/bc1qx9h20mdfztwf2n91dxm888lfpend4ja74a8p97)
-[![Cardano](https://img.shields.io/badge/Cardano-9cf.svg)](web+cardano:addr1qy32u0vthhy76mdck84nanw6d8t2ufrhv3pzulycp75lcp6jfmzvguq883d96hq5cmys2h28hmqfpjyfz4ceuw29h33sa3t5mf?amount=1)
+[![Cardano](https://img.shields.io/badge/Cardano-9cf.svg)](https://cardanoscan.io/address/addr1qy32u0vthhy76mdck84nanw6d8t2ufrhv3pzulycp75lcp6jfmzvguq883d96hq5cmys2h28hmqfpjyfz4ceuw29h33sa3t5mf)
 
 ##### Others
 [![ko-fi](https://img.shields.io/badge/Kofi-red.svg)](https://ko-fi.com/B0B024E6C)
