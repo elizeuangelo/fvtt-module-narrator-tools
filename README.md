@@ -5,9 +5,13 @@
 ![GitHub All Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator-tools/total?label=downloads)
 
 #### Donations
+##### Crypto
 
-[![Donate](https://img.shields.io/badge/donate-bitcoin-gold.svg)](https://blockchair.com/bitcoin/address/bc1qx9h20mdfztwf2n91dxm888lfpend4ja74a8p97)
-[![ko-fi](https://img.shields.io/badge/donate-paypal-blue.svg)](https://ko-fi.com/B0B024E6C)
+[![Donate](https://img.shields.io/badge/bitcoin-gold.svg)](https://blockchair.com/bitcoin/address/bc1qx9h20mdfztwf2n91dxm888lfpend4ja74a8p97)
+[![Cardano](https://img.shields.io/badge/Cardano-9cf.svg)](web+cardano:addr1qy32u0vthhy76mdck84nanw6d8t2ufrhv3pzulycp75lcp6jfmzvguq883d96hq5cmys2h28hmqfpjyfz4ceuw29h33sa3t5mf?amount=1)
+
+##### Others
+[![ko-fi](https://img.shields.io/badge/Kofi-red.svg)](https://ko-fi.com/B0B024E6C)
 [![BuyCoffee](https://img.shields.io/badge/coffee-%243-orange)](https://www.buymeacoffee.com/j6auA0z)
 
 Special tools to increase the immersion in your roleplaying game.
