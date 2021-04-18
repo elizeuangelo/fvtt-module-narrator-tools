@@ -5,6 +5,7 @@
 ![GitHub All Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator-tools/total?label=downloads)
 
 #### Donations
+
 ##### Crypto
 
 [![BTC](https://img.shields.io/badge/bitcoin-gold.svg)](https://blockchair.com/bitcoin/address/bc1qtyy30h4d7yc6d3pjwmu46mpqxw7v50jnsq5sk9)
@@ -14,6 +15,7 @@
 [![DOGE](https://img.shields.io/badge/doge-yellow.svg)](https://blockchair.com/dogecoin/address/DPmkqoDc25YeLhSK2LbQyvyi1yP5f4JvDh)
 
 ##### Others
+
 [![ko-fi](https://img.shields.io/badge/Kofi-red.svg)](https://ko-fi.com/B0B024E6C)
 [![BuyCoffee](https://img.shields.io/badge/coffee-%243-orange)](https://www.buymeacoffee.com/j6auA0z)
 
@@ -33,6 +35,8 @@ The module currently adds chat commands and a new tool on the token toolbox (the
 
 -   `/desc (or /describe, or /description) [message]` - displays a descriptive message in chat only
 -   `/narrate (or /narration) [message]` - displays a limited duration message in the canvas and chat
+-   `/note (or /notify or /notification) [message]` - displays a _note message_ in chat only visible to GMs
+-   `/as [speaker]` - makes the next messages be sent as the _speaker_. `/as` resets to standard behavior
 
 ![img](https://cdn.discordapp.com/attachments/542495303929036824/750483802719125634/narrator-tools_2.jpg)
 

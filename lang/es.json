@@ -1,7 +1,4 @@
 {
-	"I18N.LANGUAGE": "Español",
-	"I18N.MAINTAINERS": "elizeuangelo, @Viriato139ac#0342",
-
 	"NT.ButtonTitle": "Decorado",
 	"NT.Narrator": "Narrador",
 	"NT.CfgName": "Configurar",
@@ -17,5 +14,12 @@
 	"NT.DurationMultiplierHint": "Multiplica la duración del comando /narrate por el número especificado",
 	"NT.TextColor": "Color",
 	"NT.TextShadow": "Sombra",
-	"NT.TextCSS": "CSS (anula otros estilos)"
+	"NT.TextCSS": "CSS (anula otros estilos)",
+	"NT.BGColor": "Color de fondo",
+	"NT.BGColorHint": "Utilice 8 dígitos en lugar de 6 para establecer la transparencia, por ejemplo, #000000a0",
+	"NT.BGImage": "Imagen de fondo",
+	"NT.NarrationStartPaused": "Comience siempre una narración pausada",
+	"NT.SpeakingAs": "Hablando como",
+	"NT.PauseButton": "Pausa",
+	"NT.PlayButton": "Play"
 }

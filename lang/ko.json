@@ -14,5 +14,12 @@
 	"NT.DurationMultiplierHint": "/narrate 의 기간에 지정된 숫자를 곱합니다.",
 	"NT.TextColor": "색깔",
 	"NT.TextShadow": "그림자",
-	"NT.TextCSS": "CSS (다른 스타일 무시)"
+	"NT.TextCSS": "CSS (다른 스타일 무시)",
+	"NT.BGColor": "배경색",
+	"NT.BGColorHint": "6자리 대신 8자리 숫자를 사용하여 투명도를 설정합니다.#000000a0",
+	"NT.BGImage": "배경 이미지",
+	"NT.NarrationStartPaused": "항상 일시 중지된 내레이션 시작",
+	"NT.SpeakingAs": "말하기",
+	"NT.PauseButton": "Pause",
+	"NT.PlayButton": "Play"
 }

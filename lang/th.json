@@ -14,5 +14,12 @@
 	"NT.DurationMultiplierHint": "คูณระยะเวลาของ /narrate บรรยายตามจำนวนที่ระบุ",
 	"NT.TextColor": "สี",
 	"NT.TextShadow": "เงา",
-	"NT.TextCSS": "CSS (แทนที่รูปแบบอื่น ๆ )"
+	"NT.TextCSS": "CSS (แทนที่รูปแบบอื่น ๆ )",
+	"NT.BGColor": "สีพื้นหลัง",
+	"NT.BGColorHint": "ใช้ตัวเลข 8 หลักแทน 6 หลักเพื่อตั้งค่า#000000a0",
+	"NT.BGImage": "รูปพื้นหลัง",
+	"NT.NarrationStartPaused": "เริ่มคําบรรยายที่หยุดชั่วคราวเสมอ",
+	"NT.SpeakingAs": "กําลังพูดเป็น",
+	"NT.PauseButton": "Pause",
+	"NT.PlayButton": "Play"
 }

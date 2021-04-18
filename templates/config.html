@@ -3,6 +3,27 @@
 	<h3 class="form-header"><i class="far fa-image"></i> {{localize "NT.NarrationNav"}}</h3>
 	<p class="notes">{{localize "NT.AppearanceHint"}}</p>
 
+    <div class="form-group">
+		<label>{{localize "NT.BGColor"}}</label>
+		<input class="color" type="text" name="BGColor" placeholder="#000000" value="{{BGColor}}" />
+        <input type="color" value="{{BGColor}}" data-edit="BGColor"/>
+        <p class="notes">{{localize "NT.BGColorHint"}}</p>
+    </div>
+
+    <div class="form-group">
+        <label>{{localize "NT.BGImage"}}</label>
+        <div class="form-fields">
+            {{filePicker target="BGImage" type="imagevideo"}}
+            <input class="image" type="text" name="BGImage" placeholder="{{localize 'File Path'}}" value="{{BGImage}}"/>
+        </div>
+    </div>
+
+    <div class="form-group">
+		<label>{{localize "NT.TextColor"}}</label>
+		<input class="color" type="text" name="TextColor" placeholder="white" value="{{TextColor}}" />
+        <input type="color" value="{{TextColor}}" data-edit="TextColor"/>
+    </div>
+
 	<div class="form-group">
 		<label>{{localize "NT.FontSize"}}</label>
 		<input type="text" name="FontSize" placeholder="28px" value="{{FontSize}}" />
@@ -11,11 +32,6 @@
 	<div class="form-group">
 		<label>Google Fonts</label>
 		<input type="text" name="WebFont" placeholder="Dancing Script" value="{{WebFont}}" />
-    </div>
-    
-    <div class="form-group">
-		<label>{{localize "NT.TextColor"}}</label>
-		<input type="text" name="TextColor" placeholder="white" value="{{TextColor}}" />
     </div>
     
     <div class="form-group">
@@ -35,6 +51,11 @@
 	<div class="form-group">
 		<label>{{localize "NT.Pause"}}</label>
 		<input type="checkbox" name="Pause" {{checked Pause}} />
+    </div>
+
+    <div class="form-group">
+		<label>{{localize "NT.NarrationStartPaused"}}</label>
+		<input type="checkbox" name="NarrationStartPaused" {{checked NarrationStartPaused}} />
     </div>
     
     <div class="form-group">

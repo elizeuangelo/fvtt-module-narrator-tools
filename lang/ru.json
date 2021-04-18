@@ -14,5 +14,12 @@
 	"NT.DurationMultiplierHint": "Умножает продолжительность /narrate на указанное число",
 	"NT.TextColor": "цвет",
 	"NT.TextShadow": "Тень",
-	"NT.TextCSS": "CSS (отменяет другие стили)"
+	"NT.TextCSS": "CSS (отменяет другие стили)",
+	"NT.BGColor": "цвет фона",
+	"NT.BGColorHint": "Используйте 8 цифр вместо 6, чтобы установить прозрачность, например, #000000a0",
+	"NT.BGImage": "Фоновое изображение",
+	"NT.NarrationStartPaused": "Всегда начинайте повествование приостановлено",
+	"NT.SpeakingAs": "Выступая в качестве",
+	"NT.PauseButton": "Pause",
+	"NT.PlayButton": "Play"
 }
