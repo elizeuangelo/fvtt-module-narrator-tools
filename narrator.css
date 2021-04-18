@@ -1,24 +1,25 @@
-#chat-log .narrator-narrative {
+#chat-log .message.narrator-narrative {
 	background: #333;
-	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 	color: white;
-	margin: 2px;
-	padding: 10px;
 	border: 2px solid #191813d6;
+	font-style: italic;
 }
 
-#chat-log .narrator-description {
+#chat-log .message.narrator-description {
 	background: #4b4a44;
-	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 	color: white;
-	margin: 2px;
-	padding: 10px;
 	border: 2px solid #191813d6;
+	font-style: italic;
+}
+
+#chat-log .message.narrator-notification {
+	background: #4f7373aa;
+	color: white;
+	border: 2px dotted #b7b7b7d6;
 }
 
 #chat-log .narrator-chat {
 	text-align: center;
-	font-style: italic;
 }
 
 #chat-log .narrator-span {
@@ -54,6 +55,21 @@
 	display: flex;
 }
 
+.narrator-buttons {
+	position: absolute;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	cursor: pointer;
+	pointer-events: all;
+	transition: 0.5s ease-in-out;
+}
+
+.narrator-buttons button {
+	width: 100px;
+	margin: 0 5px;
+}
+
 .narrator-frame {
 	height: 100%;
 	width: 100%;
@@ -69,7 +85,6 @@
 	width: 100%;
 	left: 0;
 	transition: 0.5s ease-in-out;
-	box-shadow: inset 0 0 2000px 100px black;
 	background: rgba(0, 0, 0, 0.2);
 	opacity: 0;
 }
@@ -88,7 +103,6 @@
 	position: absolute;
 	width: 100%;
 	transition: 0.5s ease-in-out;
-	background: linear-gradient(transparent 0%, rgba(0, 0, 0, 0.66) 40%, rgba(0, 0, 0, 0.66) 60%, transparent 100%);
 }
 
 .narrator-box {
@@ -111,18 +125,6 @@
 	color: white;
 	transition: opacity 0.5s ease-in-out;
 	white-space: pre-line;
-}
-
-/* Fixes for modules compatibility */
-/* Pathfinder-UI && Dnd-UI modules*/
-#chat-log .sasmira-uis-fix {
-	text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
-	color: black;
-}
-
-#chat-log .sasmira-uis-fix::selection {
-	background: darkgray;
-	text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
 /* Moerill's FVTT Markdown Editor*/

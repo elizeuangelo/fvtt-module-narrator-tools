@@ -1,3 +1,12 @@
+/**Interface of the narration state */
+interface NarrationState {
+	id: number;
+	display: boolean;
+	message: string;
+	paused: boolean;
+}
+
+/* -------------------------------------------- */
 /**
  * Narrator Tools configuration menu
  */
@@ -8,7 +17,7 @@ class NarratorMenu extends FormApplication {
 			title: game.i18n.localize('NT.Title'),
 			classes: ['sheet'],
 			template: 'modules/narrator-tools/templates/config.html',
-			width: 500,
+			width: 800,
 		});
 	}
 	/**
@@ -24,6 +33,9 @@ class NarratorMenu extends FormApplication {
 			TextCSS: game.settings.get('narrator-tools', 'TextCSS'),
 			Pause: game.settings.get('narrator-tools', 'Pause'),
 			DurationMultiplier: game.settings.get('narrator-tools', 'DurationMultiplier'),
+			BGColor: game.settings.get('narrator-tools', 'BGColor'),
+			BGImage: game.settings.get('narrator-tools', 'BGImage'),
+			NarrationStartPaused: game.settings.get('narrator-tools', 'NarrationStartPaused'),
 		};
 	}
 	/**
@@ -48,29 +60,152 @@ class NarratorMenu extends FormApplication {
  */
 const NarratorTools = {
 	_element: $(
-		'<div id="narrator" class="narrator"><div class="narrator-frame"><div class="narrator-frameBG"></div><div class="narrator-box"><div class="narrator-content"></div></div></div><div class="narrator-sidebarBG"></div><div class="narrator-bg"></div></div>'
+		'<div id="narrator" class="narrator"><div class="narrator-bg"></div><div class="narrator-frame"><div class="narrator-frameBG"></div><div class="narrator-box"><div class="narrator-content"></div></div><div class="narrator-buttons" style="opacity:0;"><button class="NT-btn-pause"></button><button class="NT-btn-close"></button></div></div><div class="narrator-sidebarBG"></div>'
 	),
+	_character: '',
 	/**
 	 * Hooked function wich identifies if a message is a Narrator Tools command
 	 * @param _message
 	 * @param content   Message to be identified
-	 * @param _data
+	 * @param chatData
 	 */
-	_chatMessage(_message: string, content: string, _data: Object) {
+	_chatMessage(_message: string, content: string, _chatData: any) {
 		if (!game.user.isGM) return;
-		const narrate = new RegExp('^(\\/narrat(?:e|ion)) ([^]*)', 'i');
-		const description = new RegExp('^(\\/desc(?:ription)?(?:ribe)?) ([^]*)', 'i');
+		const narration = new RegExp('^\\/narrat(?:e|ion) ([^]*)', 'i');
+		const description = new RegExp('^\\/desc(?:ribe|ription|) ([^]*)', 'i');
+		const notification = new RegExp('^\\/not(?:e|ify|ication) ([^]*)', 'i');
+		const as = new RegExp('^(?:\\/as$|\\/as ([^]*))', 'i');
 		const commands = {
-			narrate: narrate,
+			narration: narration,
 			description: description,
+			note: notification,
+			as: as,
 		};
 		// Iterate over patterns, finding the first match
 		let c: string, rgx: RegExp, match: RegExpMatchArray | null;
 		for ([c, rgx] of Object.entries(commands)) {
 			match = content.match(rgx);
 			if (match) {
-				this.createChatMessage(c, match[2]);
+				if (c == 'as') {
+					if (match[1]) {
+						this._character = match[1];
+						($('#chat-message')[0] as HTMLInputElement).placeholder = game.i18n.localize('NT.SpeakingAs') + ' ' + this._character;
+					} else {
+						this._character = '';
+						($('#chat-message')[0] as HTMLInputElement).placeholder = '';
+					}
+				} else {
+					this.createChatMessage(c, match[1]);
+				}
 				return false;
+			}
+		}
+	},
+	/**
+	 * Control the module behavior in response to a change in the sharedState
+	 * @param state The new application state
+	 */
+	_controller({ narration, scenery }: { narration: NarrationState; scenery: boolean }) {
+		/**First, we manage the scenery changes */
+		this._updateScenery(scenery);
+		if (game.user.isGM) {
+			const tool = ui.controls.controls[0].tools.find((tool: any) => tool.name === 'scenery');
+			if (scenery) {
+				$('.control-tool[title=Scenery]')[0].classList.add('active');
+				tool.active = true;
+			} else {
+				$('.control-tool[title=Scenery]')[0].classList.remove('active');
+				tool.active = false;
+			}
+		}
+
+		/**Then, we control the narration's behavior */
+
+		/**If a narration had ocurred and the display now is still on, turn it off */
+		if (!narration.display && this.elements.content[0].style.opacity === '1') {
+			this.elements.BG.height(0);
+			if (game.user.isGM) this.elements.buttons[0].style.opacity = '0';
+		}
+
+		/**If the message suddenly disappears, turn off the opacity */
+		if (!narration.message) {
+			this.elements.content[0].style.opacity = '0';
+		}
+
+		if (narration.display) {
+			const scroll = () => {
+				if (!this.sharedState.narration.paused) {
+					const scroll = (this.elements.content.height() ?? 0) - 310;
+					let duration = this.messageDuration(this.sharedState.narration.message.length);
+
+					/**If the narration is open */
+					if (scroll > 0) {
+						const remaining = 1 - Number(this.elements.content[0].style.top.slice(0, -2)) / -scroll;
+						const duration_multiplier = game.settings.get('narrator-tools', 'DurationMultiplier');
+						const scroll_duration = (duration - 500 - 4500 * duration_multiplier) * remaining;
+						const fun_scroll = () => {
+							this.elements.content.animate({ top: -scroll }, scroll_duration, 'linear');
+							this._timeouts.narrationScrolls = 0;
+						};
+						if (this.elements.content[0].style.top == '0px') {
+							this._timeouts.narrationScrolls = setTimeout(fun_scroll, 3000 * duration_multiplier);
+						} else {
+							fun_scroll();
+							duration = scroll_duration + 4500 * duration_multiplier;
+						}
+					}
+
+					if (game.user.isGM) {
+						if (this._timeouts.narrationCloses) {
+							clearTimeout(this._timeouts.narrationCloses);
+							this._timeouts.narrationCloses = 0;
+						}
+						this._timeouts.narrationCloses = setTimeout(NarratorTools._narrationClose, duration);
+					}
+				}
+			};
+
+			/**If the display is on and the narration.id is a new one, it means a new narration is taking place */
+			if (narration.id !== this._id) {
+				this._id = narration.id;
+				clearTimeout(this._timeouts.narrationOpens);
+				this.elements.content[0].style.opacity = '0';
+				this.elements.content.stop();
+
+				this._timeouts.narrationOpens = setTimeout(() => {
+					this.elements.content.text(narration.message);
+					this.elements.content[0].style.opacity = '1';
+					this.elements.content[0].style.top = '0px';
+
+					const height = Math.min(this.elements.content.height() ?? 0, 310);
+					this.elements.BG.height(height * 3);
+
+					if (game.user.isGM) {
+						this.elements.buttons[0].style.opacity = '1';
+						this.elements.buttons[0].style.top = `calc(50% + ${60 + height / 2}px)`;
+						this._updateStopButton(game.settings.get('narrator-tools', 'NarrationStartPaused'));
+					}
+
+					this._timeouts.narrationOpens = 0;
+					Hooks.call('narration', narration);
+				}, 500);
+
+				Hooks.once('narration', scroll);
+			} else {
+				/**If narration is paused, stop animation and clear timeouts */
+				if (narration.paused) {
+					if (this._timeouts.narrationScrolls) {
+						clearTimeout(this._timeouts.narrationScrolls);
+						this._timeouts.narrationScrolls = 0;
+					}
+					this.elements.content.stop();
+					if (this._timeouts.narrationCloses) {
+						clearTimeout(this._timeouts.narrationCloses);
+						this._timeouts.narrationCloses = 0;
+					}
+				} else {
+					scroll();
+				}
 			}
 		}
 	},
@@ -81,7 +216,7 @@ const NarratorTools = {
 		if (tokenButton && game.user.isGM) {
 			tokenButton.tools.push({
 				name: 'scenery',
-				title: 'NT.ButtonTitle',
+				title: game.i18n.localize('NT.ButtonTitle'),
 				icon: 'fas fa-theater-masks',
 				visible: game.user.isGM,
 				toggle: true,
@@ -105,6 +240,8 @@ const NarratorTools = {
 		NarratorTools._menu.hide();
 		document.removeEventListener('click', NarratorTools._hideContextMenu);
 	},
+	/**The id of the last narration update */
+	_id: 0,
 	/**
 	 * Loads a specific font from the Google Fonts web page
 	 * @param font Google font to load
@@ -117,22 +254,60 @@ const NarratorTools = {
 		);
 		$('head').append(linkRel);
 	},
-	//@ts-ignore
-	_menu: null as ContextMenuNT | null,
+	_menu: undefined as any,
+	/**
+	 * Behavior for when a narration is closed
+	 */
+	_narrationClose() {
+		let state = NarratorTools.sharedState.narration;
+		Hooks.call('narration_closes', { id: state.id, message: state.message });
+		state.display = false;
+		state.message = '';
+		NarratorTools.sharedState.narration = state;
+		if (NarratorTools._timeouts.narrationCloses) {
+			clearTimeout(NarratorTools._timeouts.narrationCloses);
+			NarratorTools._timeouts.narrationCloses = 0;
+		}
+	},
 	_pause() {
 		if (game.user.isGM && game.settings.get('narrator-tools', 'Pause')) {
 			NarratorTools.scenery(game.paused);
 		}
 	},
+	/**
+	 * Creates an alias and change message type if this._character option is true
+	 * @param chatData Change the chat message configuration
+	 * @param _options
+	 * @param _user
+	 */
+	_preCreateChatMessage(chatData: any, _options: any, _user: string) {
+		if (game.user.isGM && this._character) {
+			chatData.type = this._msgtype;
+			chatData.speaker = { alias: this._character };
+		}
+	},
 	/**Initialization routine for 'ready' hook */
 	_ready() {
-		$(document.getElementById('chat-log') as HTMLElement).on('click', '.message.narrator-chat', NarratorTools._onClickMessage.bind(NarratorTools));
-		game.socket.on('module.narrator-tools', NarratorTools._onMessage.bind(NarratorTools));
-		if (!game.user.isGM) {
-			game.socket.emit('module.narrator-tools', { command: 'update' });
-		}
-		//@ts-ignore
-		NarratorTools._menu = new ContextMenuNT({
+		this.elements = {
+			/**Main Element */
+			narrator: this._element,
+			frame: this._element.find('.narrator-frame'),
+			frameBG: this._element.find('.narrator-frameBG'),
+			sidebarBG: this._element.find('.narrator-sidebarBG'),
+			BG: this._element.find('.narrator-bg'),
+			box: this._element.find('.narrator-box'),
+			content: this._element.find('.narrator-content'),
+			buttons: this._element.find('.narrator-buttons'),
+			buttonPause: this._element.find('.NT-btn-pause'),
+			buttonClose: this._element.find('.NT-btn-close'),
+		};
+		this._updateBGColor();
+		this._updateBGImage();
+		this._fitSidebar();
+		$('body').append(this._element);
+
+		// @ts-ignore
+		this._menu = new ContextMenuNT({
 			theme: 'default', // or 'blue'
 			items: [
 				{
@@ -153,25 +328,24 @@ const NarratorTools = {
 				},
 			],
 		});
+		$(document.getElementById('chat-log') as HTMLElement).on('click', '.message.narrator-chat', NarratorTools._onClickMessage.bind(NarratorTools));
+		NarratorTools.elements.buttonPause.on('click', () => {
+			const pause = !NarratorTools.sharedState.narration.paused;
+			NarratorTools.sharedState.narration = {
+				...NarratorTools.sharedState.narration,
+				paused: pause,
+			};
+			NarratorTools._updateStopButton(pause);
+		});
+		NarratorTools.elements.buttonClose[0].innerHTML = `<i class="fas fa-times-circle"></i> ${game.i18n.localize('Close')}`;
+		NarratorTools.elements.buttonClose.on('click', NarratorTools._narrationClose);
 		NarratorTools._loadFont(game.settings.get('narrator-tools', 'WebFont'));
 		NarratorTools._updateContentStyle();
+		this._controller(game.settings.get('narrator-tools', 'sharedState'));
 		NarratorTools._pause();
 	},
 	/**Initialization routine for 'setup' hook */
 	_setup() {
-		this.elements = {
-			/**Main Element */
-			narrator: this._element,
-			frame: this._element.find('.narrator-frame'),
-			frameBG: this._element.find('.narrator-frameBG'),
-			sidebarBG: this._element.find('.narrator-sidebarBG'),
-			BG: this._element.find('.narrator-bg'),
-			box: this._element.find('.narrator-box'),
-			content: this._element.find('.narrator-content'),
-		};
-		this._fitSidebar();
-		$('body').append(this._element);
-
 		// Game Settings
 		// The shared state of the Narrator Tools application, emitted by the DM across all players
 		// Q:   Why use a setting instead of sockets?
@@ -180,24 +354,27 @@ const NarratorTools = {
 		//      There should be no concurrency between sockets and this config,
 		//      so we eliminated sockets altogether.
 		game.settings.register('narrator-tools', 'sharedState', {
-			name: 'NT.state',
+			name: game.i18n.localize('NT.state'),
 			scope: 'world',
 			config: false,
 			default: {
 				/**Displays information about whats happening on screen */
 				narration: {
+					id: 0,
 					display: false,
+					new: false,
 					message: '',
 					paused: false,
-				},
+				} as NarrationState,
 				/**If the background scenery is on or off */
 				scenery: false,
 			},
+			onChange: (newState: { narration: NarrationState; scenery: boolean }) => this._controller(newState),
 		});
 		// Register the application menu
 		game.settings.registerMenu('narrator-tools', 'settingsMenu', {
-			name: 'NT.CfgName',
-			label: 'NT.CfgLabel',
+			name: game.i18n.localize('NT.CfgName'),
+			label: game.i18n.localize('NT.CfgLabel'),
 			icon: 'fas fa-adjust',
 			type: NarratorMenu,
 			restricted: true,
@@ -253,38 +430,34 @@ const NarratorTools = {
 			default: 1,
 			type: Number,
 		});
+		game.settings.register('narrator-tools', 'BGColor', {
+			name: 'Background Color',
+			scope: 'world',
+			config: false,
+			default: '',
+			type: String,
+			onChange: (color: string) => NarratorTools._updateBGColor(color),
+		});
+		game.settings.register('narrator-tools', 'BGImage', {
+			name: 'Background Color',
+			scope: 'world',
+			config: false,
+			default: '',
+			type: String,
+			onChange: (filePath: string) => NarratorTools._updateBGImage(filePath),
+		});
+		game.settings.register('narrator-tools', 'NarrationStartPaused', {
+			name: 'Start the Narration Paused',
+			scope: 'world',
+			config: false,
+			default: false,
+			type: Boolean,
+		});
 	},
 	/**Specify how the module's messages will be intepreted by foundry and other modules:
 	 * OTHER: 0, OOC: 1, IC: 2, EMOTE: 3, WHISPER: 4, ROLL: 5
 	 */
-	_msgtype: 0,
-	/**
-	 * Opens the narrator on screen
-	 * @param content   Message displayed
-	 * @param duration  Duration
-	 */
-	_narrationOpen(content: string, duration: number) {
-		this.elements.content.text(content);
-		const durationMulti = game.settings.get('narrator-tools', 'DurationMultiplier');
-		const height = Math.min(this.elements.content.height() ?? 0, 310);
-		this.elements.BG.height(height * 3);
-		this.elements.content.stop();
-		this.elements.content[0].style.top = '0px';
-		this.elements.BG[0].style.opacity = '1';
-		this.elements.content[0].style.opacity = '1';
-		let scroll = height - 310;
-		clearTimeout(this._timeouts.narrationScrolls);
-		if (scroll > 0) {
-			this._timeouts.narrationScrolls = setTimeout(() => {
-				this.elements.content.animate({ top: -scroll }, duration - (5000 * durationMulti + 500), 'linear');
-			}, 3000 * durationMulti);
-		}
-	},
-	/**Closes the narrator screen */
-	_narrationClose() {
-		this.elements.BG[0].style.opacity = '0';
-		this.elements.content[0].style.opacity = '0';
-	},
+	_msgtype: CONST.CHAT_MESSAGE_TYPES.OTHER,
 	/**
 	 * Behavior when a chat message is clicked
 	 * @param event The event wich triggered the handler
@@ -304,17 +477,8 @@ const NarratorTools = {
 	 */
 	_onMessage(data: { command: string; value: any }) {
 		const commands: { [key: string]: Function } = {
-			scenery: function () {
-				NarratorTools.sharedState.scenery = data.value;
-				NarratorTools._updateScenery();
-			},
 			style: function () {
 				NarratorTools._updateContentStyle();
-			},
-			update: function () {
-				if (game.user.isGM) {
-					game.socket.emit('module.narrator-tools', { command: 'scenery', value: NarratorTools.sharedState.scenery });
-				}
 			},
 		};
 		commands[data.command]();
@@ -326,23 +490,17 @@ const NarratorTools = {
 	 * @param _data
 	 */
 	_renderChatMessage(message: any, html: JQuery<HTMLElement>, _data: any) {
-		if (html.find('.narrator-span').length) {
+		const span = html.find('.narrator-span');
+		if (span.length) {
 			html.find('.message-sender').text('');
 			html.find('.message-metadata')[0].style.display = 'none';
 			html[0].classList.add('narrator-chat');
-			if (html.find('.narration').length) {
+			if (span[0].classList.contains('narration')) {
 				html[0].classList.add('narrator-narrative');
-				const timestamp = new Date().getTime();
-				if (message.data.timestamp + 2000 > timestamp) {
-					const content = $(message.data.content)[0].textContent;
-					let duration = this.messageDuration(content.length);
-					clearTimeout(this._timeouts.narrationCloses);
-					this.elements.content[0].style.opacity = '0';
-					this._timeouts.narrationOpens = setTimeout(this._narrationOpen.bind(this, content, duration), 500);
-					this._timeouts.narrationCloses = setTimeout(this._narrationClose.bind(this), duration);
-				}
-			} else {
+			} else if (span[0].classList.contains('description')) {
 				html[0].classList.add('narrator-description');
+			} else if (span[0].classList.contains('note')) {
+				html[0].classList.add('narrator-notification');
 			}
 		}
 	},
@@ -383,6 +541,27 @@ const NarratorTools = {
 		narrationCloses: 0,
 		narrationScrolls: 0,
 	},
+	_updateStopButton(pause: boolean) {
+		if (pause) {
+			NarratorTools.elements.buttonPause[0].innerHTML = `<i class='fas fa-play-circle'></i> ${game.i18n.localize('NT.PlayButton')}`;
+		} else {
+			NarratorTools.elements.buttonPause[0].innerHTML = `<i class='fas fa-pause-circle'></i> ${game.i18n.localize('NT.PauseButton')}`;
+		}
+	},
+	_updateBGColor(color?: string) {
+		if (!color) color = game.settings.get('narrator-tools', 'BGColor');
+		if (!color) color = '#000000';
+		this.elements.frameBG[0].style.boxShadow = `inset 0 0 2000px 100px ${color}`;
+		this.elements.BG[0].style.background = `linear-gradient(transparent 0%, ${color}a8 40%, ${color}a8 60%, transparent 100%)`;
+	},
+	_updateBGImage(filePath?: string) {
+		if (!filePath) filePath = game.settings.get('narrator-tools', 'BGImage');
+		if (!filePath) this.elements.frameBG[0].style.background = '';
+		else {
+			this.elements.frameBG[0].style.background = `url(${filePath})`;
+			this.elements.frameBG[0].style.backgroundSize = '100% 100%';
+		}
+	},
 	/**Update the content element style to match the settings */
 	_updateContentStyle() {
 		const style = game.settings.get('narrator-tools', 'TextCSS');
@@ -399,55 +578,120 @@ const NarratorTools = {
 		this.elements.content[0].style.textShadow = `${game.settings.get('narrator-tools', 'TextShadow')}`;
 	},
 	/**Updates the background opacity to match the scenery */
-	_updateScenery() {
-		this.elements.frameBG[0].style.opacity = this.sharedState.scenery ? '1' : '0';
-		this.elements.sidebarBG[0].style.opacity = this.sharedState.scenery ? '1' : '0';
+	_updateScenery(scenery?: boolean) {
+		if (!scenery) scenery = this.sharedState.scenery;
+		const new_state = scenery ? '1' : '0';
+		if (this.elements.frameBG[0].style.opacity === new_state) return;
+		this.elements.frameBG[0].style.opacity = new_state;
+		this.elements.sidebarBG[0].style.opacity = new_state;
 	},
 	/**Shortcut object for creating chat messages */
 	chatMessage: {
 		/**
-		 * Creates a 'narration' chat message
-		 * @param message
-		 */
-		narrate(message: string) {
-			return NarratorTools.createChatMessage('narrate', message);
-		},
-		/**
 		 * Creates a 'description' chat message
 		 * @param message
+		 * @param options - Change the chat message configuration
 		 */
-		describe(message: string) {
-			return NarratorTools.createChatMessage('describe', message);
+		describe(message: string, options = {}) {
+			return NarratorTools.createChatMessage('description', message, options);
+		},
+		/**
+		 * Creates a 'narration' chat message
+		 * @param message - single message or an array of messages to be consecutively displayed
+		 * @param options - Change the chat message configuration
+		 */
+		narrate(message: string | string[], options = {}) {
+			if (typeof message == 'string') {
+				message = [message];
+			}
+
+			let res = NarratorTools.createChatMessage('narration', message[0], options);
+
+			if (res) {
+				for (let i = 1; i < message.length; i++) {
+					res = res.then(() => NarratorTools.createChatMessage('narration', message[i], options));
+				}
+			}
+
+			return res;
+		},
+		/**
+		 * Creates a 'notification' chat message
+		 * @param message
+		 * @param options - Change the chat message configuration
+		 */
+		notify(message: string, options = {}) {
+			return NarratorTools.createChatMessage('note', message, options);
 		},
 	},
 	/**
 	 * Creates a chat message of the specified type
 	 * @param type     'narrate' for narrations or anything else for descriptions
 	 * @param message
+	 * @param options - Change the chat message configuration
 	 */
-	createChatMessage(type: string, message: string) {
-		// Patch the chat appearance to conform with specific modules
-		let csspatches = '';
-		if (game.modules.get('pathfinder-ui') !== undefined && game.modules.get('pathfinder-ui').active) {
-			csspatches += 'sasmira-uis-fix';
-		} else if (game.modules.get('dnd-ui') !== undefined && game.modules.get('dnd-ui').active) {
-			csspatches += 'sasmira-uis-fix';
-		}
-		const chatData = {
-			content: `<span class="narrator-span ${type == 'narrate' ? 'narration' : 'description'} ${csspatches}">${message.replace(
-				/\\n|<br>/g,
-				'\n'
-			)}</span>`,
+	createChatMessage(type: string, message: string, options = {}) {
+		if (!game.user.isGM) return;
+
+		message = message.replace(/\\n|<br>/g, '\n');
+
+		let chatData = {
+			content: `<span class="narrator-span ${type}">${message}</span>`,
 			type: this._msgtype,
 			speaker: {
 				alias: game.i18n.localize('NT.Narrator'),
 				scene: game.user.viewedScene,
 			},
+			whisper: type == 'notification' ? game.users.entities.filter((u) => u.isGM) : [],
+			...options,
 		};
+
+		/**If the message is a narration, start the protocol */
+		if (type == 'narration') {
+			const narration = new Promise((resolve) => {
+				Hooks.once('narration_closes', (narration: { id: number; message: string }) => {
+					resolve(narration.message == message);
+				});
+			});
+
+			if (this._timeouts.narrationOpens) {
+				clearTimeout(this._timeouts.narrationOpens);
+				this._timeouts.narrationOpens = 0;
+			}
+			if (this._timeouts.narrationCloses) {
+				clearTimeout(this._timeouts.narrationCloses);
+				this._timeouts.narrationCloses = 0;
+			}
+
+			let state: NarrationState = {
+				id: this.sharedState.narration.id + 1,
+				display: true,
+				message: message,
+				paused: game.settings.get('narrator-tools', 'NarrationStartPaused'),
+			};
+
+			this.sharedState.narration = state;
+
+			ChatMessage.create(chatData, {});
+			return narration;
+		}
+
 		ChatMessage.create(chatData, {});
 	},
 	/**Shortcuts for easy access of the elements of the module */
-	elements: {} as { [key: string]: JQuery<HTMLElement> },
+	elements: {} as {
+		/**Main Element */
+		narrator: JQuery<HTMLElement>;
+		frame: JQuery<HTMLElement>;
+		frameBG: JQuery<HTMLElement>;
+		sidebarBG: JQuery<HTMLElement>;
+		BG: JQuery<HTMLElement>;
+		box: JQuery<HTMLElement>;
+		content: JQuery<HTMLElement>;
+		buttons: JQuery<HTMLElement>;
+		buttonPause: JQuery<HTMLElement>;
+		buttonClose: JQuery<HTMLElement>;
+	},
 	/**
 	 * Returns the calculated duration a string of length size would have
 	 * @param length    The lenght of the string
@@ -463,30 +707,24 @@ const NarratorTools = {
 	scenery(state: boolean) {
 		if (game.user.isGM) {
 			this.sharedState.scenery = state ?? !this.sharedState.scenery;
-			this._updateScenery();
-			game.socket.emit('module.narrator-tools', { command: 'scenery', value: this.sharedState.scenery });
-			const btn = $('.control-tool[title=Scenery]')[0].classList.contains('active');
-			//@ts-ignore
-			const tool = ui.controls.controls[0].tools.find((tool: any) => tool.name === 'scenery');
-			if (this.sharedState.scenery) {
-				$('.control-tool[title=Scenery]')[0].classList.add('active');
-				tool.active = true;
-			} else {
-				$('.control-tool[title=Scenery]')[0].classList.remove('active');
-				tool.active = false;
-			}
 		}
 	},
 	/**The shared state of the Narrator Tools application, emitted by the DM across all players */
 	sharedState: {
-		/**Displays information about whats happening on screen */
-		narration: {
-			display: false,
-			message: '',
-			paused: false,
+		get narration() {
+			return game.settings.get('narrator-tools', 'sharedState').narration;
 		},
-		/**If the background scenery is on or off */
-		scenery: false,
+		set narration(state: NarrationState) {
+			const sharedState = { ...game.settings.get('narrator-tools', 'sharedState'), narration: state };
+			game.settings.set('narrator-tools', 'sharedState', sharedState);
+		},
+		get scenery() {
+			return game.settings.get('narrator-tools', 'sharedState').scenery;
+		},
+		set scenery(state: boolean) {
+			const sharedState = { ...game.settings.get('narrator-tools', 'sharedState'), scenery: state };
+			game.settings.set('narrator-tools', 'sharedState', sharedState);
+		},
 	},
 };
 
@@ -494,6 +732,7 @@ const NarratorTools = {
 Hooks.on('setup', () => NarratorTools._setup());
 Hooks.on('ready', () => NarratorTools._ready());
 Hooks.on('chatMessage', NarratorTools._chatMessage.bind(NarratorTools)); // This hook spans the chatmsg
+Hooks.on('preCreateChatMessage', NarratorTools._preCreateChatMessage.bind(NarratorTools));
 Hooks.on('renderChatMessage', NarratorTools._renderChatMessage.bind(NarratorTools)); // This hook changes the chat message in case its a narration + triggers
 Hooks.on('getSceneControlButtons', NarratorTools._createSceneryButton.bind(NarratorTools));
 Hooks.on('sidebarCollapse', NarratorTools._fitSidebar.bind(NarratorTools));

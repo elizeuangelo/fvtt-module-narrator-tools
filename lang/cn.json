@@ -14,5 +14,12 @@
 	"NT.DurationMultiplierHint": "将/旁白的持续时间乘以指定的数字",
 	"NT.TextColor": "颜色",
 	"NT.TextShadow": "阴影",
-	"NT.TextCSS": "CSS（替代其他样式）"
+	"NT.TextCSS": "CSS（替代其他样式）",
+	"NT.BGColor": "背景颜色",
+	"NT.BGColorHint": "使用 8 位数字而不是 6 位数字来设置透明度，例如#000000a0",
+	"NT.BGImage": "背景图片",
+	"NT.NarrationStartPaused": "始终启动暂停的旁白",
+	"NT.SpeakingAs": "发言作为",
+	"NT.PauseButton": "Pause",
+	"NT.PlayButton": "Play"
 }

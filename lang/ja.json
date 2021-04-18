@@ -14,5 +14,12 @@
 	"NT.DurationMultiplierHint": "/narrate の期間に指定された数を掛けます",
 	"NT.TextColor": "色",
 	"NT.TextShadow": "影",
-	"NT.TextCSS": "CSS（他のスタイルを上書きします）"
+	"NT.TextCSS": "CSS（他のスタイルを上書きします）",
+	"NT.BGColor": "背景色",
+	"NT.BGColorHint": "透明度を設定するには、6 の代わりに 8 桁の数字を使用#000000a0",
+	"NT.BGImage": "背景画像",
+	"NT.NarrationStartPaused": "ナレーションを常に一時停止して開始する",
+	"NT.SpeakingAs": "話す",
+	"NT.PauseButton": "Pause",
+	"NT.PlayButton": "Play"
 }

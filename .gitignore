@@ -1,0 +1,10 @@
+# Paths
+node_modules
+backups
+.vscode
+
+# Files
+package-lock.json
+tsconfig.json
+foundry.js
+context-menu.min.js

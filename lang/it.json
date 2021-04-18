@@ -14,5 +14,12 @@
 	"NT.DurationMultiplierHint": "Moltiplica la durata di /narrate per il numero specificato",
 	"NT.TextColor": "Colore",
 	"NT.TextShadow": "Ombra",
-	"NT.TextCSS": "CSS (sovrascrive altri stili)"
+	"NT.TextCSS": "CSS (sovrascrive altri stili)",
+	"NT.BGColor": "Colore sfondo",
+	"NT.BGColorHint": "Utilizzare 8 cifre anziché 6 per impostare la trasparenza, ad esempio #000000a0",
+	"NT.BGImage": "Immagine di sfondo",
+	"NT.NarrationStartPaused": "Avviare sempre una narrazione in pausa",
+	"NT.SpeakingAs": "Parlando come",
+	"NT.PauseButton": "Pausa",
+	"NT.PlayButton": "Play"
 }
