@@ -60,14 +60,14 @@
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	cursor: pointer;
-	pointer-events: all;
 	transition: 0.5s ease-in-out;
 }
 
 .narrator-buttons button {
 	width: 100px;
 	margin: 0 5px;
+	cursor: pointer;
+	pointer-events: all;
 }
 
 .narrator-frame {

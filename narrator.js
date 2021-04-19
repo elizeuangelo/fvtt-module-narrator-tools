@@ -52,7 +52,10 @@ class NarratorMenu extends FormApplication {
  */
 const NarratorTools = {
     _element: $('<div id="narrator" class="narrator"><div class="narrator-bg"></div><div class="narrator-frame"><div class="narrator-frameBG"></div><div class="narrator-box"><div class="narrator-content"></div></div><div class="narrator-buttons" style="opacity:0;"><button class="NT-btn-pause"></button><button class="NT-btn-close"></button></div></div><div class="narrator-sidebarBG"></div>'),
-    _character: '',
+    /**
+     * Here is where a custom speaker is stored, if you change the value to anything other than '' the next messages will speak as such
+     */
+    character: '',
     /**
      * Hooked function wich identifies if a message is a Narrator Tools command
      * @param _message
@@ -79,11 +82,11 @@ const NarratorTools = {
             if (match) {
                 if (c == 'as') {
                     if (match[1]) {
-                        this._character = match[1];
-                        $('#chat-message')[0].placeholder = game.i18n.localize('NT.SpeakingAs') + ' ' + this._character;
+                        this.character = match[1];
+                        $('#chat-message')[0].placeholder = game.i18n.localize('NT.SpeakingAs') + ' ' + this.character;
                     }
                     else {
-                        this._character = '';
+                        this.character = '';
                         $('#chat-message')[0].placeholder = '';
                     }
                 }
@@ -116,8 +119,10 @@ const NarratorTools = {
         /**If a narration had ocurred and the display now is still on, turn it off */
         if (!narration.display && this.elements.content[0].style.opacity === '1') {
             this.elements.BG.height(0);
-            if (game.user.isGM)
+            if (game.user.isGM) {
                 this.elements.buttons[0].style.opacity = '0';
+                this.elements.buttons[0].style.visibility = 'hidden';
+            }
         }
         /**If the message suddenly disappears, turn off the opacity */
         if (!narration.message) {
@@ -168,6 +173,7 @@ const NarratorTools = {
                     this.elements.BG.height(height * 3);
                     if (game.user.isGM) {
                         this.elements.buttons[0].style.opacity = '1';
+                        this.elements.buttons[0].style.visibility = 'visible';
                         this.elements.buttons[0].style.top = `calc(50% + ${60 + height / 2}px)`;
                         this._updateStopButton(game.settings.get('narrator-tools', 'NarrationStartPaused'));
                     }
@@ -260,15 +266,15 @@ const NarratorTools = {
         }
     },
     /**
-     * Creates an alias and change message type if this._character option is true
+     * Creates an alias and change message type if this.character option is true
      * @param chatData Change the chat message configuration
      * @param _options
      * @param _user
      */
     _preCreateChatMessage(chatData, _options, _user) {
-        if (game.user.isGM && this._character) {
+        if (game.user.isGM && this.character) {
             chatData.type = this._msgtype;
-            chatData.speaker = { alias: this._character };
+            chatData.speaker = { alias: this.character };
         }
     },
     /**Initialization routine for 'ready' hook */

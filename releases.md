@@ -1,5 +1,10 @@
 # Patch Notes
 
+## 0.51
+
+-   Fixed visibility-related bug to the buttons bar
+-   \_character attribute is now public, changed to character and added to the wiki
+
 ## 0.50
 
 -   A background image or video can now be added to the scenery background (works best with transparency)
