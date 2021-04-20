@@ -22,17 +22,8 @@
 	text-align: center;
 }
 
-#chat-log .narrator-span {
+#chat-log .narrator-chat .message-content {
 	white-space: pre-line;
-	user-select: text;
-}
-
-#chat-log .narrator-span::selection {
-	background: yellow;
-}
-
-#chat-log .narrator-span p {
-	margin: -0.2rem;
 }
 
 #chat-log .narrator-chat .message-metadata {
@@ -60,14 +51,15 @@
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	cursor: pointer;
-	pointer-events: all;
 	transition: 0.5s ease-in-out;
+	visibility: hidden;
 }
 
 .narrator-buttons button {
 	width: 100px;
 	margin: 0 5px;
+	cursor: pointer;
+	pointer-events: all;
 }
 
 .narrator-frame {
