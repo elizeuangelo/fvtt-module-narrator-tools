@@ -499,7 +499,8 @@ const NarratorTools = {
 	_renderChatMessage(message: any, html: JQuery<HTMLElement>, data: any) {
 		const type = message.getFlag('narrator-tools', 'type');
 		if (type) {
-			html.find('div.message-content')[0].innerText = html.find('div.message-content')[0].innerText.slice(9);
+			const text = html.find('div.message-content')[0].innerText.match(/^\n *(.*)/);
+			if (text && text[1]) html.find('div.message-content')[0].innerText = text[1];
 			html.find('.message-sender').text('');
 			html.find('.message-metadata')[0].style.display = 'none';
 			html[0].classList.add('narrator-chat');

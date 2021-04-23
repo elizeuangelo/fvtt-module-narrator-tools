@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 0.53
+
+-   Corrected bug where some characters might disappear depending on the system's CSS
+
 ## 0.52
 
 -   Fixed visibility-related bug to the buttons bar (again)
