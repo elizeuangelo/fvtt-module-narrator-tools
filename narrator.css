@@ -18,16 +18,28 @@
 	border: 2px dotted #b7b7b7d6;
 }
 
-#chat-log .narrator-chat {
+#chat-log .message.narrator-chat {
 	text-align: center;
+}
+
+#chat-log .message.narrator-chat .message-header.flexrow {
+	border: none;
+	padding: 0;
+	min-height: 0;
+	box-shadow: none;
+	background: none;
+}
+
+#chat-log .message.narrator-chat .message-header .message-metadata {
+	color: white;
+}
+
+#chat-log .message.narrator-chat .message-header .message-metadata .message-delete {
+	color: white;
 }
 
 #chat-log .narrator-chat .message-content {
 	white-space: pre-line;
-}
-
-#chat-log .narrator-chat .message-metadata {
-	color: white;
 }
 
 .narrator-chat a.entity-link,

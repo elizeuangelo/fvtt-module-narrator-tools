@@ -36,6 +36,12 @@ class NarratorMenu extends FormApplication {
 			BGColor: game.settings.get('narrator-tools', 'BGColor'),
 			BGImage: game.settings.get('narrator-tools', 'BGImage'),
 			NarrationStartPaused: game.settings.get('narrator-tools', 'NarrationStartPaused'),
+			MessageType: game.settings.get('narrator-tools', 'MessageType'),
+			CHAT_MESSAGE_TYPES: {
+				0: 'Other',
+				1: 'Out of Character',
+				2: 'In Character',
+			},
 		};
 	}
 	/**
@@ -113,12 +119,15 @@ const NarratorTools = {
 		this._updateScenery(scenery);
 		if (game.user.isGM) {
 			const tool = ui.controls.controls[0].tools.find((tool: any) => tool.name === 'scenery');
-			if (scenery) {
-				$('.control-tool[title=Scenery]')[0].classList.add('active');
-				tool.active = true;
-			} else {
-				$('.control-tool[title=Scenery]')[0].classList.remove('active');
-				tool.active = false;
+			const btn = $('.control-tool[data-tool=scenery]');
+			if (tool && btn) {
+				if (scenery) {
+					btn[0].classList.add('active');
+					tool.active = true;
+				} else {
+					btn[0].classList.remove('active');
+					tool.active = false;
+				}
 			}
 		}
 
@@ -289,7 +298,7 @@ const NarratorTools = {
 	 */
 	_preCreateChatMessage(chatData: any, options: any, user: string) {
 		if (game.user.isGM && this.character) {
-			chatData.type = this._msgtype;
+			chatData.type = game.settings.get('narrator-tools', 'MessageType');
 			chatData.speaker = { alias: this.character };
 		}
 	},
@@ -460,11 +469,14 @@ const NarratorTools = {
 			default: false,
 			type: Boolean,
 		});
+		game.settings.register('narrator-tools', 'MessageType', {
+			name: 'Narration Message Type',
+			scope: 'world',
+			config: false,
+			default: CONST.CHAT_MESSAGE_TYPES.OTHER,
+			type: Number,
+		});
 	},
-	/**Specify how the module's messages will be intepreted by foundry and other modules:
-	 * OTHER: 0, OOC: 1, IC: 2, EMOTE: 3, WHISPER: 4, ROLL: 5
-	 */
-	_msgtype: CONST.CHAT_MESSAGE_TYPES.IC,
 	/**
 	 * Behavior when a chat message is clicked
 	 * @param event The event wich triggered the handler
@@ -651,7 +663,7 @@ const NarratorTools = {
 					type: type,
 				},
 			},
-			type: this._msgtype,
+			type: game.settings.get('narrator-tools', 'MessageType'),
 			speaker: {
 				alias: game.i18n.localize('NT.Narrator'),
 				scene: game.user.viewedScene,
