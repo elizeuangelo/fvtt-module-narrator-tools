@@ -65,5 +65,12 @@
         <p class="notes">{{localize "NT.DurationMultiplierHint"}}</p>
 	</div>
 
+    <div class="form-group">
+		<label>{{localize "NT.MessageType"}}</label>
+        <select name="MessageType">
+            {{selectOptions CHAT_MESSAGE_TYPES selected=MessageType localize=true}}
+        </select>
+	</div>
+
 	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{localize "Save Changes"}}</button>
 </form>

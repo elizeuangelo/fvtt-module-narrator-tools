@@ -21,5 +21,6 @@
 	"NT.NarrationStartPaused": "Always start a narration paused",
 	"NT.SpeakingAs": "Speaking as",
 	"NT.PauseButton": "Pause",
-	"NT.PlayButton": "Play"
+	"NT.PlayButton": "Play",
+	"NT.MessageType": "Narrator's message type"
 }

@@ -36,6 +36,12 @@ class NarratorMenu extends FormApplication {
 			BGColor: game.settings.get('narrator-tools', 'BGColor'),
 			BGImage: game.settings.get('narrator-tools', 'BGImage'),
 			NarrationStartPaused: game.settings.get('narrator-tools', 'NarrationStartPaused'),
+			MessageType: game.settings.get('narrator-tools', 'MessageType'),
+			CHAT_MESSAGE_TYPES: {
+				0: 'Other',
+				1: 'Out of Character',
+				2: 'In Character',
+			},
 		};
 	}
 	/**
@@ -68,11 +74,11 @@ const NarratorTools = {
 	character: '',
 	/**
 	 * Hooked function wich identifies if a message is a Narrator Tools command
-	 * @param _message
+	 * @param message
 	 * @param content   Message to be identified
 	 * @param chatData
 	 */
-	_chatMessage(_message: string, content: string, _chatData: any) {
+	_chatMessage(message: string, content: string, chatData: any) {
 		if (!game.user.isGM) return;
 		const narration = new RegExp('^\\/narrat(?:e|ion) ([^]*)', 'i');
 		const description = new RegExp('^\\/desc(?:ribe|ription|) ([^]*)', 'i');
@@ -81,7 +87,7 @@ const NarratorTools = {
 		const commands = {
 			narration: narration,
 			description: description,
-			note: notification,
+			notification: notification,
 			as: as,
 		};
 		// Iterate over patterns, finding the first match
@@ -113,12 +119,15 @@ const NarratorTools = {
 		this._updateScenery(scenery);
 		if (game.user.isGM) {
 			const tool = ui.controls.controls[0].tools.find((tool: any) => tool.name === 'scenery');
-			if (scenery) {
-				$('.control-tool[title=Scenery]')[0].classList.add('active');
-				tool.active = true;
-			} else {
-				$('.control-tool[title=Scenery]')[0].classList.remove('active');
-				tool.active = false;
+			const btn = $('.control-tool[data-tool=scenery]');
+			if (tool && btn) {
+				if (scenery) {
+					btn[0].classList.add('active');
+					tool.active = true;
+				} else {
+					btn[0].classList.remove('active');
+					tool.active = false;
+				}
 			}
 		}
 
@@ -171,7 +180,7 @@ const NarratorTools = {
 				}
 			};
 
-			/**If the display is on and the narration.id is a new one, it means a new narration is taking place */
+			/** If the display is on and the narration.id is a new one, it means a new narration is taking place */
 			if (narration.id !== this._id) {
 				this._id = narration.id;
 				clearTimeout(this._timeouts.narrationOpens);
@@ -199,7 +208,7 @@ const NarratorTools = {
 
 				Hooks.once('narration', scroll);
 			} else {
-				/**If narration is paused, stop animation and clear timeouts */
+				/** If narration is paused, stop animation and clear timeouts */
 				if (narration.paused) {
 					if (this._timeouts.narrationScrolls) {
 						clearTimeout(this._timeouts.narrationScrolls);
@@ -241,9 +250,9 @@ const NarratorTools = {
 	},
 	/**
 	 * Hides the journals context menu
-	 * @param _e
+	 * @param e
 	 */
-	_hideContextMenu(_e: Event) {
+	_hideContextMenu(e: Event) {
 		NarratorTools._menu.hide();
 		document.removeEventListener('click', NarratorTools._hideContextMenu);
 	},
@@ -284,12 +293,12 @@ const NarratorTools = {
 	/**
 	 * Creates an alias and change message type if this.character option is true
 	 * @param chatData Change the chat message configuration
-	 * @param _options
-	 * @param _user
+	 * @param options
+	 * @param user
 	 */
-	_preCreateChatMessage(chatData: any, _options: any, _user: string) {
+	_preCreateChatMessage(chatData: any, options: any, user: string) {
 		if (game.user.isGM && this.character) {
-			chatData.type = this._msgtype;
+			chatData.type = game.settings.get('narrator-tools', 'MessageType');
 			chatData.speaker = { alias: this.character };
 		}
 	},
@@ -460,11 +469,14 @@ const NarratorTools = {
 			default: false,
 			type: Boolean,
 		});
+		game.settings.register('narrator-tools', 'MessageType', {
+			name: 'Narration Message Type',
+			scope: 'world',
+			config: false,
+			default: CONST.CHAT_MESSAGE_TYPES.OTHER,
+			type: Number,
+		});
 	},
-	/**Specify how the module's messages will be intepreted by foundry and other modules:
-	 * OTHER: 0, OOC: 1, IC: 2, EMOTE: 3, WHISPER: 4, ROLL: 5
-	 */
-	_msgtype: CONST.CHAT_MESSAGE_TYPES.OTHER,
 	/**
 	 * Behavior when a chat message is clicked
 	 * @param event The event wich triggered the handler
@@ -494,29 +506,31 @@ const NarratorTools = {
 	 * Renders the chat message and sets out the message behavior
 	 * @param message Message object to be rendered
 	 * @param html HTML element of the message
-	 * @param _data
+	 * @param data
 	 */
-	_renderChatMessage(message: any, html: JQuery<HTMLElement>, _data: any) {
-		const span = html.find('.narrator-span');
-		if (span.length) {
+	_renderChatMessage(message: any, html: JQuery<HTMLElement>, data: any) {
+		const type = message.getFlag('narrator-tools', 'type');
+		if (type) {
+			const text = html.find('div.message-content')[0].innerText.match(/^\n *(.*)/);
+			if (text && text[1]) html.find('div.message-content')[0].innerText = text[1];
 			html.find('.message-sender').text('');
 			html.find('.message-metadata')[0].style.display = 'none';
 			html[0].classList.add('narrator-chat');
-			if (span[0].classList.contains('narration')) {
+			if (type == 'narration') {
 				html[0].classList.add('narrator-narrative');
-			} else if (span[0].classList.contains('description')) {
+			} else if (type == 'description') {
 				html[0].classList.add('narrator-description');
-			} else if (span[0].classList.contains('note')) {
+			} else if (type == 'notification') {
 				html[0].classList.add('narrator-notification');
 			}
 		}
 	},
 	/**
 	 * Hook wich triggers when the journal sheet is rendered
-	 * @param _journalSheet
+	 * @param journalSheet
 	 * @param html
 	 */
-	_renderJournalSheet(_journalSheet: any, html: JQuery<HTMLElement>) {
+	_renderJournalSheet(journalSheet: any, html: JQuery<HTMLElement>) {
 		let editor = '.editor-content';
 		// Identifies if there is a Easy MDE Container
 		const MDEContainer = html.find('.EasyMDEContainer').length;
@@ -628,7 +642,7 @@ const NarratorTools = {
 		 * @param options - Change the chat message configuration
 		 */
 		notify(message: string, options = {}) {
-			return NarratorTools.createChatMessage('note', message, options);
+			return NarratorTools.createChatMessage('notification', message, options);
 		},
 	},
 	/**
@@ -643,8 +657,13 @@ const NarratorTools = {
 		message = message.replace(/\\n|<br>/g, '\n');
 
 		let chatData = {
-			content: `<span class="narrator-span ${type}">${message}</span>`,
-			type: this._msgtype,
+			content: message,
+			flags: {
+				'narrator-tools': {
+					type: type,
+				},
+			},
+			type: game.settings.get('narrator-tools', 'MessageType'),
 			speaker: {
 				alias: game.i18n.localize('NT.Narrator'),
 				scene: game.user.viewedScene,
