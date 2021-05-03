@@ -1,5 +1,11 @@
 # Patch Notes
 
+## 0.54
+
+-   Improved visuals for WRFP4
+-   Added new configuration for controlling the messages types
+-   Attempt on fixing some compatibility errors with other modules
+
 ## 0.53
 
 -   Corrected bug where some characters might disappear depending on the system's CSS
