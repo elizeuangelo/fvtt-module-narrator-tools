@@ -38,8 +38,14 @@
 	color: white;
 }
 
-#chat-log .narrator-chat .message-content {
-	white-space: pre-line;
+.system-wfrp4e #chat-log .narrator-chat {
+	padding: 0px;
+	text-align: center;
+	line-height: normal;
+	border: 3px double #5d513e;
+	box-shadow: 0px 0px 10px inset black;
+	border-radius: 0px;
+	text-shadow: 1px 1px 5px #000000;
 }
 
 .narrator-chat a.entity-link,
@@ -128,7 +134,6 @@
 	text-shadow: 3px 3px 2px black;
 	color: white;
 	transition: opacity 0.5s ease-in-out;
-	white-space: pre-line;
 }
 
 /* Moerill's FVTT Markdown Editor*/

@@ -1,5 +1,12 @@
 # Patch Notes
 
+## 0.55
+
+-   Added context-menu support for any `.editor-content`
+-   Improved visuals for WRFP4
+-   Fixed a bug where break-line would not be respected
+-   Selection tool for the context-menu remade
+
 ## 0.54
 
 -   Improved visuals for WRFP4
