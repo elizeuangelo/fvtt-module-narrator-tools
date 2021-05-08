@@ -1,5 +1,10 @@
 # Patch Notes
 
+## 0.56
+
+-   Improved (again) the text selection tool, fixing some bugs
+-   Custom Font configuration now loads fonts directly from a Web or local File Path, instead of using the Google Fonts api
+
 ## 0.55
 
 -   Added context-menu support for any `.editor-content`

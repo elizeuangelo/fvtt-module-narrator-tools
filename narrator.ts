@@ -249,9 +249,10 @@ const NarratorTools = {
 		const selection = window.getSelection();
 		if (selection?.rangeCount && !selection.isCollapsed) {
 			const fragments = selection.getRangeAt(0).cloneContents();
-			const size = fragments.children.length;
+			const size = fragments.childNodes.length;
 			for (let i = 0; i < size; i++) {
-				html += fragments.children[i].outerHTML;
+				if (fragments.childNodes[i].nodeType == fragments.TEXT_NODE) html += (fragments.childNodes[i] as Text).wholeText;
+				else html += (fragments.childNodes[i] as Element).outerHTML;
 			}
 		}
 		return html;
@@ -259,16 +260,22 @@ const NarratorTools = {
 	/**The id of the last narration update */
 	_id: 0,
 	/**
-	 * Loads a specific font from the Google Fonts web page
-	 * @param font Google font to load
+	 * Loads a custom font for the narration style
+	 * @param font Font to load
 	 */
 	_loadFont(font: string) {
 		$('#narratorWebFont').remove();
 		if (font == '') return;
-		const linkRel = $(
-			`<link id="narratorWebFont" href="https://fonts.googleapis.com/css2?family=${font}&display=swap" rel="stylesheet" type="text/css" media="all">`
-		);
-		$('head').append(linkRel);
+		//const linkRel = $(
+		//	`<link id="narratorWebFont" href="https://fonts.googleapis.com/css2?family=${font}&display=swap" rel="stylesheet" type="text/css" media="all">`
+		//);
+		//$('head').append(linkRel);
+
+		var newStyle = document.createElement('style');
+		newStyle.id = 'narratorWebFont';
+		newStyle.appendChild(document.createTextNode(`@font-face {font-family: NTCustomFont; src: url('${font}');}`));
+
+		document.head.appendChild(newStyle);
 	},
 	_menu: undefined as any,
 	/**
@@ -576,7 +583,7 @@ const NarratorTools = {
 			this.elements.content[0].style.opacity = opacity;
 			return;
 		}
-		this.elements.content[0].style.fontFamily = `${game.settings.get('narrator-tools', 'WebFont')}`;
+		this.elements.content[0].style.fontFamily = `${game.settings.get('narrator-tools', 'WebFont')}` ? 'NTCustomFont' : '';
 		this.elements.content[0].style.fontSize = `${game.settings.get('narrator-tools', 'FontSize')}`;
 		this.elements.content[0].style.color = `${game.settings.get('narrator-tools', 'TextColor')}`;
 		this.elements.content[0].style.textShadow = `${game.settings.get('narrator-tools', 'TextShadow')}`;
