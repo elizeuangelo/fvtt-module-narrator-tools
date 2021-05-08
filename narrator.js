@@ -253,14 +253,10 @@ const NarratorTools = {
         $('#narratorWebFont').remove();
         if (font == '')
             return;
-        //const linkRel = $(
-        //	`<link id="narratorWebFont" href="https://fonts.googleapis.com/css2?family=${font}&display=swap" rel="stylesheet" type="text/css" media="all">`
-        //);
-        //$('head').append(linkRel);
-        var newStyle = document.createElement('style');
-        newStyle.id = 'narratorWebFont';
-        newStyle.appendChild(document.createTextNode(`@font-face {font-family: CustomFont; src: url('${font}');}`));
-        document.head.appendChild(newStyle);
+        let style = document.createElement('style');
+        style.id = 'narratorWebFont';
+        style.appendChild(document.createTextNode(`@font-face {font-family: NTCustomFont; src: url('${font}');}`));
+        document.head.appendChild(style);
     },
     _menu: undefined,
     /**
@@ -578,7 +574,7 @@ const NarratorTools = {
             this.elements.content[0].style.opacity = opacity;
             return;
         }
-        this.elements.content[0].style.fontFamily = `${game.settings.get('narrator-tools', 'WebFont')}` ? 'CustomFont' : '';
+        this.elements.content[0].style.fontFamily = `${game.settings.get('narrator-tools', 'WebFont')}` ? 'NTCustomFont' : '';
         this.elements.content[0].style.fontSize = `${game.settings.get('narrator-tools', 'FontSize')}`;
         this.elements.content[0].style.color = `${game.settings.get('narrator-tools', 'TextColor')}`;
         this.elements.content[0].style.textShadow = `${game.settings.get('narrator-tools', 'TextShadow')}`;

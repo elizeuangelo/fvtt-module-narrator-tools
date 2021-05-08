@@ -266,16 +266,12 @@ const NarratorTools = {
 	_loadFont(font: string) {
 		$('#narratorWebFont').remove();
 		if (font == '') return;
-		//const linkRel = $(
-		//	`<link id="narratorWebFont" href="https://fonts.googleapis.com/css2?family=${font}&display=swap" rel="stylesheet" type="text/css" media="all">`
-		//);
-		//$('head').append(linkRel);
 
-		var newStyle = document.createElement('style');
-		newStyle.id = 'narratorWebFont';
-		newStyle.appendChild(document.createTextNode(`@font-face {font-family: NTCustomFont; src: url('${font}');}`));
+		let style = document.createElement('style');
+		style.id = 'narratorWebFont';
+		style.appendChild(document.createTextNode(`@font-face {font-family: NTCustomFont; src: url('${font}');}`));
 
-		document.head.appendChild(newStyle);
+		document.head.appendChild(style);
 	},
 	_menu: undefined as any,
 	/**
