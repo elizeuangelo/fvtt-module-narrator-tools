@@ -8,3 +8,4 @@ package-lock.json
 tsconfig.json
 foundry.js
 context-menu.min.js
+narrator-tools.lock

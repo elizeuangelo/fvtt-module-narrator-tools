@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 0.57
+-   Full compatibility with 0.8.6
+-   Added permission settings
+
 ## 0.56
 
 -   Improved (again) the text selection tool, fixing some bugs

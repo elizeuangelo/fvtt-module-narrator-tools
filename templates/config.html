@@ -4,14 +4,14 @@
 	<p class="notes">{{localize "NT.AppearanceHint"}}</p>
 
     <div class="form-group">
-		<label>{{localize "NT.BGColor"}}</label>
+		<label>{{localize "SCENES.BackgroundColor"}}</label>
 		<input class="color" type="text" name="BGColor" placeholder="#000000" value="{{BGColor}}" />
         <input type="color" value="{{BGColor}}" data-edit="BGColor"/>
         <p class="notes">{{localize "NT.BGColorHint"}}</p>
     </div>
 
     <div class="form-group">
-        <label>{{localize "NT.BGImage"}}</label>
+        <label>{{localize "SCENES.BackgroundImage"}}</label>
         <div class="form-fields">
             {{filePicker target="BGImage" type="imagevideo"}}
             <input class="image" type="text" name="BGImage" placeholder="{{localize 'File Path'}}" value="{{BGImage}}"/>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="form-group">
-		<label>Font</label>
+		<label>{{localize "NOTE.FontFamily"}}</label>
         <div class="form-fields">
             {{filePicker target="WebFont" type="stylesheet"}}
             <input class="image" type="text" name="WebFont" placeholder="{{localize 'File Path'}}" value="{{WebFont}}"/>
@@ -27,13 +27,13 @@
     </div>
 
     <div class="form-group">
-		<label>{{localize "NT.TextColor"}}</label>
+		<label>{{localize "NOTE.TextColor"}}</label>
 		<input class="color" type="text" name="TextColor" placeholder="white" value="{{TextColor}}" />
         <input type="color" value="{{TextColor}}" data-edit="TextColor"/>
     </div>
 
 	<div class="form-group">
-		<label>{{localize "NT.FontSize"}}</label>
+		<label>{{localize "NOTE.FontSize"}}</label>
 		<input type="text" name="FontSize" placeholder="28px" value="{{FontSize}}" />
 	</div>
     
@@ -47,7 +47,6 @@
 		<input type="text" name="TextCSS" placeholder="color: white; text-shadow: 3px 3px 2px black" value="{{TextCSS}}" />
     </div>
     
-    <hr>
 	<h3 class="form-header"><i class="fas fa-microchip"></i> {{localize "NT.OthersNav"}}</h3>
 	<p class="notes">{{localize "NT.OthersHint"}}</p>
 
@@ -72,6 +71,37 @@
 		<label>{{localize "NT.MessageType"}}</label>
         <select name="MessageType">
             {{selectOptions CHAT_MESSAGE_TYPES selected=MessageType localize=true}}
+        </select>
+	</div>
+
+    <h3 class="form-header"><i class="far fa-address-card"></i> {{localize "Permissions"}}</h3>
+    <p class="notes">{{localize "NT.PermissionsHint"}}</p>
+
+    <div class="form-group">
+		<label>{{localize "NT.PERMScenery"}}</label>
+        <select name="PERMScenery">
+            {{selectOptions USER_ROLES selected=PERMScenery localize=true}}
+        </select>
+	</div>
+
+    <div class="form-group">
+		<label>/as</label>
+        <select name="PERMAs">
+            {{selectOptions USER_ROLES selected=PERMAs localize=true}}
+        </select>
+	</div>
+
+    <div class="form-group">
+		<label>/describe</label>
+        <select name="PERMDescribe">
+            {{selectOptions USER_ROLES selected=PERMDescribe localize=true}}
+        </select>
+	</div>
+
+    <div class="form-group">
+		<label>/narrate</label>
+        <select name="PERMNarrate">
+            {{selectOptions USER_ROLES selected=PERMNarrate localize=true}}
         </select>
 	</div>
 

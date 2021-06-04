@@ -35,6 +35,17 @@ class NarratorMenu extends FormApplication {
                 1: 'Out of Character',
                 2: 'In Character',
             },
+            PERMScenery: game.settings.get('narrator-tools', 'PERMScenery'),
+            PERMDescribe: game.settings.get('narrator-tools', 'PERMDescribe'),
+            PERMNarrate: game.settings.get('narrator-tools', 'PERMNarrate'),
+            PERMAs: game.settings.get('narrator-tools', 'PERMAs'),
+            USER_ROLES: {
+                0: game.i18n.localize('USER.RoleNone'),
+                1: game.i18n.localize('USER.RolePlayer'),
+                2: game.i18n.localize('USER.RoleTrusted'),
+                3: game.i18n.localize('USER.RoleAssistant'),
+                4: game.i18n.localize('USER.RoleGamemaster'),
+            },
         };
     }
     /**
@@ -69,18 +80,17 @@ const NarratorTools = {
      * @param chatData
      */
     _chatMessage(message, content, chatData) {
-        if (!game.user.isGM)
-            return;
-        const narration = new RegExp('^\\/narrat(?:e|ion) ([^]*)', 'i');
-        const description = new RegExp('^\\/desc(?:ribe|ription|) ([^]*)', 'i');
-        const notification = new RegExp('^\\/not(?:e|ify|ication) ([^]*)', 'i');
-        const as = new RegExp('^(?:\\/as$|\\/as ([^]*))', 'i');
-        const commands = {
-            narration: narration,
-            description: description,
-            notification: notification,
-            as: as,
-        };
+        let commands = {};
+        if (game.user.role >= game.settings.get('narrator-tools', 'PERMAs')) {
+            commands.as = new RegExp('^(?:\\/as$|\\/as ([^]*))', 'i');
+        }
+        if (game.user.role >= game.settings.get('narrator-tools', 'PERMDescribe')) {
+            commands.description = new RegExp('^\\/desc(?:ribe|ription|) ([^]*)', 'i');
+            commands.notification = new RegExp('^\\/not(?:e|ify|ication) ([^]*)', 'i');
+        }
+        if (game.user.role >= game.settings.get('narrator-tools', 'PERMNarrate')) {
+            commands.narration = new RegExp('^\\/narrat(?:e|ion) ([^]*)', 'i');
+        }
         // Iterate over patterns, finding the first match
         let c, rgx, match;
         for ([c, rgx] of Object.entries(commands)) {
@@ -97,7 +107,10 @@ const NarratorTools = {
                     }
                 }
                 else {
-                    this.createChatMessage(c, match[1]);
+                    if (c == 'narration' && !game.user.hasPermission('SETTINGS_MODIFY'))
+                        ui.notifications.error(game.i18n.localize('NT.CantModifySettings'));
+                    else
+                        this.createChatMessage(c, match[1]);
                 }
                 return false;
             }
@@ -110,7 +123,7 @@ const NarratorTools = {
     _controller({ narration, scenery }) {
         /**First, we manage the scenery changes */
         this._updateScenery(scenery);
-        if (game.user.isGM) {
+        if (game.user.role >= game.settings.get('narrator-tools', 'PERMScenery')) {
             const tool = ui.controls.controls[0].tools.find((tool) => tool.name === 'scenery');
             const btn = $('.control-tool[data-tool=scenery]');
             if (tool && btn) {
@@ -125,10 +138,11 @@ const NarratorTools = {
             }
         }
         /**Then, we control the narration's behavior */
+        const is_narrator = game.user.hasPermission('SETTINGS_MODIFY') && game.user.role >= game.settings.get('narrator-tools', 'PERMNarrate');
         /**If a narration had ocurred and the display now is still on, turn it off */
         if (!narration.display && this.elements.content[0].style.opacity === '1') {
             this.elements.BG.height(0);
-            if (game.user.isGM) {
+            if (is_narrator) {
                 this.elements.buttons[0].style.opacity = '0';
                 this.elements.buttons[0].style.visibility = 'hidden';
             }
@@ -140,10 +154,10 @@ const NarratorTools = {
         if (narration.display) {
             const scroll = () => {
                 if (!this.sharedState.narration.paused) {
-                    const scroll = (this.elements.content.height() ?? 0) - 310;
+                    let scroll = (this.elements.content.height() ?? 0) - 290; // 310
                     let duration = this.messageDuration(this.sharedState.narration.message.length);
                     /**If the narration is open */
-                    if (scroll > 0) {
+                    if (scroll > 20) {
                         const remaining = 1 - Number(this.elements.content[0].style.top.slice(0, -2)) / -scroll;
                         const duration_multiplier = game.settings.get('narrator-tools', 'DurationMultiplier');
                         const scroll_duration = (duration - 500 - 4500 * duration_multiplier) * remaining;
@@ -159,7 +173,7 @@ const NarratorTools = {
                             duration = scroll_duration + 4500 * duration_multiplier;
                         }
                     }
-                    if (game.user.isGM) {
+                    if (is_narrator) {
                         if (this._timeouts.narrationCloses) {
                             clearTimeout(this._timeouts.narrationCloses);
                             this._timeouts.narrationCloses = 0;
@@ -180,7 +194,7 @@ const NarratorTools = {
                     this.elements.content[0].style.top = '0px';
                     const height = Math.min(this.elements.content.height() ?? 0, 310);
                     this.elements.BG.height(height * 3);
-                    if (game.user.isGM) {
+                    if (is_narrator) {
                         this.elements.buttons[0].style.opacity = '1';
                         this.elements.buttons[0].style.visibility = 'visible';
                         this.elements.buttons[0].style.top = `calc(50% + ${60 + height / 2}px)`;
@@ -213,12 +227,13 @@ const NarratorTools = {
     /**Hook function wich creates the scenery button */
     _createSceneryButton(buttons) {
         let tokenButton = buttons.find((b) => b.name === 'token');
-        if (tokenButton && game.user.isGM) {
+        const hasPerm = game.user.role >= game.settings.get('narrator-tools', 'PERMScenery');
+        if (tokenButton && hasPerm) {
             tokenButton.tools.push({
                 name: 'scenery',
                 title: game.i18n.localize('NT.ButtonTitle'),
                 icon: 'fas fa-theater-masks',
-                visible: game.user.isGM,
+                visible: hasPerm,
                 toggle: true,
                 active: this.sharedState.scenery,
                 onClick: (toggle) => {
@@ -265,29 +280,36 @@ const NarratorTools = {
     _narrationClose() {
         let state = NarratorTools.sharedState.narration;
         Hooks.call('narration_closes', { id: state.id, message: state.message });
-        state.display = false;
-        state.message = '';
-        NarratorTools.sharedState.narration = state;
         if (NarratorTools._timeouts.narrationCloses) {
             clearTimeout(NarratorTools._timeouts.narrationCloses);
             NarratorTools._timeouts.narrationCloses = 0;
         }
+        setTimeout(() => {
+            if (state.id == NarratorTools.sharedState.narration.id) {
+                state.display = false;
+                state.message = '';
+                NarratorTools.sharedState.narration = state;
+            }
+        }, 250);
     },
     _pause() {
-        if (game.user.isGM && game.settings.get('narrator-tools', 'Pause')) {
+        const canScenery = game.user.role >= game.settings.get('narrator-tools', 'PERMScenery');
+        if (canScenery && game.settings.get('narrator-tools', 'Pause')) {
             NarratorTools.scenery(game.paused);
         }
     },
     /**
      * Creates an alias and change message type if this.character option is true
-     * @param chatData Change the chat message configuration
+     * @param chatMessage The chat message object
      * @param options
      * @param user
      */
-    _preCreateChatMessage(chatData, options, user) {
-        if (game.user.isGM && this.character) {
+    _preCreateChatMessage(chatMessage, options, user) {
+        if (game.user.role >= game.settings.get('narrator-tools', 'PERMAs') && this.character) {
+            let chatData = {};
             chatData.type = game.settings.get('narrator-tools', 'MessageType');
             chatData.speaker = { alias: this.character };
+            chatMessage.data.update(chatData);
         }
     },
     /**Initialization routine for 'ready' hook */
@@ -369,7 +391,7 @@ const NarratorTools = {
         //      There should be no concurrency between sockets and this config,
         //      so we eliminated sockets altogether.
         game.settings.register('narrator-tools', 'sharedState', {
-            name: game.i18n.localize('NT.state'),
+            name: 'Shared State',
             scope: 'world',
             config: false,
             default: {
@@ -388,8 +410,8 @@ const NarratorTools = {
         });
         // Register the application menu
         game.settings.registerMenu('narrator-tools', 'settingsMenu', {
-            name: game.i18n.localize('NT.CfgName'),
-            label: game.i18n.localize('NT.CfgLabel'),
+            name: game.i18n.localize('SETTINGS.Configure'),
+            label: game.i18n.localize('SCENES.Configure'),
             icon: 'fas fa-adjust',
             type: NarratorMenu,
             restricted: true,
@@ -473,6 +495,34 @@ const NarratorTools = {
             scope: 'world',
             config: false,
             default: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            type: Number,
+        });
+        game.settings.register('narrator-tools', 'PERMScenery', {
+            name: 'Permission Required to set the Scenery',
+            scope: 'world',
+            config: false,
+            default: CONST.USER_ROLES.GAMEMASTER,
+            type: Number,
+        });
+        game.settings.register('narrator-tools', 'PERMDescribe', {
+            name: 'Permission Required to /describe and /note',
+            scope: 'world',
+            config: false,
+            default: CONST.USER_ROLES.GAMEMASTER,
+            type: Number,
+        });
+        game.settings.register('narrator-tools', 'PERMNarrate', {
+            name: 'Permission Required to /narrate',
+            scope: 'world',
+            config: false,
+            default: CONST.USER_ROLES.GAMEMASTER,
+            type: Number,
+        });
+        game.settings.register('narrator-tools', 'PERMAs', {
+            name: 'Permission Required to /as',
+            scope: 'world',
+            config: false,
+            default: CONST.USER_ROLES.GAMEMASTER,
             type: Number,
         });
     },
@@ -632,7 +682,9 @@ const NarratorTools = {
      * @param options - Change the chat message configuration
      */
     createChatMessage(type, message, options = {}) {
-        if (!game.user.isGM)
+        if (type == 'narration' && !game.user.role >= game.settings.get('narrator-tools', 'PERMNarrate'))
+            return;
+        else if (!game.user.role >= game.settings.get('narrator-tools', 'PERMDescribe'))
             return;
         message = message.replace(/\\n/g, '<br>');
         let chatData = {
@@ -692,8 +744,11 @@ const NarratorTools = {
      * @param state True to turn on the scenery, false to turn it off
      */
     scenery(state) {
-        if (game.user.isGM) {
-            this.sharedState.scenery = state ?? !this.sharedState.scenery;
+        if (game.user.role >= game.settings.get('narrator-tools', 'PERMScenery')) {
+            if (!game.user.hasPermission('SETTINGS_MODIFY'))
+                ui.notifications.error(game.i18n.localize('NT.CantModifySettings'));
+            else
+                this.sharedState.scenery = state ?? !this.sharedState.scenery;
         }
     },
     /**The shared state of the Narrator Tools application, emitted by the DM across all players */
@@ -721,5 +776,5 @@ Hooks.on('chatMessage', NarratorTools._chatMessage.bind(NarratorTools)); // This
 Hooks.on('preCreateChatMessage', NarratorTools._preCreateChatMessage.bind(NarratorTools));
 Hooks.on('renderChatMessage', NarratorTools._renderChatMessage.bind(NarratorTools)); // This hook changes the chat message in case its a narration + triggers
 Hooks.on('getSceneControlButtons', NarratorTools._createSceneryButton.bind(NarratorTools));
-Hooks.on('sidebarCollapse', NarratorTools._fitSidebar.bind(NarratorTools));
+Hooks.on('collapseSidebar', NarratorTools._fitSidebar.bind(NarratorTools));
 Hooks.on('pauseGame', (_pause) => NarratorTools._pause());
