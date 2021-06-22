@@ -132,16 +132,10 @@ const NarratorTools = {
 		/**First, we manage the scenery changes */
 		this._updateScenery(scenery);
 		if (game.user.role >= game.settings.get('narrator-tools', 'PERMScenery')) {
-			const tool = ui.controls.controls[0].tools.find((tool: any) => tool.name === 'scenery');
 			const btn = $('.control-tool[data-tool=scenery]');
-			if (tool && btn) {
-				if (scenery) {
-					btn[0].classList.add('active');
-					tool.active = true;
-				} else {
-					btn[0].classList.remove('active');
-					tool.active = false;
-				}
+			if (btn) {
+				if (scenery) btn[0].classList.add('active');
+				else btn[0].classList.remove('active');
 			}
 		}
 
@@ -241,22 +235,16 @@ const NarratorTools = {
 		}
 	},
 	/**Hook function wich creates the scenery button */
-	_createSceneryButton(buttons: any) {
-		let tokenButton = buttons.find((b: any) => b.name === 'token');
+	_createSceneryButton(control: Application, html: JQuery, data: any) {
 		const hasPerm = game.user.role >= game.settings.get('narrator-tools', 'PERMScenery');
-
-		if (tokenButton && hasPerm) {
-			tokenButton.tools.push({
-				name: 'scenery',
-				title: game.i18n.localize('NT.ButtonTitle'),
-				icon: 'fas fa-theater-masks',
-				visible: hasPerm,
-				toggle: true,
-				active: this.sharedState.scenery,
-				onClick: (toggle: boolean) => {
-					this.scenery(toggle);
-				},
-			});
+		if (hasPerm) {
+			const name = 'scenery';
+			const title = game.i18n.localize('NT.ButtonTitle');
+			const icon = 'fas fa-theater-masks';
+			const active = this.sharedState.scenery;
+			const btn = $(`<li class="control-tool toggle ${active ? 'active' : ''}" title="${title}" data-tool="${name}"><i class="${icon}"></i></li>`);
+			btn.on('click', () => this.scenery());
+			html.append(btn);
 		}
 	},
 	/**Gets whats selected on screen */
@@ -768,7 +756,7 @@ const NarratorTools = {
 	 * Set the background scenery and calls all clients
 	 * @param state True to turn on the scenery, false to turn it off
 	 */
-	scenery(state: boolean) {
+	scenery(state?: boolean) {
 		if (game.user.role >= game.settings.get('narrator-tools', 'PERMScenery')) {
 			if (!game.user.hasPermission('SETTINGS_MODIFY')) ui.notifications.error(game.i18n.localize('NT.CantModifySettings'));
 			else this.sharedState.scenery = state ?? !this.sharedState.scenery;
@@ -799,6 +787,6 @@ Hooks.on('ready', () => NarratorTools._ready());
 Hooks.on('chatMessage', NarratorTools._chatMessage.bind(NarratorTools)); // This hook spans the chatmsg
 Hooks.on('preCreateChatMessage', NarratorTools._preCreateChatMessage.bind(NarratorTools));
 Hooks.on('renderChatMessage', NarratorTools._renderChatMessage.bind(NarratorTools)); // This hook changes the chat message in case its a narration + triggers
-Hooks.on('getSceneControlButtons', NarratorTools._createSceneryButton.bind(NarratorTools));
+Hooks.on('renderSceneControls', NarratorTools._createSceneryButton.bind(NarratorTools));
 Hooks.on('collapseSidebar', NarratorTools._fitSidebar.bind(NarratorTools));
 Hooks.on('pauseGame', (_pause: boolean) => NarratorTools._pause());
