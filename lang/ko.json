@@ -12,7 +12,7 @@
 	"NT.OthersHint": "모듈 작동 설정",
 	"NT.OthersNav": "작동",
 	"NT.PERMScenery": "배경 제어",
-	"NT.Pause": "게임 일시 정지시 자동 풍경 제어",
+	"NT.Pause": "게임 일시 정지시 자동 배경 제어",
 	"NT.PauseButton": "일시정지",
 	"NT.PermissionsHint": "모듈 기능에 대한 최소 수준 액세스를 설정합니다.일부 작업에는 사용자가 설정을 수정할 수있는 권한이 필요할 수 있습니다.",
 	"NT.PlayButton": "재생",
