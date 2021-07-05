@@ -1,9 +1,16 @@
 # Patch Notes
 
+## 0.59
+
+-   Chat commands now respect newlines properly
+-   Update to korean translation
+
 ## 0.58
+
 -   The scenery button now resides on the controls layer side and no longer is using the ui controls app
 
 ## 0.57
+
 -   Full compatibility with 0.8.6
 -   Added permission settings
 

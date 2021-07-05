@@ -89,8 +89,9 @@ const NarratorTools = {
 	 * @param content   Message to be identified
 	 * @param chatData
 	 */
-	_chatMessage(message: string, content: string, chatData: any) {
+	_chatMessage(message: any, content: string, chatData: any) {
 		let commands: { [key: string]: RegExp } = {};
+		content = content.replace(/\n/g, '<br>');
 
 		if (game.user.role >= game.settings.get('narrator-tools', 'PERMAs')) {
 			commands.as = new RegExp('^(?:\\/as$|\\/as ([^]*))', 'i');
