@@ -19,5 +19,7 @@
 	"NT.SpeakingAs": "Sprechen als",
 	"NT.TextCSS": "CSS (überschreibt andere Stile)",
 	"NT.TextShadow": "Schatten",
-	"NT.Title": "Erzähler Werkzeuge"
+	"NT.Title": "Erzähler Werkzeuge",
+	"NT.Copy": "Kopieren",
+	"NT.CopyClipboard": "Kommentar kopiert"
 }

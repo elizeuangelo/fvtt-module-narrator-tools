@@ -77,7 +77,7 @@ class NarratorMenu extends FormApplication {
  */
 const NarratorTools = {
 	_element: $(
-		'<div id="narrator" class="narrator"><div class="narrator-bg"></div><div class="narrator-frame"><div class="narrator-frameBG"></div><div class="narrator-box"><div class="narrator-content"></div></div><div class="narrator-buttons" style="opacity:0;"><button class="NT-btn-pause"></button><button class="NT-btn-close"></button></div></div><div class="narrator-sidebarBG"></div>'
+		'<div id="narrator" class="narrator"><div class="narrator-bg"></div><div class="narrator-frame"><div class="narrator-frameBG"></div><div class="narrator-box"><div class="narrator-content"></div></div><div class="narrator-buttons" style="opacity:0;"><button class="NT-btn-pause"></button><button class="NT-btn-close"></button></button><button class="NT-btn-clipboard"></button></div></div><div class="narrator-sidebarBG"></div>'
 	),
 	/**
 	 * Here is where a custom speaker is stored, if you change the value to anything other than '' the next messages will speak as such
@@ -140,16 +140,11 @@ const NarratorTools = {
 			}
 		}
 
-		/**Then, we control the narration's behavior */
-		const is_narrator = game.user.hasPermission('SETTINGS_MODIFY') && game.user.role >= game.settings.get('narrator-tools', 'PERMNarrate');
-
 		/**If a narration had ocurred and the display now is still on, turn it off */
 		if (!narration.display && this.elements.content[0].style.opacity === '1') {
 			this.elements.BG.height(0);
-			if (is_narrator) {
-				this.elements.buttons[0].style.opacity = '0';
-				this.elements.buttons[0].style.visibility = 'hidden';
-			}
+			this.elements.buttons[0].style.opacity = '0';
+			this.elements.buttons[0].style.visibility = 'hidden';
 		}
 
 		/**If the message suddenly disappears, turn off the opacity */
@@ -180,7 +175,7 @@ const NarratorTools = {
 						}
 					}
 
-					if (is_narrator) {
+					if (this.isNarrator) {
 						if (this._timeouts.narrationCloses) {
 							clearTimeout(this._timeouts.narrationCloses);
 							this._timeouts.narrationCloses = 0;
@@ -205,12 +200,10 @@ const NarratorTools = {
 					const height = Math.min(this.elements.content.height() ?? 0, 310);
 					this.elements.BG.height(height * 3);
 
-					if (is_narrator) {
-						this.elements.buttons[0].style.opacity = '1';
-						this.elements.buttons[0].style.visibility = 'visible';
-						this.elements.buttons[0].style.top = `calc(50% + ${60 + height / 2}px)`;
-						this._updateStopButton(game.settings.get('narrator-tools', 'NarrationStartPaused'));
-					}
+					this.elements.buttons[0].style.opacity = '1';
+					this.elements.buttons[0].style.visibility = 'visible';
+					this.elements.buttons[0].style.top = `calc(50% + ${60 + height / 2}px)`;
+					this._updateStopButton(game.settings.get('narrator-tools', 'NarrationStartPaused'));
 
 					this._timeouts.narrationOpens = 0;
 					Hooks.call('narration', narration);
@@ -329,13 +322,17 @@ const NarratorTools = {
 			box: this._element.find('.narrator-box'),
 			content: this._element.find('.narrator-content'),
 			buttons: this._element.find('.narrator-buttons'),
-			buttonPause: this._element.find('.NT-btn-pause'),
-			buttonClose: this._element.find('.NT-btn-close'),
+			buttonPause: this._element.find('.NT-btn-pause') as JQuery<HTMLButtonElement>,
+			buttonClose: this._element.find('.NT-btn-close') as JQuery<HTMLButtonElement>,
+			buttonCopy: this._element.find('.NT-btn-clipboard') as JQuery<HTMLButtonElement>,
 		};
 		this._updateBGColor();
 		this._updateBGImage();
 		this._fitSidebar();
 		$('body').append(this._element);
+
+		// Check if the user can Narrate
+		this.isNarrator = game.user.hasPermission('SETTINGS_MODIFY') && game.user.role >= game.settings.get('narrator-tools', 'PERMNarrate');
 
 		// @ts-ignore
 		this._menu = new ContextMenuNT({
@@ -359,8 +356,9 @@ const NarratorTools = {
 				},
 			],
 		});
-		$(document.getElementById('chat-log') as HTMLElement).on('click', '.message.narrator-chat', NarratorTools._onClickMessage.bind(NarratorTools));
-		NarratorTools.elements.buttonPause.on('click', () => {
+		$(document.getElementById('chat-log') as HTMLElement).on('click', '.message.narrator-chat', this._onClickMessage.bind(NarratorTools));
+
+		this.elements.buttonPause.on('click', () => {
 			const pause = !NarratorTools.sharedState.narration.paused;
 			NarratorTools.sharedState.narration = {
 				...NarratorTools.sharedState.narration,
@@ -368,12 +366,23 @@ const NarratorTools = {
 			};
 			NarratorTools._updateStopButton(pause);
 		});
-		NarratorTools.elements.buttonClose.html(`<i class="fas fa-times-circle"></i> ${game.i18n.localize('Close')}`);
-		NarratorTools.elements.buttonClose.on('click', NarratorTools._narrationClose);
-		NarratorTools._loadFont(game.settings.get('narrator-tools', 'WebFont'));
-		NarratorTools._updateContentStyle();
+		this.elements.buttonClose.html(`<i class="fas fa-times-circle"></i> ${game.i18n.localize('Close')}`);
+		this.elements.buttonClose.on('click', this._narrationClose);
+		this.elements.buttonCopy.html(`<i class="fas fa-clipboard"></i> ${game.i18n.localize('NT.Copy')}`);
+		this.elements.buttonCopy.on('click', () => {
+			navigator.clipboard.writeText(this.elements.content[0].innerText);
+			ui.notifications.info(game.i18n.localize('NT.CopyClipboard'));
+		});
+
+		if (!this.isNarrator) {
+			this.elements.buttonPause[0].style.display = 'none';
+			this.elements.buttonClose[0].style.display = 'none';
+		}
+
+		this._loadFont(game.settings.get('narrator-tools', 'WebFont'));
+		this._updateContentStyle();
 		this._controller(game.settings.get('narrator-tools', 'sharedState'));
-		NarratorTools._pause();
+		this._pause();
 		document.addEventListener('contextmenu', (ev) => {
 			if ((<HTMLElement>ev.target).classList.contains('editor-content') || $(<HTMLElement>ev.target).parents('div.editor-content').length) {
 				const time = this._menu.isOpen() ? 100 : 0;
@@ -701,6 +710,12 @@ const NarratorTools = {
 
 		/**If the message is a narration, start the protocol */
 		if (type == 'narration') {
+			const messageStripped = message
+				.replaceAll('\n', '')
+				.replace(/<(?:\/p|br)[^>]*>/g, '\n')
+				.replace(/<[^>]+>/g, '')
+				.replaceAll('\n', '<br>')
+				.replace(/<br>$/g, '');
 			const narration = new Promise((resolve) => {
 				Hooks.once('narration_closes', (narration: { id: number; message: string }) => {
 					resolve(narration.message == message);
@@ -719,7 +734,7 @@ const NarratorTools = {
 			let state: NarrationState = {
 				id: this.sharedState.narration.id + 1,
 				display: true,
-				message: message,
+				message: messageStripped,
 				paused: game.settings.get('narrator-tools', 'NarrationStartPaused'),
 			};
 
@@ -742,9 +757,11 @@ const NarratorTools = {
 		box: JQuery<HTMLElement>;
 		content: JQuery<HTMLElement>;
 		buttons: JQuery<HTMLElement>;
-		buttonPause: JQuery<HTMLElement>;
-		buttonClose: JQuery<HTMLElement>;
+		buttonPause: JQuery<HTMLButtonElement>;
+		buttonClose: JQuery<HTMLButtonElement>;
+		buttonCopy: JQuery<HTMLButtonElement>;
 	},
+	isNarrator: false,
 	/**
 	 * Returns the calculated duration a string of length size would have
 	 * @param length    The lenght of the string

@@ -1,5 +1,10 @@
 # Patch Notes
 
+## 0.60
+
+-   New copy button to copy a narration's content;
+-   Narration's are now stripped of html tags;
+
 ## 0.59
 
 -   Chat commands now respect newlines properly

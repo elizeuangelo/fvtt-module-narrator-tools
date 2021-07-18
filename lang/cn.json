@@ -19,5 +19,7 @@
 	"NT.SpeakingAs": "发言作为",
 	"NT.TextCSS": "CSS（替代其他样式）",
 	"NT.TextShadow": "阴影",
-	"NT.Title": "旁白工具"
+	"NT.Title": "旁白工具",
+	"NT.Copy": "复制",
+	"NT.CopyClipboard": "旁白复制到剪贴板"
 }

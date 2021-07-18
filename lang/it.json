@@ -19,5 +19,7 @@
 	"NT.SpeakingAs": "Parlando come",
 	"NT.TextCSS": "CSS (sovrascrive altri stili)",
 	"NT.TextShadow": "Ombra",
-	"NT.Title": "Strumenti dell'Assistente vocale"
+	"NT.Title": "Strumenti dell'Assistente vocale",
+	"NT.Copy": "Copiare",
+	"NT.CopyClipboard": "Narrazione copiata negli appunti"
 }

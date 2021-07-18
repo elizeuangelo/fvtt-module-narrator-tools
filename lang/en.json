@@ -19,5 +19,7 @@
 	"NT.SpeakingAs": "Speaking as",
 	"NT.TextCSS": "CSS (overrides other styles)",
 	"NT.TextShadow": "Shadow",
-	"NT.Title": "Narrator Tools"
+	"NT.Title": "Narrator Tools",
+	"NT.Copy": "Copy",
+	"NT.CopyClipboard": "Narration copied to clipboard"
 }
