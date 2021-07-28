@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 0.61
+
+-   Copy Button is now optional and set in the configuration menu
+
 ## 0.60
 
 -   New copy button to copy a narration's content;

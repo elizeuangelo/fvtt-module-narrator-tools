@@ -21,5 +21,6 @@
 	"NT.TextShadow": "Shadow",
 	"NT.Title": "Narrator Tools",
 	"NT.Copy": "Copy",
-	"NT.CopyClipboard": "Narration copied to clipboard"
+	"NT.CopyClipboard": "Narration copied to clipboard",
+	"NT.CopyButton": "Enable Copy Button"
 }

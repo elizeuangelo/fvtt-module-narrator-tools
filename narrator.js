@@ -24,6 +24,7 @@ class NarratorMenu extends FormApplication {
             TextColor: game.settings.get('narrator-tools', 'TextColor'),
             TextShadow: game.settings.get('narrator-tools', 'TextShadow'),
             TextCSS: game.settings.get('narrator-tools', 'TextCSS'),
+            Copy: game.settings.get('narrator-tools', 'Copy'),
             Pause: game.settings.get('narrator-tools', 'Pause'),
             DurationMultiplier: game.settings.get('narrator-tools', 'DurationMultiplier'),
             BGColor: game.settings.get('narrator-tools', 'BGColor'),
@@ -180,6 +181,8 @@ const NarratorTools = {
                 clearTimeout(this._timeouts.narrationOpens);
                 this.elements.content[0].style.opacity = '0';
                 this.elements.content.stop();
+                // If the Copy button configuration is enabled
+                this.elements.buttonCopy[0].style.display = game.settings.get('narrator-tools', 'Copy') ? '' : 'none';
                 this._timeouts.narrationOpens = setTimeout(() => {
                     this.elements.content.html(narration.message);
                     this.elements.content[0].style.opacity = '1';
@@ -449,6 +452,13 @@ const NarratorTools = {
             config: false,
             default: '',
             type: String,
+        });
+        game.settings.register('narrator-tools', 'Copy', {
+            name: 'Copy',
+            scope: 'world',
+            config: false,
+            default: false,
+            type: Boolean,
         });
         game.settings.register('narrator-tools', 'Pause', {
             name: 'Pause',
