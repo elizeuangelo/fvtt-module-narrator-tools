@@ -1,13 +1,19 @@
 # Patch Notes
 
+## 0.62
+
+-   Messages are now queued at `NarratorTools.messagesQueue`, the first message is never queued
+    -   New narrations can be queued by pushing at the the same object
+    -   Using `/narrate` or `NarratorTools.chatMessage.narrate` overrides the queue
+
 ## 0.61
 
 -   Copy Button is now optional and set in the configuration menu
 
 ## 0.60
 
--   New copy button to copy a narration's content;
--   Narration's are now stripped of html tags;
+-   New copy button to copy a narration's content
+-   Narration's are now stripped of html tags
 
 ## 0.59
 

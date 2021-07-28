@@ -181,7 +181,7 @@ const NarratorTools = {
                 clearTimeout(this._timeouts.narrationOpens);
                 this.elements.content[0].style.opacity = '0';
                 this.elements.content.stop();
-                // If the Copy button configuration is enabled
+                // Sets the copy button display in accordance to the configuration
                 this.elements.buttonCopy[0].style.display = game.settings.get('narrator-tools', 'Copy') ? '' : 'none';
                 this._timeouts.narrationOpens = setTimeout(() => {
                     this.elements.content.html(narration.message);
@@ -646,6 +646,7 @@ const NarratorTools = {
         this.elements.frameBG[0].style.opacity = new_state;
         this.elements.sidebarBG[0].style.opacity = new_state;
     },
+    messagesQueue: [],
     /**Shortcut object for creating chat messages */
     chatMessage: {
         /**
@@ -665,13 +666,11 @@ const NarratorTools = {
             if (typeof message == 'string') {
                 message = [message];
             }
-            let res = NarratorTools.createChatMessage('narration', message[0], options);
-            if (res) {
-                for (let i = 1; i < message.length; i++) {
-                    res = res.then(() => NarratorTools.createChatMessage('narration', message[i], options));
-                }
-            }
-            return res;
+            // Create the first message
+            NarratorTools.createChatMessage('narration', message[0], options);
+            // Queue the others
+            NarratorTools.messagesQueue = message.slice(1);
+            return NarratorTools.messagesQueue;
         },
         /**
          * Creates a 'notification' chat message
@@ -719,6 +718,9 @@ const NarratorTools = {
                 .replace(/<br>$/g, '');
             const narration = new Promise((resolve) => {
                 Hooks.once('narration_closes', (narration) => {
+                    const msg = this.messagesQueue.shift();
+                    if (msg)
+                        NarratorTools.createChatMessage('narration', msg, options);
                     resolve(narration.message == message);
                 });
             });

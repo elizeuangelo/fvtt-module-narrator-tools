@@ -652,6 +652,7 @@ const NarratorTools = {
 		this.elements.frameBG[0].style.opacity = new_state;
 		this.elements.sidebarBG[0].style.opacity = new_state;
 	},
+	messagesQueue: [] as string[],
 	/**Shortcut object for creating chat messages */
 	chatMessage: {
 		/**
@@ -672,15 +673,13 @@ const NarratorTools = {
 				message = [message];
 			}
 
-			let res = NarratorTools.createChatMessage('narration', message[0], options);
+			// Create the first message
+			NarratorTools.createChatMessage('narration', message[0], options);
 
-			if (res) {
-				for (let i = 1; i < message.length; i++) {
-					res = res.then(() => NarratorTools.createChatMessage('narration', message[i], options));
-				}
-			}
+			// Queue the others
+			NarratorTools.messagesQueue = message.slice(1);
 
-			return res;
+			return NarratorTools.messagesQueue;
 		},
 		/**
 		 * Creates a 'notification' chat message
@@ -729,6 +728,8 @@ const NarratorTools = {
 				.replace(/<br>$/g, '');
 			const narration = new Promise((resolve) => {
 				Hooks.once('narration_closes', (narration: { id: number; message: string }) => {
+					const msg = this.messagesQueue.shift();
+					if (msg) NarratorTools.createChatMessage('narration', msg, options);
 					resolve(narration.message == message);
 				});
 			});
