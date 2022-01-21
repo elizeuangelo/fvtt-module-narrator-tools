@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 0.70
+
+-   Compatibility for Foundry V9
+
 ## 0.62
 
 -   Messages are now queued at `NarratorTools.messagesQueue`, the first message is never queued
