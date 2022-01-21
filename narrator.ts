@@ -242,7 +242,7 @@ const NarratorTools = {
 			const active = this.sharedState.scenery;
 			const btn = $(`<li class="control-tool toggle ${active ? 'active' : ''}" title="${title}" data-tool="${name}"><i class="${icon}"></i></li>`);
 			btn.on('click', () => this.scenery());
-			html.append(btn);
+			html.find('.main-controls').append(btn);
 		}
 	},
 	/**Gets whats selected on screen */
