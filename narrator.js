@@ -60,7 +60,7 @@ class NarratorMenu extends FormApplication {
         }
         setTimeout(() => {
             NarratorTools._updateContentStyle();
-            game.socket.emit('module.narrator-tools', { command: 'style' });
+            game.socket?.emit('module.narrator-tools', { command: 'style' });
         }, 200);
     }
 }
@@ -159,7 +159,7 @@ const NarratorTools = {
                             this._timeouts.narrationScrolls = 0;
                         };
                         if (this.elements.content[0].style.top == '0px') {
-                            this._timeouts.narrationScrolls = setTimeout(fun_scroll, 3000 * duration_multiplier);
+                            this._timeouts.narrationScrolls = +setTimeout(fun_scroll, 3000 * duration_multiplier);
                         }
                         else {
                             fun_scroll();
@@ -171,7 +171,7 @@ const NarratorTools = {
                             clearTimeout(this._timeouts.narrationCloses);
                             this._timeouts.narrationCloses = 0;
                         }
-                        this._timeouts.narrationCloses = setTimeout(NarratorTools._narrationClose, duration);
+                        this._timeouts.narrationCloses = +setTimeout(NarratorTools._narrationClose, duration);
                     }
                 }
             };
@@ -183,7 +183,7 @@ const NarratorTools = {
                 this.elements.content.stop();
                 // Sets the copy button display in accordance to the configuration
                 this.elements.buttonCopy[0].style.display = game.settings.get('narrator-tools', 'Copy') ? '' : 'none';
-                this._timeouts.narrationOpens = setTimeout(() => {
+                this._timeouts.narrationOpens = +setTimeout(() => {
                     this.elements.content.html(narration.message);
                     this.elements.content[0].style.opacity = '1';
                     this.elements.content[0].style.top = '0px';
@@ -225,7 +225,7 @@ const NarratorTools = {
             const title = game.i18n.localize('NT.ButtonTitle');
             const icon = 'fas fa-theater-masks';
             const active = this.sharedState.scenery;
-            const btn = $(`<li class="control-tool toggle ${active ? 'active' : ''}" title="${title}" data-tool="${name}"><i class="${icon}"></i></li>`);
+            const btn = $(`<li class="scene-control control-tool toggle ${active ? 'active' : ''}" title="${title}" data-tool="${name}"><i class="${icon}"></i></li>`);
             btn.on('click', () => this.scenery());
             html.find('.main-controls').append(btn);
         }
@@ -604,19 +604,13 @@ const NarratorTools = {
         }
     },
     _updateBGColor(color) {
-        if (!color)
-            color = game.settings.get('narrator-tools', 'BGColor');
-        if (!color)
-            color = '#000000';
+        color = color ?? (game.settings.get('narrator-tools', 'BGColor') || '#000000');
         this.elements.frameBG[0].style.boxShadow = `inset 0 0 2000px 100px ${color}`;
         this.elements.BG[0].style.background = `linear-gradient(transparent 0%, ${color}a8 40%, ${color}a8 60%, transparent 100%)`;
     },
     _updateBGImage(filePath) {
-        if (!filePath)
-            filePath = game.settings.get('narrator-tools', 'BGImage');
-        if (!filePath)
-            this.elements.frameBG[0].style.background = '';
-        else {
+        filePath = filePath ?? game.settings.get('narrator-tools', 'BGImage') ?? '';
+        if (filePath) {
             this.elements.frameBG[0].style.background = `url(${filePath})`;
             this.elements.frameBG[0].style.backgroundSize = '100% 100%';
         }
@@ -705,7 +699,7 @@ const NarratorTools = {
                 alias: game.i18n.localize('NT.Narrator'),
                 scene: game.user.viewedScene,
             },
-            whisper: type == 'notification' ? game.users.entities.filter((u) => u.isGM) : [],
+            whisper: type == 'notification' ? game.users.filter((u) => u.isGM) : [],
             ...options,
         };
         /**If the message is a narration, start the protocol */

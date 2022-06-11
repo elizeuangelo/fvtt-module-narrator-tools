@@ -1,5 +1,10 @@
 # Patch Notes
 
+## 0.71
+
+-   Changes the scenery-button CSS to work properly with other modules
+-   Adds support for chat-commands-lib
+
 ## 0.70
 
 -   Compatibility for Foundry V9
