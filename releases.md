@@ -1,6 +1,6 @@
 # Patch Notes
 
-## 0.71
+## 0.72
 
 -   Changes the scenery-button CSS to work properly with other modules
 -   Adds support for chat-commands-lib
