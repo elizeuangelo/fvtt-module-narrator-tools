@@ -607,7 +607,7 @@ const NarratorTools = {
 	},
 	/**Resize the sidebarBG and frame elements to match the sidebars size */
 	_fitSidebar() {
-		const sidebarWidth = $('body').find('.app.collapsed').length ? 0 : 305;
+		const sidebarWidth = $('body').find('div#sidebar.app.collapsed').length ? 0 : 305;
 		this.elements.sidebarBG.width(sidebarWidth);
 		this.elements.frame.width(`calc(100% - ${sidebarWidth}px)`);
 	},
@@ -727,12 +727,13 @@ const NarratorTools = {
 
 		/**If the message is a narration, start the protocol */
 		if (type == 'narration') {
-			const messageStripped = message
-				.replaceAll('\n', '')
-				.replace(/<(?:\/p|br)[^>]*>/g, '\n')
-				.replace(/<[^>]+>/g, '')
-				.replaceAll('\n', '<br>')
-				.replace(/<br>$/g, '');
+			const messageStripped = message;
+			//const messageStripped = message
+			//	.replaceAll('\n', '')
+			//	.replace(/<(?:\/p|br)[^>]*>/g, '\n')
+			//	.replace(/<[^>]+>/g, '')
+			//	.replaceAll('\n', '<br>')
+			//	.replace(/<br>$/g, '');
 			const narration = new Promise((resolve) => {
 				Hooks.once('narration_closes', (narration: { id: number; message: string }) => {
 					const msg = this.messagesQueue.shift();

@@ -1,5 +1,11 @@
 # Patch Notes
 
+## 0.73
+
+-   Adds more commands for chat-commands-lib
+-   Fixed sideBar width issue
+-   Narrations now preserve HTML code
+
 ## 0.72
 
 -   Changes the scenery-button CSS to work properly with other modules
