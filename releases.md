@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 0.74
+
+-   Fixed issue on font FilePicker
+
 ## 0.73
 
 -   Adds more commands for chat-commands-lib
