@@ -1,5 +1,10 @@
 # Patch Notes
 
+## 0.75
+
+-   Updated manifest to be compatible with Foundry v10
+-   Removed `control-tool` class from the Scenery button, to make it more compatible with stylization modules
+
 ## 0.74
 
 -   Fixed issue on font FilePicker

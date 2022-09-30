@@ -1,8 +1,4 @@
 "use strict";
-/* -------------------------------------------- */
-/**
- * Narrator Tools configuration menu
- */
 class NarratorMenu extends FormApplication {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
@@ -13,10 +9,6 @@ class NarratorMenu extends FormApplication {
             width: 800,
         });
     }
-    /**
-     * Get all game settings related to the form, to display them
-     * @param _options
-     */
     async getData(_options) {
         return {
             FontSize: game.settings.get('narrator-tools', 'FontSize'),
@@ -49,11 +41,6 @@ class NarratorMenu extends FormApplication {
             },
         };
     }
-    /**
-     * Updates the settings to match the forms
-     * @param _event
-     * @param formData The form data to be saved
-     */
     async _updateObject(_event, formData) {
         for (let [k, v] of Object.entries(formData)) {
             game.settings.set('narrator-tools', k, v);
@@ -64,22 +51,9 @@ class NarratorMenu extends FormApplication {
         }, 200);
     }
 }
-/* -------------------------------------------- */
-/**
- * Primary object used by the Narrator Tools module
- */
 const NarratorTools = {
     _element: $('<div id="narrator" class="narrator"><div class="narrator-bg"></div><div class="narrator-frame"><div class="narrator-frameBG"></div><div class="narrator-box"><div class="narrator-content"></div></div><div class="narrator-buttons" style="opacity:0;"><button class="NT-btn-pause"></button><button class="NT-btn-close"></button></button><button class="NT-btn-clipboard"></button></div></div><div class="narrator-sidebarBG"></div>'),
-    /**
-     * Here is where a custom speaker is stored, if you change the value to anything other than '' the next messages will speak as such
-     */
     character: '',
-    /**
-     * Hooked function wich identifies if a message is a Narrator Tools command
-     * @param message
-     * @param content   Message to be identified
-     * @param chatData
-     */
     _chatMessage(message, content, chatData) {
         let commands = {};
         content = content.replace(/\n/g, '<br>');
@@ -93,7 +67,6 @@ const NarratorTools = {
         if (game.user.role >= game.settings.get('narrator-tools', 'PERMNarrate')) {
             commands.narration = new RegExp('^\\/narrat(?:e|ion) ([^]*)', 'i');
         }
-        // Iterate over patterns, finding the first match
         let c, rgx, match;
         for ([c, rgx] of Object.entries(commands)) {
             match = content.match(rgx);
@@ -118,15 +91,10 @@ const NarratorTools = {
             }
         }
     },
-    /**
-     * Control the module behavior in response to a change in the sharedState
-     * @param state The new application state
-     */
     _controller({ narration, scenery }) {
-        /**First, we manage the scenery changes */
         this._updateScenery(scenery);
         if (game.user.role >= game.settings.get('narrator-tools', 'PERMScenery')) {
-            const btn = $('.control-tool[data-tool=scenery]');
+            const btn = $('.scene-control[data-tool=scenery]');
             if (btn) {
                 if (scenery)
                     btn[0].classList.add('active');
@@ -134,22 +102,19 @@ const NarratorTools = {
                     btn[0].classList.remove('active');
             }
         }
-        /**If a narration had ocurred and the display now is still on, turn it off */
         if (!narration.display && this.elements.content[0].style.opacity === '1') {
             this.elements.BG.height(0);
             this.elements.buttons[0].style.opacity = '0';
             this.elements.buttons[0].style.visibility = 'hidden';
         }
-        /**If the message suddenly disappears, turn off the opacity */
         if (!narration.message) {
             this.elements.content[0].style.opacity = '0';
         }
         if (narration.display) {
             const scroll = () => {
                 if (!this.sharedState.narration.paused) {
-                    let scroll = (this.elements.content.height() ?? 0) - 290; // 310
+                    let scroll = (this.elements.content.height() ?? 0) - 290;
                     let duration = this.messageDuration(this.sharedState.narration.message.length);
-                    /**If the narration is open */
                     if (scroll > 20) {
                         const remaining = 1 - Number(this.elements.content[0].style.top.slice(0, -2)) / -scroll;
                         const duration_multiplier = game.settings.get('narrator-tools', 'DurationMultiplier');
@@ -175,13 +140,11 @@ const NarratorTools = {
                     }
                 }
             };
-            /** If the display is on and the narration.id is a new one, it means a new narration is taking place */
             if (narration.id !== this._id) {
                 this._id = narration.id;
                 clearTimeout(this._timeouts.narrationOpens);
                 this.elements.content[0].style.opacity = '0';
                 this.elements.content.stop();
-                // Sets the copy button display in accordance to the configuration
                 this.elements.buttonCopy[0].style.display = game.settings.get('narrator-tools', 'Copy') ? '' : 'none';
                 this._timeouts.narrationOpens = +setTimeout(() => {
                     this.elements.content.html(narration.message);
@@ -199,7 +162,6 @@ const NarratorTools = {
                 Hooks.once('narration', scroll);
             }
             else {
-                /** If narration is paused, stop animation and clear timeouts */
                 if (narration.paused) {
                     if (this._timeouts.narrationScrolls) {
                         clearTimeout(this._timeouts.narrationScrolls);
@@ -217,7 +179,6 @@ const NarratorTools = {
             }
         }
     },
-    /**Hook function wich creates the scenery button */
     _createSceneryButton(control, html, data) {
         const hasPerm = game.user.role >= game.settings.get('narrator-tools', 'PERMScenery');
         if (hasPerm) {
@@ -225,12 +186,11 @@ const NarratorTools = {
             const title = game.i18n.localize('NT.ButtonTitle');
             const icon = 'fas fa-theater-masks';
             const active = this.sharedState.scenery;
-            const btn = $(`<li class="scene-control control-tool toggle ${active ? 'active' : ''}" title="${title}" data-tool="${name}"><i class="${icon}"></i></li>`);
+            const btn = $(`<li class="scene-control toggle ${active ? 'active' : ''}" title="${title}" data-tool="${name}"><i class="${icon}"></i></li>`);
             btn.on('click', () => this.scenery());
             html.find('.main-controls').append(btn);
         }
     },
-    /**Gets whats selected on screen */
     _getSelectionText() {
         let html = '';
         const selection = window.getSelection();
@@ -246,12 +206,7 @@ const NarratorTools = {
         }
         return html;
     },
-    /**The id of the last narration update */
     _id: 0,
-    /**
-     * Loads a custom font for the narration style
-     * @param font Font to load
-     */
     _loadFont(font) {
         $('#narratorWebFont').remove();
         if (font == '')
@@ -262,9 +217,6 @@ const NarratorTools = {
         document.head.appendChild(style);
     },
     _menu: undefined,
-    /**
-     * Behavior for when a narration is closed
-     */
     _narrationClose() {
         let state = NarratorTools.sharedState.narration;
         Hooks.call('narration_closes', { id: state.id, message: state.message });
@@ -286,12 +238,6 @@ const NarratorTools = {
             NarratorTools.scenery(game.paused);
         }
     },
-    /**
-     * Creates an alias and change message type if this.character option is true
-     * @param chatMessage The chat message object
-     * @param options
-     * @param user
-     */
     _preCreateChatMessage(chatMessage, options, user) {
         if (game.user.role >= game.settings.get('narrator-tools', 'PERMAs') && this.character) {
             let chatData = {};
@@ -300,10 +246,8 @@ const NarratorTools = {
             chatMessage.data.update(chatData);
         }
     },
-    /**Initialization routine for 'ready' hook */
     _ready() {
         this.elements = {
-            /**Main Element */
             narrator: this._element,
             frame: this._element.find('.narrator-frame'),
             frameBG: this._element.find('.narrator-frameBG'),
@@ -320,9 +264,7 @@ const NarratorTools = {
         this._updateBGImage();
         this._fitSidebar();
         $('body').append(this._element);
-        // Check if the user can Narrate
         this.isNarrator = game.user.hasPermission('SETTINGS_MODIFY') && game.user.role >= game.settings.get('narrator-tools', 'PERMNarrate');
-        // @ts-ignore
         this._menu = new ContextMenuNT({
             theme: 'default',
             items: [
@@ -381,21 +323,12 @@ const NarratorTools = {
         });
         document.addEventListener('click', () => NarratorTools._menu.hide());
     },
-    /**Initialization routine for 'setup' hook */
     _setup() {
-        // Game Settings
-        // The shared state of the Narrator Tools application, emitted by the DM across all players
-        // Q:   Why use a setting instead of sockets?
-        // A:   So there is memory. The screen will only update with the DM present and remain in that state.
-        //      For instance, the DM might leave the game with a message on screen.
-        //      There should be no concurrency between sockets and this config,
-        //      so we eliminated sockets altogether.
         game.settings.register('narrator-tools', 'sharedState', {
             name: 'Shared State',
             scope: 'world',
             config: false,
             default: {
-                /**Displays information about whats happening on screen */
                 narration: {
                     id: 0,
                     display: false,
@@ -403,12 +336,10 @@ const NarratorTools = {
                     message: '',
                     paused: false,
                 },
-                /**If the background scenery is on or off */
                 scenery: false,
             },
             onChange: (newState) => this._controller(newState),
         });
-        // Register the application menu
         game.settings.registerMenu('narrator-tools', 'settingsMenu', {
             name: game.i18n.localize('SETTINGS.Configure'),
             label: game.i18n.localize('SCENES.Configure'),
@@ -416,7 +347,6 @@ const NarratorTools = {
             type: NarratorMenu,
             restricted: true,
         });
-        // Menu options
         game.settings.register('narrator-tools', 'FontSize', {
             name: 'Font Size',
             scope: 'world',
@@ -533,13 +463,8 @@ const NarratorTools = {
             type: Number,
         });
     },
-    /**
-     * Behavior when a chat message is clicked
-     * @param event The event wich triggered the handler
-     */
     _onClickMessage(event) {
         if (event && event.target.classList.contains('narrator-chat')) {
-            //@ts-ignore
             const roll = $(event.currentTarget);
             const tip = roll.find('.message-metadata');
             if (!tip.is(':visible'))
@@ -548,10 +473,6 @@ const NarratorTools = {
                 tip.slideUp(200);
         }
     },
-    /**
-     * Process any received messages from the socket
-     * @param data Command and value to be addressed by the corresponding function
-     */
     _onMessage(data) {
         const commands = {
             style: function () {
@@ -560,12 +481,6 @@ const NarratorTools = {
         };
         commands[data.command]();
     },
-    /**
-     * Renders the chat message and sets out the message behavior
-     * @param message Message object to be rendered
-     * @param html HTML element of the message
-     * @param data
-     */
     _renderChatMessage(message, html, data) {
         const type = message.getFlag('narrator-tools', 'type');
         if (type) {
@@ -583,13 +498,11 @@ const NarratorTools = {
             }
         }
     },
-    /**Resize the sidebarBG and frame elements to match the sidebars size */
     _fitSidebar() {
         const sidebarWidth = $('body').find('div#sidebar.app.collapsed').length ? 0 : 305;
         this.elements.sidebarBG.width(sidebarWidth);
         this.elements.frame.width(`calc(100% - ${sidebarWidth}px)`);
     },
-    /**Object containing all the timeouts called by their numbers */
     _timeouts: {
         narrationOpens: 0,
         narrationCloses: 0,
@@ -615,12 +528,10 @@ const NarratorTools = {
             this.elements.frameBG[0].style.backgroundSize = '100% 100%';
         }
     },
-    /**Update the content element style to match the settings */
     _updateContentStyle() {
         const style = game.settings.get('narrator-tools', 'TextCSS');
         if (style) {
             const opacity = this.elements.content[0].style.opacity;
-            //@ts-ignore
             this.elements.content[0].style = style;
             this.elements.content[0].style.opacity = opacity;
             return;
@@ -630,7 +541,6 @@ const NarratorTools = {
         this.elements.content[0].style.color = `${game.settings.get('narrator-tools', 'TextColor')}`;
         this.elements.content[0].style.textShadow = `${game.settings.get('narrator-tools', 'TextShadow')}`;
     },
-    /**Updates the background opacity to match the scenery */
     _updateScenery(scenery) {
         if (!scenery)
             scenery = this.sharedState.scenery;
@@ -641,46 +551,22 @@ const NarratorTools = {
         this.elements.sidebarBG[0].style.opacity = new_state;
     },
     messagesQueue: [],
-    /**Shortcut object for creating chat messages */
     chatMessage: {
-        /**
-         * Creates a 'description' chat message
-         * @param message
-         * @param options - Change the chat message configuration
-         */
         describe(message, options = {}) {
             return NarratorTools.createChatMessage('description', message, options);
         },
-        /**
-         * Creates a 'narration' chat message
-         * @param message - single message or an array of messages to be consecutively displayed
-         * @param options - Change the chat message configuration
-         */
         narrate(message, options = {}) {
             if (typeof message == 'string') {
                 message = [message];
             }
-            // Create the first message
             NarratorTools.createChatMessage('narration', message[0], options);
-            // Queue the others
             NarratorTools.messagesQueue = message.slice(1);
             return NarratorTools.messagesQueue;
         },
-        /**
-         * Creates a 'notification' chat message
-         * @param message
-         * @param options - Change the chat message configuration
-         */
         notify(message, options = {}) {
             return NarratorTools.createChatMessage('notification', message, options);
         },
     },
-    /**
-     * Creates a chat message of the specified type
-     * @param type     'narrate' for narrations or anything else for descriptions
-     * @param message
-     * @param options - Change the chat message configuration
-     */
     createChatMessage(type, message, options = {}) {
         if (type == 'narration' && !game.user.role >= game.settings.get('narrator-tools', 'PERMNarrate'))
             return;
@@ -702,15 +588,8 @@ const NarratorTools = {
             whisper: type == 'notification' ? game.users.filter((u) => u.isGM) : [],
             ...options,
         };
-        /**If the message is a narration, start the protocol */
         if (type == 'narration') {
             const messageStripped = message;
-            //const messageStripped = message
-            //	.replaceAll('\n', '')
-            //	.replace(/<(?:\/p|br)[^>]*>/g, '\n')
-            //	.replace(/<[^>]+>/g, '')
-            //	.replaceAll('\n', '<br>')
-            //	.replace(/<br>$/g, '');
             const narration = new Promise((resolve) => {
                 Hooks.once('narration_closes', (narration) => {
                     const msg = this.messagesQueue.shift();
@@ -739,21 +618,11 @@ const NarratorTools = {
         }
         ChatMessage.create(chatData, {});
     },
-    /**Shortcuts for easy access of the elements of the module */
     elements: {},
     isNarrator: false,
-    /**
-     * Returns the calculated duration a string of length size would have
-     * @param length    The lenght of the string
-     */
     messageDuration(length) {
-        //@ts-ignore
         return (Math.clamped(2000, length * 80, 20000) + 3000) * game.settings.get('narrator-tools', 'DurationMultiplier') + 500;
     },
-    /**
-     * Set the background scenery and calls all clients
-     * @param state True to turn on the scenery, false to turn it off
-     */
     scenery(state) {
         if (game.user.role >= game.settings.get('narrator-tools', 'PERMScenery')) {
             if (!game.user.hasPermission('SETTINGS_MODIFY'))
@@ -762,7 +631,6 @@ const NarratorTools = {
                 this.sharedState.scenery = state ?? !this.sharedState.scenery;
         }
     },
-    /**The shared state of the Narrator Tools application, emitted by the DM across all players */
     sharedState: {
         get narration() {
             return game.settings.get('narrator-tools', 'sharedState').narration;
@@ -780,12 +648,11 @@ const NarratorTools = {
         },
     },
 };
-/* -------------------------------------------- */
 Hooks.on('setup', () => NarratorTools._setup());
 Hooks.on('ready', () => NarratorTools._ready());
-Hooks.on('chatMessage', NarratorTools._chatMessage.bind(NarratorTools)); // This hook spans the chatmsg
+Hooks.on('chatMessage', NarratorTools._chatMessage.bind(NarratorTools));
 Hooks.on('preCreateChatMessage', NarratorTools._preCreateChatMessage.bind(NarratorTools));
-Hooks.on('renderChatMessage', NarratorTools._renderChatMessage.bind(NarratorTools)); // This hook changes the chat message in case its a narration + triggers
+Hooks.on('renderChatMessage', NarratorTools._renderChatMessage.bind(NarratorTools));
 Hooks.on('renderSceneControls', NarratorTools._createSceneryButton.bind(NarratorTools));
 Hooks.on('collapseSidebar', NarratorTools._fitSidebar.bind(NarratorTools));
 Hooks.on('pauseGame', (_pause) => NarratorTools._pause());

@@ -101,14 +101,14 @@ const NarratorTools = {
 		let commands: { [key: string]: RegExp } = {};
 		content = content.replace(/\n/g, '<br>');
 
-		if (game.user.role >= (game.settings.get('narrator-tools', 'PERMAs') as number)) {
+		if (game.user!.role >= (game.settings.get('narrator-tools', 'PERMAs') as number)) {
 			commands.as = new RegExp('^(?:\\/as$|\\/as ([^]*))', 'i');
 		}
-		if (game.user.role >= (game.settings.get('narrator-tools', 'PERMDescribe') as number)) {
+		if (game.user!.role >= (game.settings.get('narrator-tools', 'PERMDescribe') as number)) {
 			commands.description = new RegExp('^\\/desc(?:ribe|ription|) ([^]*)', 'i');
 			commands.notification = new RegExp('^\\/not(?:e|ify|ication) ([^]*)', 'i');
 		}
-		if (game.user.role >= (game.settings.get('narrator-tools', 'PERMNarrate') as number)) {
+		if (game.user!.role >= (game.settings.get('narrator-tools', 'PERMNarrate') as number)) {
 			commands.narration = new RegExp('^\\/narrat(?:e|ion) ([^]*)', 'i');
 		}
 
@@ -126,7 +126,7 @@ const NarratorTools = {
 						($('#chat-message')[0] as HTMLInputElement).placeholder = '';
 					}
 				} else {
-					if (c == 'narration' && !game.user.hasPermission('SETTINGS_MODIFY')) ui.notifications.error(game.i18n.localize('NT.CantModifySettings'));
+					if (c == 'narration' && !game.user!.hasPermission('SETTINGS_MODIFY')) ui.notifications.error(game.i18n.localize('NT.CantModifySettings'));
 					else this.createChatMessage(c, match[1]);
 				}
 				return false;
@@ -140,8 +140,8 @@ const NarratorTools = {
 	_controller({ narration, scenery }: { narration: NarrationState; scenery: boolean }) {
 		/**First, we manage the scenery changes */
 		this._updateScenery(scenery);
-		if (game.user.role >= (game.settings.get('narrator-tools', 'PERMScenery') as number)) {
-			const btn = $('.control-tool[data-tool=scenery]');
+		if (game.user!.role >= (game.settings.get('narrator-tools', 'PERMScenery') as number)) {
+			const btn = $('.scene-control[data-tool=scenery]');
 			if (btn) {
 				if (scenery) btn[0].classList.add('active');
 				else btn[0].classList.remove('active');
@@ -241,15 +241,13 @@ const NarratorTools = {
 	},
 	/**Hook function wich creates the scenery button */
 	_createSceneryButton(control: Application, html: JQuery, data: any) {
-		const hasPerm = game.user.role >= (game.settings.get('narrator-tools', 'PERMScenery') as number);
+		const hasPerm = game.user!.role >= (game.settings.get('narrator-tools', 'PERMScenery') as number);
 		if (hasPerm) {
 			const name = 'scenery';
 			const title = game.i18n.localize('NT.ButtonTitle');
 			const icon = 'fas fa-theater-masks';
 			const active = this.sharedState.scenery;
-			const btn = $(
-				`<li class="scene-control control-tool toggle ${active ? 'active' : ''}" title="${title}" data-tool="${name}"><i class="${icon}"></i></li>`
-			);
+			const btn = $(`<li class="scene-control toggle ${active ? 'active' : ''}" title="${title}" data-tool="${name}"><i class="${icon}"></i></li>`);
 			btn.on('click', () => this.scenery());
 			html.find('.main-controls').append(btn);
 		}
@@ -304,7 +302,7 @@ const NarratorTools = {
 		}, 250);
 	},
 	_pause() {
-		const canScenery = game.user.role >= (game.settings.get('narrator-tools', 'PERMScenery') as number);
+		const canScenery = game.user!.role >= (game.settings.get('narrator-tools', 'PERMScenery') as number);
 		if (canScenery && game.settings.get('narrator-tools', 'Pause')) {
 			NarratorTools.scenery(game.paused);
 		}
@@ -316,7 +314,7 @@ const NarratorTools = {
 	 * @param user
 	 */
 	_preCreateChatMessage(chatMessage: ChatMessage, options: any, user: string) {
-		if (game.user.role >= (game.settings.get('narrator-tools', 'PERMAs') as number) && this.character) {
+		if (game.user!.role >= (game.settings.get('narrator-tools', 'PERMAs') as number) && this.character) {
 			let chatData: any = {};
 			chatData.type = game.settings.get('narrator-tools', 'MessageType');
 			chatData.speaker = { alias: this.character };
@@ -345,7 +343,7 @@ const NarratorTools = {
 		$('body').append(this._element);
 
 		// Check if the user can Narrate
-		this.isNarrator = game.user.hasPermission('SETTINGS_MODIFY') && game.user.role >= (game.settings.get('narrator-tools', 'PERMNarrate') as number);
+		this.isNarrator = game.user!.hasPermission('SETTINGS_MODIFY') && game.user!.role >= (game.settings.get('narrator-tools', 'PERMNarrate') as number);
 
 		// @ts-ignore
 		this._menu = new ContextMenuNT({
@@ -704,8 +702,8 @@ const NarratorTools = {
 	 * @param options - Change the chat message configuration
 	 */
 	createChatMessage(type: string, message: string, options = {}) {
-		if (type == 'narration' && !game.user.role >= (game.settings.get('narrator-tools', 'PERMNarrate') as any)) return;
-		else if (!game.user.role >= (game.settings.get('narrator-tools', 'PERMDescribe') as any)) return;
+		if (type == 'narration' && !game.user!.role >= (game.settings.get('narrator-tools', 'PERMNarrate') as any)) return;
+		else if (!game.user!.role >= (game.settings.get('narrator-tools', 'PERMDescribe') as any)) return;
 
 		message = message.replace(/\\n/g, '<br>');
 
@@ -719,9 +717,9 @@ const NarratorTools = {
 			type: game.settings.get('narrator-tools', 'MessageType'),
 			speaker: {
 				alias: game.i18n.localize('NT.Narrator'),
-				scene: game.user.viewedScene,
+				scene: game.user!.viewedScene,
 			},
-			whisper: type == 'notification' ? game.users.filter((u) => u.isGM) : [],
+			whisper: type == 'notification' ? game.users!.filter((u) => u.isGM) : [],
 			...options,
 		};
 
@@ -795,8 +793,8 @@ const NarratorTools = {
 	 * @param state True to turn on the scenery, false to turn it off
 	 */
 	scenery(state?: boolean) {
-		if (game.user.role >= (game.settings.get('narrator-tools', 'PERMScenery') as number)) {
-			if (!game.user.hasPermission('SETTINGS_MODIFY')) ui.notifications.error(game.i18n.localize('NT.CantModifySettings'));
+		if (game.user!.role >= (game.settings.get('narrator-tools', 'PERMScenery') as number)) {
+			if (!game.user!.hasPermission('SETTINGS_MODIFY')) ui.notifications.error(game.i18n.localize('NT.CantModifySettings'));
 			else this.sharedState.scenery = state ?? !this.sharedState.scenery;
 		}
 	},

@@ -1,8 +1,9 @@
 {
+	"id": "narrator-tools",
 	"name": "narrator-tools",
 	"title": "Narrator Tools",
 	"description": "Special tools to increase the immersion in your roleplaying game.",
-	"version": "0.73",
+	"version": "0.75",
 	"author": ["elizeuangelo"],
 	"scripts": ["./narrator.js", "./context-menu.min.js", "./compatibility/chat-commands-lib.js"],
 	"styles": ["./narrator.css", "./context-menu.min.css"],
@@ -79,8 +80,12 @@
 	],
 	"url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools",
 	"manifest": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/latest/module.json",
-	"download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.73/narrator-tools.zip",
+	"download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.75/narrator-tools.zip",
 	"minimumCoreVersion": "9",
-	"compatibleCoreVersion": "9",
+	"compatibleCoreVersion": "10",
+	"compatibility": {
+		"minimum": 9,
+		"verified": 10.286
+	},
 	"allowBugReporter": true
 }
