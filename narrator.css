@@ -1,25 +1,27 @@
+#chat-log .message.narrator-chat {
+	text-align: center;
+    color: white;
+    font-weight: 100;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
 #chat-log .message.narrator-narrative {
 	background: #333;
-	color: white;
-	border: 2px solid #191813d6;
 	font-style: italic;
 }
 
 #chat-log .message.narrator-description {
 	background: #4b4a44;
-	color: white;
-	border: 2px solid #191813d6;
 	font-style: italic;
 }
 
 #chat-log .message.narrator-notification {
 	background: #4f7373aa;
-	color: white;
-	border: 2px dotted #b7b7b7d6;
+	border: 2px dotted rgba(255, 255, 255, 0.2);
 }
 
-#chat-log .message.narrator-chat {
-	text-align: center;
+#chat-log .message.narrator-notification span.whisper-to {
+    display: none;
 }
 
 #chat-log .message.narrator-chat .message-header.flexrow {

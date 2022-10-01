@@ -1,9 +1,15 @@
 # Patch Notes
 
+## 0.76
+
+-   Added keyboard shortcut to open/close scenery
+-   Fixed context-menu journal issue
+-   Changed minor CSS style issues
+
 ## 0.75
 
 -   Updated manifest to be compatible with Foundry v10
--   Removed `control-tool` class from the Scenery button, to make it more compatible with stylization modules
+-   Removed `control-tool` class from the scenery button, to make it more compatible with stylization modules
 
 ## 0.74
 
