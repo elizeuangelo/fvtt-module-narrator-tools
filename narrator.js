@@ -91,6 +91,10 @@ const NarratorTools = {
                 return false;
             }
         }
+        if (game.user.role >= game.settings.get(MODULE, 'PERMAs') && this.character && !/^\/.*/.exec(content)) {
+            ChatMessage.create({ type: 2, content, speaker: { alias: this.character } });
+            return false;
+        }
     },
     _controller({ narration, scenery }) {
         this._updateScenery(scenery);
@@ -205,6 +209,8 @@ const NarratorTools = {
                     html += fragments.childNodes[i].outerHTML;
             }
         }
+        if (!html) {
+        }
         return html;
     },
     _id: 0,
@@ -237,14 +243,6 @@ const NarratorTools = {
         const canScenery = game.user.role >= game.settings.get(MODULE, 'PERMScenery');
         if (canScenery && game.settings.get(MODULE, 'Pause')) {
             NarratorTools.scenery(game.paused);
-        }
-    },
-    _preCreateChatMessage(chatMessage, options, user) {
-        if (game.user.role >= game.settings.get(MODULE, 'PERMAs') && this.character) {
-            let chatData = {};
-            chatData.type = game.settings.get(MODULE, 'MessageType');
-            chatData.speaker = { alias: this.character };
-            chatMessage.update(chatData);
         }
     },
     _ready() {
@@ -671,7 +669,6 @@ const NarratorTools = {
 Hooks.on('setup', () => NarratorTools._setup());
 Hooks.on('ready', () => NarratorTools._ready());
 Hooks.on('chatMessage', NarratorTools._chatMessage.bind(NarratorTools));
-Hooks.on('preCreateChatMessage', NarratorTools._preCreateChatMessage.bind(NarratorTools));
 Hooks.on('renderChatMessage', NarratorTools._renderChatMessage.bind(NarratorTools));
 Hooks.on('renderSceneControls', NarratorTools._createSceneryButton.bind(NarratorTools));
 Hooks.on('collapseSidebar', NarratorTools._fitSidebar.bind(NarratorTools));

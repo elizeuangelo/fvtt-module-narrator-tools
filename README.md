@@ -6,16 +6,6 @@
 
 #### Donations
 
-##### Crypto
-
-[![BTC](https://img.shields.io/badge/bitcoin-gold.svg)](https://blockchair.com/bitcoin/address/bc1qtyy30h4d7yc6d3pjwmu46mpqxw7v50jnsq5sk9)
-[![ADA](https://img.shields.io/badge/Cardano-9cf.svg)](https://cardanoscan.io/address/addr1qy32u0vthhy76mdck84nanw6d8t2ufrhv3pzulycp75lcp6jfmzvguq883d96hq5cmys2h28hmqfpjyfz4ceuw29h33sa3t5mf)
-[![ETH](https://img.shields.io/badge/ethereum-silver.svg)](https://blockchair.com/ethereum/address/0xa9c30d78f6ba250523289090bcc55832eda19a16)
-[![LTC](https://img.shields.io/badge/litecoin-lightgrey.svg)](https://blockchair.com/litecoin/address/LbB43DHAny9CShT5yL6Fc62SMXQUvZVEtZ)
-[![DOGE](https://img.shields.io/badge/doge-yellow.svg)](https://blockchair.com/dogecoin/address/DPmkqoDc25YeLhSK2LbQyvyi1yP5f4JvDh)
-
-##### Others
-
 [![ko-fi](https://img.shields.io/badge/Kofi-red.svg)](https://ko-fi.com/B0B024E6C)
 [![BuyCoffee](https://img.shields.io/badge/coffee-%243-orange)](https://www.buymeacoffee.com/j6auA0z)
 

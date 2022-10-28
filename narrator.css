@@ -40,6 +40,11 @@
 	color: white;
 }
 
+#chat-log .message.narrator-chat a.content-link {
+    color: black;
+    font-weight: 400;
+}
+
 .system-wfrp4e #chat-log .narrator-chat {
 	padding: 0px;
 	text-align: center;

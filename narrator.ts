@@ -134,6 +134,12 @@ const NarratorTools = {
 				return false;
 			}
 		}
+
+		// Identify speaker
+		if (game.user!.role >= (game.settings.get(MODULE, 'PERMAs') as number) && this.character && !/^\/.*/.exec(content)) {
+			ChatMessage.create({ type: 2, content, speaker: { alias: this.character } });
+			return false;
+		}
 	},
 	/**
 	 * Control the module behavior in response to a change in the sharedState
@@ -266,6 +272,8 @@ const NarratorTools = {
 				else html += (fragments.childNodes[i] as Element).outerHTML;
 			}
 		}
+		if (!html) {
+		}
 		return html;
 	},
 	/**The id of the last narration update */
@@ -307,20 +315,6 @@ const NarratorTools = {
 		const canScenery = game.user!.role >= (game.settings.get(MODULE, 'PERMScenery') as number);
 		if (canScenery && game.settings.get(MODULE, 'Pause')) {
 			NarratorTools.scenery(game.paused);
-		}
-	},
-	/**
-	 * Creates an alias and change message type if this.character option is true
-	 * @param chatMessage The chat message object
-	 * @param options
-	 * @param user
-	 */
-	_preCreateChatMessage(chatMessage: ChatMessage, options: any, user: string) {
-		if (game.user!.role >= (game.settings.get(MODULE, 'PERMAs') as number) && this.character) {
-			let chatData: any = {};
-			chatData.type = game.settings.get(MODULE, 'MessageType');
-			chatData.speaker = { alias: this.character };
-			chatMessage.update(chatData);
 		}
 	},
 	/**Initialization routine for 'ready' hook */
@@ -843,7 +837,6 @@ const NarratorTools = {
 Hooks.on('setup', () => NarratorTools._setup());
 Hooks.on('ready', () => NarratorTools._ready());
 Hooks.on('chatMessage', NarratorTools._chatMessage.bind(NarratorTools)); // This hook spans the chatmsg
-Hooks.on('preCreateChatMessage', NarratorTools._preCreateChatMessage.bind(NarratorTools));
 Hooks.on('renderChatMessage', NarratorTools._renderChatMessage.bind(NarratorTools)); // This hook changes the chat message in case its a narration + triggers
 Hooks.on('renderSceneControls', NarratorTools._createSceneryButton.bind(NarratorTools));
 Hooks.on('collapseSidebar', NarratorTools._fitSidebar.bind(NarratorTools));

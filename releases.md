@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 0.77
+
+-   Fixed broken `/as` command in v10
+
 ## 0.76
 
 -   Added keyboard shortcut to open/close scenery

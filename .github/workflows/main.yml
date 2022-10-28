@@ -31,7 +31,7 @@ jobs:
                   download: https://github.com/${{github.repository}}/releases/download/${{ steps.get_version.outputs.VERSION }}/narrator-tools.zip
 
             - name: Zip files
-              run: zip -r narrator-tools * -x ".github/*" "narrator.ts"
+              run: zip -r narrator-tools * -x ".github/*" "narrator.ts" ".gitignore" "*.md"
 
             # Create a release for this specific version
             - name: Create Release
@@ -44,16 +44,3 @@ jobs:
                   prerelease: false
                   token: ${{ secrets.GITHUB_TOKEN }}
                   artifacts: './module.json,./narrator-tools.zip'
-
-            # Update the 'latest' release
-            - name: Create Release
-              id: create_latest_release
-              uses: ncipollo/release-action@v1
-              with:
-                  allowUpdates: true
-                  name: Latest
-                  draft: false
-                  prerelease: false
-                  token: ${{ secrets.GITHUB_TOKEN }}
-                  artifacts: './module.json,./narrator-tools.zip'
-                  tag: latest

@@ -2,6 +2,7 @@
 node_modules
 backups
 .vscode
+.gitignore
 
 # Files
 package-lock.json
