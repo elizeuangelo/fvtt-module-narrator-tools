@@ -3,7 +3,7 @@
 	"name": "narrator-tools",
 	"title": "Narrator Tools",
 	"description": "Special tools to increase the immersion in your roleplaying game.",
-	"version": "0.77",
+	"version": "0.78",
 	"author": ["elizeuangelo"],
 	"scripts": ["./narrator.js", "./context-menu.min.js", "./compatibility/chat-commands-lib.js"],
 	"styles": ["./narrator.css", "./context-menu.min.css"],
@@ -85,7 +85,7 @@
 	"compatibleCoreVersion": "10",
 	"compatibility": {
 		"minimum": 10,
-		"verified": 10.287
+		"verified": 10.288
 	},
 	"allowBugReporter": true
 }

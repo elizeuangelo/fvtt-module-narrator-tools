@@ -1,8 +1,8 @@
 # Foundry VTT - Narrator Tools
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/elizeuangelo/fvtt-module-narrator-tools)
-![GitHub Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator-tools/latest/total)
-![GitHub All Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator-tools/total?label=downloads)
+![GitHub Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator-tools/latest/narrator-tools.zip)
+![GitHub All Releases](https://img.shields.io/github/downloads/elizeuangelo/fvtt-module-narrator-tools/narrator-tools.zip?label=downloads)
 
 #### Donations
 

@@ -391,7 +391,12 @@ const NarratorTools = {
 		this._controller(game.settings.get(MODULE, 'sharedState') as any);
 		this._pause();
 		document.addEventListener('contextmenu', (ev) => {
-			if ((<HTMLElement>ev.target).classList.contains('journal-entry-pages') || $(<HTMLElement>ev.target).parents('div.journal-entry-pages').length) {
+			if (
+				(<HTMLElement>ev.target).classList.contains('journal-entry-pages') ||
+				$(<HTMLElement>ev.target).parents('div.journal-entry-pages').length ||
+				(<HTMLElement>ev.target).classList.contains('editor-content') ||
+				$(<HTMLElement>ev.target).parents('div.editor-content').length
+			) {
 				const time = this._menu.isOpen() ? 100 : 0;
 				this._menu.hide();
 				setTimeout(() => {

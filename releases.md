@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 0.78
+
+-   Contextmenu now renders in all editors
+
 ## 0.77
 
 -   Fixed broken `/as` command in v10
