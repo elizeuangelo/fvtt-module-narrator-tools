@@ -1,5 +1,10 @@
 # Patch Notes
 
+## 0.79
+
+-   Now fully compatible with v11
+-   Fixes in font selection filepicker
+
 ## 0.78
 
 -   Contextmenu now renders in all editors
