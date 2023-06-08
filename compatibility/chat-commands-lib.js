@@ -2,7 +2,6 @@ Hooks.on('chatCommandsReady', function (chatCommands) {
 	chatCommands.registerCommand(
 		chatCommands.createCommandFromData({
 			commandKey: '/as',
-			invokeOnCommand: (chatlog, messageText, chatdata) => NarratorTools.chatMessage.narrate(messageText),
 			shouldDisplayToChat: false,
 			iconClass: 'fa-sticky-note',
 			description: 'Makes the next messages be sent as the [speaker]. "/as" resets.',
@@ -12,7 +11,7 @@ Hooks.on('chatCommandsReady', function (chatCommands) {
 	chatCommands.registerCommand(
 		chatCommands.createCommandFromData({
 			commandKey: '/describe',
-			invokeOnCommand: (chatlog, messageText, chatdata) => NarratorTools.chatMessage.narrate(messageText),
+			invokeOnCommand: (chatlog, messageText, chatdata) => NarratorTools.chatMessage.describe(messageText),
 			shouldDisplayToChat: false,
 			iconClass: 'fa-sticky-note',
 			description: 'Display a description in chat',
@@ -32,7 +31,7 @@ Hooks.on('chatCommandsReady', function (chatCommands) {
 	chatCommands.registerCommand(
 		chatCommands.createCommandFromData({
 			commandKey: '/note',
-			invokeOnCommand: (chatlog, messageText, chatdata) => NarratorTools.chatMessage.narrate(messageText),
+			invokeOnCommand: (chatlog, messageText, chatdata) => NarratorTools.chatMessage.notify(messageText),
 			shouldDisplayToChat: false,
 			iconClass: 'fa-sticky-note',
 			description: 'Display a note only visible to the DM',
