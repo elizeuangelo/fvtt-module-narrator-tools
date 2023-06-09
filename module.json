@@ -72,14 +72,15 @@
 		{
 			"name": "narrator-macros",
 			"label": "Narrator Tools",
-			"path": "./packs/macros.db",
+			"path": "packs/macros.db",
 			"module": "narrator-tools",
-			"type": "Macro"
+			"type": "Macro",
+			"private": false
 		}
 	],
 	"url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools",
 	"manifest": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/latest/module.json",
-	"download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.76/narrator-tools.zip",
+	"download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.79/narrator-tools.zip",
 	"compatibility": {
 		"minimum": 10,
 		"verified": 11

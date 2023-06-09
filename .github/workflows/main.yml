@@ -43,4 +43,4 @@ jobs:
                   draft: false
                   prerelease: false
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  artifacts: './narrator-tools.zip'
+                  artifacts: 'module.json,./narrator-tools.zip'

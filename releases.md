@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 0.80
+
+-   Fixed issues with "Chat Commander"
+
 ## 0.79
 
 -   Now fully compatible with v11
