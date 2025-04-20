@@ -2,8 +2,8 @@
 	"id": "narrator-tools",
 	"title": "Narrator Tools",
 	"description": "Special tools to increase the immersion in your roleplaying game.",
-	"version": "0.79",
-	"author": ["elizeuangelo"],
+	"version": "0.79.1",
+	"author": ["Super-Thomate", "elizeuangelo"],
 	"scripts": ["./narrator.js", "./context-menu.min.js", "./compatibility/chat-commands-lib.js"],
 	"styles": ["./narrator.css", "./context-menu.min.css"],
 	"languages": [
@@ -78,11 +78,11 @@
 			"private": false
 		}
 	],
-	"url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools",
-	"manifest": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/latest/download/module.json",
-	"download": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/releases/download/v0.79/narrator-tools.zip",
+	"url": "https://github.com/Super-Thomate/fvtt-module-narrator-tools",
+	"manifest": "https://github.com/Super-Thomate/fvtt-module-narrator-tools/releases/latest/download/module.json",
+	"download": "https://github.com/Super-Thomate/fvtt-module-narrator-tools/releases/download/v0.79/narrator-tools.zip",
 	"compatibility": {
 		"minimum": 10,
-		"verified": 11
+		"verified": 12
 	}
 }
