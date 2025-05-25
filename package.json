@@ -1,0 +1,23 @@
+{
+	"name": "narrator-tools",
+	"version": "0.79",
+	"description": "Special tools to increase the immersion in your roleplaying game.",
+	"private": true,
+	"type": "module",
+	"main": "main.ts",
+	"author": "elizeuangelo",
+	"license": "ISC",
+	"devDependencies": {
+		"@types/jquery": "^3.5.29",
+		"handlebars": "^4.7.8",
+		"socket.io": "^4.7.5",
+		"tinymce": "^7.0.0",
+		"typedoc": "^0.25.13",
+		"typescript": "^5.4.4"
+	},
+	"scripts": {
+		"update-patch": "npm version patch && git push && git push --tags",
+		"update-minor": "npm version minor && git push && git push --tags",
+		"update-major": "npm version major && git push && git push --tags"
+	}
+}

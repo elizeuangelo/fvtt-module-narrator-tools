@@ -12,7 +12,19 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
+
+            - name: Install Dependencies
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+            - run: npm install
+
+            - name: Build Project
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+            - run: tsc
 
             - name: Get the version
               id: get_version
@@ -28,10 +40,16 @@ jobs:
                   files: 'module.json'
               env:
                   version: ${{ steps.get_version.outputs.VERSION_NUMBER }}
+                  url: https://github.com/${{ github.repository }}
+                  bugs: https://github.com/${{ github.repository }}/issues
+                  #license: https://raw.githubusercontent.com/${{ github.repository }}/v${{ steps.get_version.outputs.VERSION_NUMBER }}/LICENSE
+                  readme: https://raw.githubusercontent.com/${{ github.repository }}/v${{ steps.get_version.outputs.VERSION_NUMBER }}/README.md
+                  manifest: https://github.com/${{ github.repository }}/releases/latest/download/module.json
+                  download: https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION_NUMBER }}/module.zip
 
             # Zip Files
             - name: Zip files
-              run: zip -r narrator-tools * -x ".github/*" "*.ts" "README.md" "tsconfig.json"
+              run: zip -r narrator-tools * -x ".github/*" "*.ts" "README.md" "tsconfig.json" "package.json"
 
             # Create a release for this specific version
             - name: Create Release
