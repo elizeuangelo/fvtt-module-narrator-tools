@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 1.0.0
+
+-   Breaking compatibility change, updated to Foundry v13
+
 ## 0.80
 
 -   Fixed issues with "Chat Commander"
