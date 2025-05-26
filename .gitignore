@@ -3,6 +3,7 @@ node_modules
 backups
 .vscode
 .gitignore
+packs/macros
 
 # Files
 package-lock.json
