@@ -19,6 +19,7 @@
 	"scripts": {
 		"update-patch": "npm version patch && git push && git push --tags",
 		"update-minor": "npm version minor && git push && git push --tags",
-		"update-major": "npm version major && git push && git push --tags"
+		"update-major": "npm version major && git push && git push --tags",
+		"foundry:release": "tsx ./scripts/foundry-release.ts"
 	}
 }

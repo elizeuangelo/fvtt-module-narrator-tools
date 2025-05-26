@@ -6,4 +6,5 @@
       "strict": true,
       "skipLibCheck": true
     },
+    "exclude": ["scripts", "node_modules"],
 }

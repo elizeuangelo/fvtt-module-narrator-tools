@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 1.0.1
+
+-   Fixes major bug related to the game object reference.
+
 ## 1.0.0
 
 -   Breaking compatibility change, updated to Foundry v13

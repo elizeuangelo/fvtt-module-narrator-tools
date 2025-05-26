@@ -1,6 +1,8 @@
 const MODULE = 'narrator-tools';
 
-const readyGame = game as ReadyGame;
+function getReadyGame(): ReadyGame {
+	return game as ReadyGame;
+}
 
 /* -------------------------------------------- */
 /**
@@ -10,7 +12,7 @@ class NarratorMenu extends FormApplication<FormApplicationOptions, any> {
 	static get defaultOptions() {
 		return foundry.utils.mergeObject(super.defaultOptions, {
 			id: 'narrator-config',
-			title: readyGame.i18n.localize('NT.Title'),
+			title: getReadyGame().i18n.localize('NT.Title'),
 			classes: ['sheet'],
 			template: 'modules/narrator-tools/templates/config.html',
 			width: 800,
@@ -22,33 +24,33 @@ class NarratorMenu extends FormApplication<FormApplicationOptions, any> {
 	 */
 	async getData(_options: any) {
 		return {
-			FontSize: readyGame.settings.get(MODULE, 'FontSize'),
-			WebFont: readyGame.settings.get(MODULE, 'WebFont'),
-			TextColor: readyGame.settings.get(MODULE, 'TextColor'),
-			TextShadow: readyGame.settings.get(MODULE, 'TextShadow'),
-			TextCSS: readyGame.settings.get(MODULE, 'TextCSS'),
-			Copy: readyGame.settings.get(MODULE, 'Copy'),
-			Pause: readyGame.settings.get(MODULE, 'Pause'),
-			DurationMultiplier: readyGame.settings.get(MODULE, 'DurationMultiplier'),
-			BGColor: readyGame.settings.get(MODULE, 'BGColor'),
-			BGImage: readyGame.settings.get(MODULE, 'BGImage'),
-			NarrationStartPaused: readyGame.settings.get(MODULE, 'NarrationStartPaused'),
-			MessageType: readyGame.settings.get(MODULE, 'MessageType'),
+			FontSize: getReadyGame().settings.get(MODULE, 'FontSize'),
+			WebFont: getReadyGame().settings.get(MODULE, 'WebFont'),
+			TextColor: getReadyGame().settings.get(MODULE, 'TextColor'),
+			TextShadow: getReadyGame().settings.get(MODULE, 'TextShadow'),
+			TextCSS: getReadyGame().settings.get(MODULE, 'TextCSS'),
+			Copy: getReadyGame().settings.get(MODULE, 'Copy'),
+			Pause: getReadyGame().settings.get(MODULE, 'Pause'),
+			DurationMultiplier: getReadyGame().settings.get(MODULE, 'DurationMultiplier'),
+			BGColor: getReadyGame().settings.get(MODULE, 'BGColor'),
+			BGImage: getReadyGame().settings.get(MODULE, 'BGImage'),
+			NarrationStartPaused: getReadyGame().settings.get(MODULE, 'NarrationStartPaused'),
+			MessageType: getReadyGame().settings.get(MODULE, 'MessageType'),
 			CHAT_MESSAGE_TYPES: {
 				0: 'Other',
 				1: 'Out of Character',
 				2: 'In Character',
 			},
-			PERMScenery: readyGame.settings.get(MODULE, 'PERMScenery'),
-			PERMDescribe: readyGame.settings.get(MODULE, 'PERMDescribe'),
-			PERMNarrate: readyGame.settings.get(MODULE, 'PERMNarrate'),
-			PERMAs: readyGame.settings.get(MODULE, 'PERMAs'),
+			PERMScenery: getReadyGame().settings.get(MODULE, 'PERMScenery'),
+			PERMDescribe: getReadyGame().settings.get(MODULE, 'PERMDescribe'),
+			PERMNarrate: getReadyGame().settings.get(MODULE, 'PERMNarrate'),
+			PERMAs: getReadyGame().settings.get(MODULE, 'PERMAs'),
 			USER_ROLES: {
-				0: readyGame.i18n.localize('USER.RoleNone'),
-				1: readyGame.i18n.localize('USER.RolePlayer'),
-				2: readyGame.i18n.localize('USER.RoleTrusted'),
-				3: readyGame.i18n.localize('USER.RoleAssistant'),
-				4: readyGame.i18n.localize('USER.RoleGamemaster'),
+				0: getReadyGame().i18n.localize('USER.RoleNone'),
+				1: getReadyGame().i18n.localize('USER.RolePlayer'),
+				2: getReadyGame().i18n.localize('USER.RoleTrusted'),
+				3: getReadyGame().i18n.localize('USER.RoleAssistant'),
+				4: getReadyGame().i18n.localize('USER.RoleGamemaster'),
 			},
 		};
 	}
@@ -59,11 +61,11 @@ class NarratorMenu extends FormApplication<FormApplicationOptions, any> {
 	 */
 	async _updateObject(_event: Event, formData: { [key: string]: any }) {
 		for (let [k, v] of Object.entries(formData)) {
-			readyGame.settings.set(MODULE, k as any, v);
+			getReadyGame().settings.set(MODULE, k as any, v);
 		}
 		setTimeout(() => {
 			NarratorTools._updateContentStyle();
-			readyGame.socket?.emit('module.narrator-tools', { command: 'style' });
+			getReadyGame().socket?.emit('module.narrator-tools', { command: 'style' });
 		}, 200);
 	}
 }
@@ -90,14 +92,14 @@ const NarratorTools = {
 		let commands: { [key: string]: RegExp } = {};
 		content = content.replace(/\n/g, '<br>');
 
-		if (readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMAs') as number)) {
+		if (getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMAs') as number)) {
 			commands.as = new RegExp('^(?:\\/as$|\\/as ([^]*))', 'i');
 		}
-		if (readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMDescribe') as number)) {
+		if (getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMDescribe') as number)) {
 			commands.description = new RegExp('^\\/desc(?:ribe|ription|) ([^]*)', 'i');
 			commands.notification = new RegExp('^\\/not(?:e|ify|ication) ([^]*)', 'i');
 		}
-		if (readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMNarrate') as number)) {
+		if (getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMNarrate') as number)) {
 			commands.narration = new RegExp('^\\/narrat(?:e|ion) ([^]*)', 'i');
 		}
 
@@ -110,14 +112,14 @@ const NarratorTools = {
 					if (match[1]) {
 						this.character = match[1];
 						($('#chat-message')[0] as HTMLInputElement).placeholder =
-							readyGame.i18n.localize('NT.SpeakingAs') + ' ' + this.character;
+							getReadyGame().i18n.localize('NT.SpeakingAs') + ' ' + this.character;
 					} else {
 						this.character = '';
 						($('#chat-message')[0] as HTMLInputElement).placeholder = '';
 					}
 				} else {
-					if (c == 'narration' && !readyGame.user!.hasPermission('SETTINGS_MODIFY'))
-						ui.notifications!.error(readyGame.i18n.localize('NT.CantModifySettings'));
+					if (c == 'narration' && !getReadyGame().user!.hasPermission('SETTINGS_MODIFY'))
+						ui.notifications!.error(getReadyGame().i18n.localize('NT.CantModifySettings'));
 					else this.createChatMessage(c, match[1]);
 				}
 				return false;
@@ -126,7 +128,7 @@ const NarratorTools = {
 
 		// Identify speaker
 		if (
-			readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMAs') as number) &&
+			getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMAs') as number) &&
 			this.character &&
 			!/^\/.*/.exec(content)
 		) {
@@ -141,7 +143,7 @@ const NarratorTools = {
 	_controller({ narration, scenery }: { narration: NarrationState; scenery: boolean }) {
 		/**First, we manage the scenery changes */
 		this._updateScenery(scenery);
-		if (readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMScenery') as number)) {
+		if (getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMScenery') as number)) {
 			const btn = $('[data-tool=scenery]');
 			if (btn) {
 				if (scenery) btn[0].classList.add('active');
@@ -170,7 +172,7 @@ const NarratorTools = {
 					/**If the narration is open */
 					if (scroll > 20) {
 						const remaining = 1 - Number(this.elements.content[0].style.top.slice(0, -2)) / -scroll;
-						const duration_multiplier = readyGame.settings.get(MODULE, 'DurationMultiplier') as number;
+						const duration_multiplier = getReadyGame().settings.get(MODULE, 'DurationMultiplier') as number;
 						const scroll_duration = (duration - 500 - 4500 * duration_multiplier) * remaining;
 						const fun_scroll = () => {
 							this.elements.content.animate({ top: -scroll }, scroll_duration, 'linear');
@@ -202,7 +204,7 @@ const NarratorTools = {
 				this.elements.content.stop();
 
 				// Sets the copy button display in accordance to the configuration
-				this.elements.buttonCopy[0].style.display = readyGame.settings.get(MODULE, 'Copy') ? '' : 'none';
+				this.elements.buttonCopy[0].style.display = getReadyGame().settings.get(MODULE, 'Copy') ? '' : 'none';
 
 				this._timeouts.narrationOpens = +setTimeout(() => {
 					this.elements.content.html(narration.message);
@@ -216,7 +218,8 @@ const NarratorTools = {
 					this.elements.buttons[0].style.visibility = 'visible';
 					this.elements.buttons[0].style.top = `calc(50% + ${60 + height / 2}px)`;
 					const paused =
-						this.sharedState.narration.paused || readyGame.settings.get(MODULE, 'NarrationStartPaused');
+						this.sharedState.narration.paused ||
+						getReadyGame().settings.get(MODULE, 'NarrationStartPaused');
 					this._updateStopButton(paused);
 					this._timeouts.narrationOpens = 0;
 					Hooks.call('narration', narration);
@@ -244,10 +247,10 @@ const NarratorTools = {
 	/**Hook function wich creates the scenery button */
 	_createSceneryButton(control: Application, html: HTMLElement) {
 		if (html.querySelector('button[data-tool=scenery]')) return;
-		const hasPerm = readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMScenery') as number);
+		const hasPerm = getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMScenery') as number);
 		if (hasPerm) {
 			const name = 'scenery';
-			const title = readyGame.i18n.localize('NT.ButtonTitle');
+			const title = getReadyGame().i18n.localize('NT.ButtonTitle');
 			const icon = 'fa-solid fa-theater-masks';
 			const active = this.sharedState.scenery;
 			const btn = $(
@@ -316,9 +319,9 @@ const NarratorTools = {
 		}, 250);
 	},
 	_pause() {
-		const canScenery = readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMScenery') as number);
-		if (canScenery && readyGame.settings.get(MODULE, 'Pause')) {
-			NarratorTools.scenery(readyGame.paused);
+		const canScenery = getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMScenery') as number);
+		if (canScenery && getReadyGame().settings.get(MODULE, 'Pause')) {
+			NarratorTools.scenery(getReadyGame().paused);
 		}
 	},
 	/**Initialization routine for 'ready' hook */
@@ -342,8 +345,8 @@ const NarratorTools = {
 
 		// Check if the user can Narrate
 		this.isNarrator =
-			readyGame.user!.hasPermission('SETTINGS_MODIFY') &&
-			readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMNarrate') as number);
+			getReadyGame().user!.hasPermission('SETTINGS_MODIFY') &&
+			getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMNarrate') as number);
 
 		// @ts-ignore
 		this._menu = new ContextMenuNT({
@@ -381,12 +384,12 @@ const NarratorTools = {
 			};
 			NarratorTools._updateStopButton(pause);
 		});
-		this.elements.buttonClose.html(`<i class="fas fa-times-circle"></i> ${readyGame.i18n.localize('Close')}`);
+		this.elements.buttonClose.html(`<i class="fas fa-times-circle"></i> ${getReadyGame().i18n.localize('Close')}`);
 		this.elements.buttonClose.on('click', this._narrationClose);
-		this.elements.buttonCopy.html(`<i class="fas fa-clipboard"></i> ${readyGame.i18n.localize('NT.Copy')}`);
+		this.elements.buttonCopy.html(`<i class="fas fa-clipboard"></i> ${getReadyGame().i18n.localize('NT.Copy')}`);
 		this.elements.buttonCopy.on('click', () => {
 			navigator.clipboard.writeText(this.elements.content[0].innerText);
-			ui.notifications!.info(readyGame.i18n.localize('NT.CopyClipboard'));
+			ui.notifications!.info(getReadyGame().i18n.localize('NT.CopyClipboard'));
 		});
 
 		if (!this.isNarrator) {
@@ -394,9 +397,9 @@ const NarratorTools = {
 			this.elements.buttonClose[0].style.display = 'none';
 		}
 
-		this._loadFont(readyGame.settings.get(MODULE, 'WebFont'));
+		this._loadFont(getReadyGame().settings.get(MODULE, 'WebFont'));
 		this._updateContentStyle();
-		this._controller(readyGame.settings.get(MODULE, 'sharedState'));
+		this._controller(getReadyGame().settings.get(MODULE, 'sharedState'));
 		document.addEventListener('contextmenu', (ev) => {
 			if (
 				(<HTMLElement>ev.target).classList.contains('journal-entry-pages') ||
@@ -426,7 +429,7 @@ const NarratorTools = {
 		//      For instance, the DM might leave the game with a message on screen.
 		//      There should be no concurrency between sockets and this config,
 		//      so we eliminated sockets altogether.
-		readyGame.settings.register(MODULE, 'sharedState', {
+		getReadyGame().settings.register(MODULE, 'sharedState', {
 			name: 'Shared State',
 			scope: 'world',
 			config: false,
@@ -445,23 +448,23 @@ const NarratorTools = {
 			onChange: (newState: { narration: NarrationState; scenery: boolean }) => this._controller(newState),
 		});
 		// Register the application menu
-		readyGame.settings.registerMenu(MODULE, 'settingsMenu', {
-			name: readyGame.i18n.localize('Configure'),
+		getReadyGame().settings.registerMenu(MODULE, 'settingsMenu', {
+			name: getReadyGame().i18n.localize('Configure'),
 			hint: '',
-			label: readyGame.i18n.localize('Configure'),
+			label: getReadyGame().i18n.localize('Configure'),
 			icon: 'fas fa-adjust',
 			type: NarratorMenu as any,
 			restricted: true,
 		});
 		// Menu options
-		readyGame.settings.register(MODULE, 'FontSize', {
+		getReadyGame().settings.register(MODULE, 'FontSize', {
 			name: 'Font Size',
 			scope: 'world',
 			config: false,
 			default: '',
 			type: String,
 		});
-		readyGame.settings.register(MODULE, 'WebFont', {
+		getReadyGame().settings.register(MODULE, 'WebFont', {
 			name: 'Web Font',
 			scope: 'world',
 			config: false,
@@ -469,49 +472,49 @@ const NarratorTools = {
 			type: String,
 			onChange: (value: string) => NarratorTools._loadFont(value),
 		});
-		readyGame.settings.register(MODULE, 'TextColor', {
+		getReadyGame().settings.register(MODULE, 'TextColor', {
 			name: 'Text Color',
 			scope: 'world',
 			config: false,
 			default: '',
 			type: String,
 		});
-		readyGame.settings.register(MODULE, 'TextShadow', {
+		getReadyGame().settings.register(MODULE, 'TextShadow', {
 			name: 'Text Shadow',
 			scope: 'world',
 			config: false,
 			default: '',
 			type: String,
 		});
-		readyGame.settings.register(MODULE, 'TextCSS', {
+		getReadyGame().settings.register(MODULE, 'TextCSS', {
 			name: 'TextCSS',
 			scope: 'world',
 			config: false,
 			default: '',
 			type: String,
 		});
-		readyGame.settings.register(MODULE, 'Copy', {
+		getReadyGame().settings.register(MODULE, 'Copy', {
 			name: 'Copy',
 			scope: 'world',
 			config: false,
 			default: false,
 			type: Boolean,
 		});
-		readyGame.settings.register(MODULE, 'Pause', {
+		getReadyGame().settings.register(MODULE, 'Pause', {
 			name: 'Pause',
 			scope: 'world',
 			config: false,
 			default: false,
 			type: Boolean,
 		});
-		readyGame.settings.register(MODULE, 'DurationMultiplier', {
+		getReadyGame().settings.register(MODULE, 'DurationMultiplier', {
 			name: 'Duration Multiplier',
 			scope: 'world',
 			config: false,
 			default: 1,
 			type: Number,
 		});
-		readyGame.settings.register(MODULE, 'BGColor', {
+		getReadyGame().settings.register(MODULE, 'BGColor', {
 			name: 'Background Color',
 			scope: 'world',
 			config: false,
@@ -519,7 +522,7 @@ const NarratorTools = {
 			type: String,
 			onChange: (color: string) => NarratorTools._updateBGColor(color),
 		});
-		readyGame.settings.register(MODULE, 'BGImage', {
+		getReadyGame().settings.register(MODULE, 'BGImage', {
 			name: 'Background Color',
 			scope: 'world',
 			config: false,
@@ -527,42 +530,42 @@ const NarratorTools = {
 			type: String,
 			onChange: (filePath: string) => NarratorTools._updateBGImage(filePath),
 		});
-		readyGame.settings.register(MODULE, 'NarrationStartPaused', {
+		getReadyGame().settings.register(MODULE, 'NarrationStartPaused', {
 			name: 'Start the Narration Paused',
 			scope: 'world',
 			config: false,
 			default: false,
 			type: Boolean,
 		});
-		readyGame.settings.register(MODULE, 'MessageType', {
+		getReadyGame().settings.register(MODULE, 'MessageType', {
 			name: 'Narration Message Type',
 			scope: 'world',
 			config: false,
 			default: CONST.CHAT_MESSAGE_STYLES.OTHER,
 			type: Number,
 		});
-		readyGame.settings.register(MODULE, 'PERMScenery', {
+		getReadyGame().settings.register(MODULE, 'PERMScenery', {
 			name: 'Permission Required to set the Scenery',
 			scope: 'world',
 			config: false,
 			default: CONST.USER_ROLES.GAMEMASTER,
 			type: Number,
 		});
-		readyGame.settings.register(MODULE, 'PERMDescribe', {
+		getReadyGame().settings.register(MODULE, 'PERMDescribe', {
 			name: 'Permission Required to /describe and /note',
 			scope: 'world',
 			config: false,
 			default: CONST.USER_ROLES.GAMEMASTER,
 			type: Number,
 		});
-		readyGame.settings.register(MODULE, 'PERMNarrate', {
+		getReadyGame().settings.register(MODULE, 'PERMNarrate', {
 			name: 'Permission Required to /narrate',
 			scope: 'world',
 			config: false,
 			default: CONST.USER_ROLES.GAMEMASTER,
 			type: Number,
 		});
-		readyGame.settings.register(MODULE, 'PERMAs', {
+		getReadyGame().settings.register(MODULE, 'PERMAs', {
 			name: 'Permission Required to /as',
 			scope: 'world',
 			config: false,
@@ -625,21 +628,21 @@ const NarratorTools = {
 	_updateStopButton(pause: boolean) {
 		if (pause) {
 			NarratorTools.elements.buttonPause.html(
-				`<i class='fas fa-play-circle'></i> ${readyGame.i18n.localize('NT.PlayButton')}`
+				`<i class='fas fa-play-circle'></i> ${getReadyGame().i18n.localize('NT.PlayButton')}`
 			);
 		} else {
 			NarratorTools.elements.buttonPause.html(
-				`<i class='fas fa-pause-circle'></i> ${readyGame.i18n.localize('NT.PauseButton')}`
+				`<i class='fas fa-pause-circle'></i> ${getReadyGame().i18n.localize('NT.PauseButton')}`
 			);
 		}
 	},
 	_updateBGColor(color?: string) {
-		color = color ?? ((readyGame.settings.get(MODULE, 'BGColor') as string) || '#000000');
+		color = color ?? ((getReadyGame().settings.get(MODULE, 'BGColor') as string) || '#000000');
 		this.elements.frameBG[0].style.boxShadow = `inset 0 0 2000px 100px ${color}`;
 		this.elements.BG[0].style.background = `linear-gradient(transparent 0%, ${color}a8 40%, ${color}a8 60%, transparent 100%)`;
 	},
 	_updateBGImage(filePath?: string) {
-		filePath = filePath ?? (readyGame.settings.get(MODULE, 'BGImage') as string) ?? '';
+		filePath = filePath ?? (getReadyGame().settings.get(MODULE, 'BGImage') as string) ?? '';
 		if (filePath) {
 			this.elements.frameBG[0].style.background = `url(${filePath})`;
 			this.elements.frameBG[0].style.backgroundSize = '100% 100%';
@@ -647,7 +650,7 @@ const NarratorTools = {
 	},
 	/**Update the content element style to match the settings */
 	_updateContentStyle() {
-		const style = readyGame.settings.get(MODULE, 'TextCSS');
+		const style = getReadyGame().settings.get(MODULE, 'TextCSS');
 		if (style) {
 			const opacity = this.elements.content[0].style.opacity;
 			//@ts-ignore
@@ -655,12 +658,12 @@ const NarratorTools = {
 			this.elements.content[0].style.opacity = opacity;
 			return;
 		}
-		this.elements.content[0].style.fontFamily = `${readyGame.settings.get(MODULE, 'WebFont')}`
+		this.elements.content[0].style.fontFamily = `${getReadyGame().settings.get(MODULE, 'WebFont')}`
 			? 'NTCustomFont'
 			: '';
-		this.elements.content[0].style.fontSize = `${readyGame.settings.get(MODULE, 'FontSize')}`;
-		this.elements.content[0].style.color = `${readyGame.settings.get(MODULE, 'TextColor')}`;
-		this.elements.content[0].style.textShadow = `${readyGame.settings.get(MODULE, 'TextShadow')}`;
+		this.elements.content[0].style.fontSize = `${getReadyGame().settings.get(MODULE, 'FontSize')}`;
+		this.elements.content[0].style.color = `${getReadyGame().settings.get(MODULE, 'TextColor')}`;
+		this.elements.content[0].style.textShadow = `${getReadyGame().settings.get(MODULE, 'TextShadow')}`;
 	},
 	/**Updates the background opacity to match the scenery */
 	_updateScenery(scenery?: boolean) {
@@ -671,7 +674,7 @@ const NarratorTools = {
 	},
 	/**Registers the scenery keyboard shortcut */
 	_registerKeybindings() {
-		readyGame.keybindings.register(MODULE, 'toogleScenery', {
+		getReadyGame().keybindings.register(MODULE, 'toogleScenery', {
 			name: 'Toggle Scenery Control',
 			hint: 'Turns the scenery on/off on command.',
 			editable: [
@@ -730,9 +733,12 @@ const NarratorTools = {
 	 * @param options - Change the chat message configuration
 	 */
 	createChatMessage(type: string, message: string, options = {}) {
-		if (type == 'narration' && !readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMNarrate') as any))
+		if (
+			type == 'narration' &&
+			!getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMNarrate') as any)
+		)
 			return;
-		else if (!readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMDescribe') as any)) return;
+		else if (!getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMDescribe') as any)) return;
 
 		message = message.replace(/\\n/g, '<br>');
 
@@ -743,12 +749,12 @@ const NarratorTools = {
 					type: type,
 				},
 			},
-			type: readyGame.settings.get(MODULE, 'MessageType'),
+			type: getReadyGame().settings.get(MODULE, 'MessageType'),
 			speaker: {
-				alias: readyGame.i18n.localize('NT.Narrator'),
-				scene: readyGame.user!.viewedScene,
+				alias: getReadyGame().i18n.localize('NT.Narrator'),
+				scene: getReadyGame().user!.viewedScene,
 			},
-			whisper: type == 'notification' ? readyGame.users!.filter((u) => u.isGM) : [],
+			whisper: type == 'notification' ? getReadyGame().users!.filter((u) => u.isGM) : [],
 			...options,
 		};
 
@@ -782,7 +788,7 @@ const NarratorTools = {
 				id: this.sharedState.narration.id + 1,
 				display: true,
 				message: messageStripped,
-				paused: readyGame.settings.get(MODULE, 'NarrationStartPaused') as boolean,
+				paused: getReadyGame().settings.get(MODULE, 'NarrationStartPaused') as boolean,
 			};
 
 			this.sharedState.narration = state;
@@ -815,7 +821,8 @@ const NarratorTools = {
 	messageDuration(length: number) {
 		//@ts-ignore
 		return (
-			(Math.clamp(2000, length * 80, 20000) + 3000) * readyGame.settings.get(MODULE, 'DurationMultiplier') + 500
+			(Math.clamp(2000, length * 80, 20000) + 3000) * getReadyGame().settings.get(MODULE, 'DurationMultiplier') +
+			500
 		);
 	},
 	/**
@@ -823,27 +830,27 @@ const NarratorTools = {
 	 * @param state True to turn on the scenery, false to turn it off
 	 */
 	scenery(state?: boolean) {
-		if (readyGame.user!.role >= (readyGame.settings.get(MODULE, 'PERMScenery') as number)) {
-			if (!readyGame.user!.hasPermission('SETTINGS_MODIFY'))
-				ui.notifications!.error(readyGame.i18n.localize('NT.CantModifySettings'));
+		if (getReadyGame().user!.role >= (getReadyGame().settings.get(MODULE, 'PERMScenery') as number)) {
+			if (!getReadyGame().user!.hasPermission('SETTINGS_MODIFY'))
+				ui.notifications!.error(getReadyGame().i18n.localize('NT.CantModifySettings'));
 			else this.sharedState.scenery = state ?? !this.sharedState.scenery;
 		}
 	},
 	/**The shared state of the Narrator Tools application, emitted by the DM across all players */
 	sharedState: {
 		get narration() {
-			return (readyGame.settings.get(MODULE, 'sharedState') as any).narration;
+			return (getReadyGame().settings.get(MODULE, 'sharedState') as any).narration;
 		},
 		set narration(state: NarrationState) {
-			const sharedState = { ...(readyGame.settings.get(MODULE, 'sharedState') as any), narration: state };
-			readyGame.settings.set(MODULE, 'sharedState', sharedState);
+			const sharedState = { ...(getReadyGame().settings.get(MODULE, 'sharedState') as any), narration: state };
+			getReadyGame().settings.set(MODULE, 'sharedState', sharedState);
 		},
 		get scenery() {
-			return (readyGame.settings.get(MODULE, 'sharedState') as any).scenery;
+			return (getReadyGame().settings.get(MODULE, 'sharedState') as any).scenery;
 		},
 		set scenery(state: boolean) {
-			const sharedState = { ...(readyGame.settings.get(MODULE, 'sharedState') as any), scenery: state };
-			readyGame.settings.set(MODULE, 'sharedState', sharedState);
+			const sharedState = { ...(getReadyGame().settings.get(MODULE, 'sharedState') as any), scenery: state };
+			getReadyGame().settings.set(MODULE, 'sharedState', sharedState);
 		},
 	},
 };
