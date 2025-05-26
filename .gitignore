@@ -6,6 +6,5 @@ backups
 
 # Files
 package-lock.json
-tsconfig.json
 narrator-tools.lock
 *.js
