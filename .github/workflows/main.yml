@@ -49,7 +49,7 @@ jobs:
 
             # Zip Files
             - name: Zip files
-              run: zip -r narrator-tools * -x ".github/*" "*.ts" "README.md" "tsconfig.json" "package.json" "node_modules/*" "package-lock.json"
+              run: zip -r module * -x ".github/*" "*.ts" "README.md" "tsconfig.json" "package.json" "node_modules/*" "package-lock.json"
 
             # Create a release for this specific version
             - name: Create Release
@@ -61,4 +61,4 @@ jobs:
                   draft: false
                   prerelease: false
                   token: ${{ secrets.GITHUB_TOKEN }}
-                  artifacts: 'module.json,./narrator-tools.zip'
+                  artifacts: 'module.json,./module.zip'
