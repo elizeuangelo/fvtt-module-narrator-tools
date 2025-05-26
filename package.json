@@ -1,6 +1,6 @@
 {
 	"name": "narrator-tools",
-	"version": "0.79.0",
+	"version": "1.0.0",
 	"description": "Special tools to increase the immersion in your roleplaying game.",
 	"private": true,
 	"type": "module",
