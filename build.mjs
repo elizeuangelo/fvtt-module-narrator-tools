@@ -136,13 +136,6 @@ if (proceed.toLowerCase() !== 'y') {
 	process.exit(0);
 }
 
-const attemptResponse = await updateFoundryRelease(true);
-if (!attemptResponse.ok) {
-	console.error('Failed to update Foundry release');
-	console.error(await attemptResponse.text());
-	process.exit(1);
-}
-
 try {
 	if (newRelease) {
 		updateVersionInManifest();
@@ -160,6 +153,12 @@ try {
 	}
 	const foundryRelease = !process.argv.includes('--no-foundry');
 	if (foundryRelease) {
+		const attemptResponse = await updateFoundryRelease(true);
+		if (!attemptResponse.ok) {
+			console.error('Failed to update Foundry release');
+			console.error(await attemptResponse.text());
+			process.exit(1);
+		}
 		const response = await updateFoundryRelease(false);
 		if (!response.ok) {
 			console.error('Failed to update Foundry release');
