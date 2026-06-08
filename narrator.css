@@ -24,12 +24,27 @@
 	display: none;
 }
 
-.chat-log .message.narrator-chat .message-header.flexrow {
-	display: none;
+.chat-log .message.narrator-chat .message-header {
+	height: 0;
+	opacity: 0;
+	transition: opacity ease 0.5s;
+
+	.message-sender {
+		visibility: hidden;
+	}
+
+	.message-metadata {
+		color: white;
+		z-index: 5;
+
+		time {
+			color: white;
+		}
+	}
 }
 
-.chat-log .message.narrator-chat .message-header .message-metadata {
-	color: white;
+.chat-log .message.narrator-chat .message-header:hover {
+	opacity: 1;
 }
 
 .chat-log

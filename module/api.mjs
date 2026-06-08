@@ -294,7 +294,6 @@ export default {
 		this.isNarrator = game.user?.hasPermission('SETTINGS_MODIFY') && hasRole('PERMNarrate');
 		this._createSelectionMenu();
 
-		document.getElementById('chat-log')?.addEventListener('click', this._onClickMessage.bind(NarratorTools));
 		this.elements.buttonPause.addEventListener('click', () => {
 			const pause = !NarratorTools.sharedState.narration.paused;
 			NarratorTools.sharedState.narration = {
@@ -469,17 +468,6 @@ export default {
 			default: CONST.USER_ROLES.GAMEMASTER,
 			type: Number,
 		});
-	},
-
-	/**
-	 * Toggle metadata display for Narrator chat messages.
-	 * @param {MouseEvent} event
-	 */
-	_onClickMessage(event) {
-		const message = event.target?.closest?.('.message.narrator-chat');
-		if (!message) return;
-		const metadata = message.querySelector('.message-metadata');
-		if (metadata) metadata.hidden = !metadata.hidden;
 	},
 
 	/**
