@@ -20,7 +20,7 @@ export class NarratorMenu extends HandlebarsApplicationMixin(ApplicationV2) {
 
 	static PARTS = {
 		form: {
-			template: 'modules/narrator-tools/templates/config.html',
+			template: 'modules/narrator-tools/templates/config.hbs',
 			root: true,
 		},
 	};

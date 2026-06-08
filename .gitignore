@@ -8,7 +8,9 @@ packs/macros
 # Files
 package-lock.json
 narrator-tools.lock
-foundry.mjs
 
 # Environment
 .env
+
+# Reference
+reference/*
