@@ -2,8 +2,13 @@
 	"id": "narrator-tools",
 	"title": "Narrator Tools",
 	"description": "Special tools to increase the immersion in your roleplaying game.",
-	"version": "this is auto replaced",
-	"author": ["elizeuangelo"],
+	"version": "1.0.1",
+	"author": [
+		{
+			"name": "Mad Wizard",
+			"discord": "mad.wizard"
+		}
+	],
 	"esmodules": ["./main.mjs"],
 	"styles": ["./narrator.css"],
 	"languages": [
@@ -78,11 +83,11 @@
 			"private": false
 		}
 	],
-	"url": "this is auto replaced",
-	"bugs": "this is auto replaced",
-	"manifest": "this is auto replaced",
-	"download": "this is auto replaced",
-	"readme": "this is auto replaced",
+	"url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/",
+	"manifest": "auto-replaced",
+	"download": "auto-replaced",
+	"readme": "auto-replaced",
+	"bugs": "auto-replaced",
 	"compatibility": {
 		"minimum": 14,
 		"verified": 14

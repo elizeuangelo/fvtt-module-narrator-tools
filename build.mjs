@@ -4,17 +4,7 @@ import fs from 'fs';
 import path, { dirname } from 'path';
 import { createInterface } from 'readline';
 import { fileURLToPath } from 'url';
-
-const env = parseEnv();
-const manifestFile = JSON.parse(fs.readFileSync('./module.json', 'utf-8'));
-
-const { id, title, version, manifest, compatibility, notes } = manifestFile;
-const newVersion = bumpVersion(version);
-
-const readline = createInterface({
-	input: process.stdin,
-	output: process.stdout,
-});
+import manifest from './module.json' with { type: 'json' };
 
 async function awaitUserInput(msg) {
 	return new Promise((resolve) => {
@@ -58,7 +48,9 @@ function parseEnv() {
 }
 
 function bumpVersion(version) {
-	const mode = process.argv.includes('--major') ? 'major' : process.argv.includes('--minor') ? 'minor' : 'patch';
+	const modes = ['major', 'minor', 'patch'];
+	const mode = modes.find((mode) => process.argv.includes(`--${mode}`));
+	if (!mode) return version;
 	const arr = version.split('.');
 	if (mode === 'major') {
 		arr[0] = parseInt(arr[0]) + 1;
@@ -73,21 +65,27 @@ function bumpVersion(version) {
 	return arr.join('.');
 }
 
-function updateVersionInManifest() {
-	manifestFile.version = newVersion;
-	fs.writeFileSync('./module.json', JSON.stringify(manifestFile, null, 4).replace(/\n/g, '\r\n'));
+function updateVersionInManifest(version) {
+	manifest.version = version;
+	fs.writeFileSync('./module.json', JSON.stringify(manifest, null, 4).replace(/\n/g, '\r\n'));
+}
+
+function createRelease() {
+	// readme: https://raw.githubusercontent.com/${{ github.repository }}/v${{ steps.get_version.outputs.VERSION_NUMBER }}/README.md
+	// manifest: https://github.com/${{ github.repository }}/releases/latest/download/module.json
+	// download: https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION_NUMBER }}/module.zip
+	const repository = manifest.url.match(/github\.com\/([^\/]+\/[^\/]+)/)[1];
+	return {
+		version: `v${newVersion}`,
+		manifest: `https://github.com/${repository}/releases/download/v${newVersion}/module.json`,
+		compatibility: manifest.compatibility,
+		notes: manifest.readme,
+	};
 }
 
 function updateFoundryRelease(dryRun = true) {
-	const parameters = {
-		id,
-		release: {
-			version: `v${newVersion}`,
-			manifest,
-			notes,
-			compatibility,
-		},
-	};
+	const release = createRelease();
+	const parameters = { id: manifest.id, release };
 	if (dryRun) {
 		parameters['dry-run'] = true;
 	}
@@ -117,7 +115,19 @@ function execCommandAsPromise(command) {
 	});
 }
 
-console.log(`Building ${title} \x1b[31mv${version}\x1b[0m -> \x1b[32mv${newVersion}\x1b[0m`);
+const env = parseEnv();
+const readline = createInterface({
+	input: process.stdin,
+	output: process.stdout,
+});
+const newVersion = bumpVersion(manifest.version);
+const newRelease = manifest.version !== newVersion;
+
+if (newRelease) {
+	console.log(`Building ${manifest.title} \x1b[31mv${manifest.version}\x1b[0m -> \x1b[32mv${newVersion}\x1b[0m`);
+} else {
+	console.log(`Resending foundry release for ${manifest.title} \x1b[31mv${newVersion}\x1b[0m`);
+}
 
 // Do you want to proceed?
 const proceed = await awaitUserInput('Do you want to proceed? (y/n)');
@@ -133,20 +143,21 @@ if (!attemptResponse.ok) {
 	process.exit(1);
 }
 
-updateVersionInManifest();
-console.log('Updated manifest version');
-
 try {
-	await execCommandAsPromise('git add module.json');
-	console.log('Added module.json to git');
-	await execCommandAsPromise(`git commit -m "New release v${newVersion}"`);
-	console.log('Committed new release');
-	await execCommandAsPromise(`git tag v${newVersion}`);
-	console.log('Created new tag');
-	await execCommandAsPromise('git push');
-	console.log('Pushed changes');
-	await execCommandAsPromise('git push --tags');
-	console.log('Pushed tags');
+	if (newRelease) {
+		updateVersionInManifest();
+		console.log('Updated manifest version');
+		await execCommandAsPromise('git add module.json');
+		console.log('Added module.json to git');
+		await execCommandAsPromise(`git commit -m "New release v${newVersion}"`);
+		console.log('Committed new release');
+		await execCommandAsPromise(`git tag v${newVersion}`);
+		console.log('Created new tag');
+		await execCommandAsPromise('git push');
+		console.log('Pushed changes');
+		await execCommandAsPromise('git push --tags');
+		console.log('Pushed tags');
+	}
 	const response = await updateFoundryRelease(false);
 	if (!response.ok) {
 		console.error('Failed to update Foundry release');
