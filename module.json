@@ -1,95 +1,99 @@
 {
-	"id": "narrator-tools",
-	"title": "Narrator Tools",
-	"description": "Special tools to increase the immersion in your roleplaying game.",
-	"version": "1.0.1",
-	"author": [
-		{
-			"name": "Mad Wizard",
-			"discord": "mad.wizard"
-		}
-	],
-	"esmodules": ["./main.mjs"],
-	"styles": ["./narrator.css"],
-	"languages": [
-		{
-			"lang": "cn",
-			"name": "简体中文",
-			"path": "./lang/cn.json"
-		},
-		{
-			"lang": "de",
-			"name": "Deutsch",
-			"path": "./lang/de.json"
-		},
-		{
-			"lang": "en",
-			"name": "English",
-			"path": "./lang/en.json"
-		},
-		{
-			"lang": "es",
-			"name": "Español",
-			"path": "./lang/es.json"
-		},
-		{
-			"lang": "fr",
-			"name": "Français",
-			"path": "./lang/fr.json"
-		},
-		{
-			"lang": "it",
-			"name": "Italian",
-			"path": "./lang/it.json"
-		},
-		{
-			"lang": "ja",
-			"name": "日本語",
-			"path": "./lang/ja.json"
-		},
-		{
-			"lang": "ko",
-			"name": "한국어",
-			"path": "./lang/ko.json"
-		},
-		{
-			"lang": "pl",
-			"name": "Polski",
-			"path": "./lang/pl.json"
-		},
-		{
-			"lang": "pt-BR",
-			"name": "Português (Brasil)",
-			"path": "./lang/pt-BR.json"
-		},
-		{
-			"lang": "ru",
-			"name": "русский",
-			"path": "./lang/ru.json"
-		},
-		{
-			"lang": "th",
-			"name": "ไทย",
-			"path": "./lang/th.json"
-		}
-	],
-	"packs": [
-		{
-			"name": "narrator-macros",
-			"label": "Narrator Tools",
-			"path": "packs/macros.db",
-			"module": "narrator-tools",
-			"type": "Macro",
-			"private": false
-		}
-	],
-	"url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/",
-	"manifest": "auto-replaced",
-	"download": "auto-replaced",
-	"readme": "auto-replaced",
-	"bugs": "auto-replaced",
-	"compatibility": {
-		"minimum": 14,
-		"verified": 14
-	}
+    "id": "narrator-tools",
+    "title": "Narrator Tools",
+    "description": "Special tools to increase the immersion in your roleplaying game.",
+    "version": "2.0.0",
+    "author": [
+        {
+            "name": "Mad Wizard",
+            "discord": "mad.wizard"
+        }
+    ],
+    "esmodules": [
+        "./main.mjs"
+    ],
+    "styles": [
+        "./narrator.css"
+    ],
+    "languages": [
+        {
+            "lang": "cn",
+            "name": "简体中文",
+            "path": "./lang/cn.json"
+        },
+        {
+            "lang": "de",
+            "name": "Deutsch",
+            "path": "./lang/de.json"
+        },
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "./lang/en.json"
+        },
+        {
+            "lang": "es",
+            "name": "Español",
+            "path": "./lang/es.json"
+        },
+        {
+            "lang": "fr",
+            "name": "Français",
+            "path": "./lang/fr.json"
+        },
+        {
+            "lang": "it",
+            "name": "Italian",
+            "path": "./lang/it.json"
+        },
+        {
+            "lang": "ja",
+            "name": "日本語",
+            "path": "./lang/ja.json"
+        },
+        {
+            "lang": "ko",
+            "name": "한국어",
+            "path": "./lang/ko.json"
+        },
+        {
+            "lang": "pl",
+            "name": "Polski",
+            "path": "./lang/pl.json"
+        },
+        {
+            "lang": "pt-BR",
+            "name": "Português (Brasil)",
+            "path": "./lang/pt-BR.json"
+        },
+        {
+            "lang": "ru",
+            "name": "русский",
+            "path": "./lang/ru.json"
+        },
+        {
+            "lang": "th",
+            "name": "ไทย",
+            "path": "./lang/th.json"
+        }
+    ],
+    "packs": [
+        {
+            "name": "narrator-macros",
+            "label": "Narrator Tools",
+            "path": "packs/macros.db",
+            "module": "narrator-tools",
+            "type": "Macro",
+            "private": false
+        }
+    ],
+    "url": "https://github.com/elizeuangelo/fvtt-module-narrator-tools/",
+    "manifest": "auto-replaced",
+    "download": "auto-replaced",
+    "readme": "auto-replaced",
+    "bugs": "auto-replaced",
+    "compatibility": {
+        "minimum": 14,
+        "verified": 14
+    }
 }
