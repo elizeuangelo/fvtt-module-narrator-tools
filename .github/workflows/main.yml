@@ -49,7 +49,7 @@ jobs:
 
             # Zip Files
             - name: Zip files
-              run: zip -r module * -x ".github/*" "*.ts" "README.md" "tsconfig.json" "jsconfig.json" "package.json" "node_modules/*" "package-lock.json" "scripts/*"
+              run: zip -r module * -x ".github/*" "*.ts" "*.md" "tsconfig.json" "jsconfig.json" "package.json" "node_modules/*" "package-lock.json" "assets/*" "build.mjs"
 
             # Create a release for this specific version
             - name: Create Release
