@@ -70,7 +70,7 @@ function updateVersionInManifest(version) {
 	fs.writeFileSync('./module.json', JSON.stringify(manifest, null, 4).replace(/\n/g, '\r\n'));
 }
 
-function createRelease() {
+function createRelease(latest = false) {
 	// readme: https://raw.githubusercontent.com/${{ github.repository }}/v${{ steps.get_version.outputs.VERSION_NUMBER }}/README.md
 	// manifest: https://github.com/${{ github.repository }}/releases/latest/download/module.json
 	// download: https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION_NUMBER }}/module.zip
@@ -79,16 +79,17 @@ function createRelease() {
 		version: `v${newVersion}`,
 		manifest: `https://github.com/${repository}/releases/download/v${newVersion}/module.json`,
 		compatibility: manifest.compatibility,
-		notes: manifest.readme,
+		notes: `https://raw.githubusercontent.com/${repository}/v${newVersion}/README.md`,
 	};
 }
 
 function updateFoundryRelease(dryRun = true) {
-	const release = createRelease();
+	const release = createRelease(dryRun);
 	const parameters = { id: manifest.id, release };
 	if (dryRun) {
 		parameters['dry-run'] = true;
 	}
+	console.log(parameters);
 	return fetch('https://foundryvtt.com/_api/packages/release_version/', {
 		headers: {
 			'Content-Type': 'application/json',
