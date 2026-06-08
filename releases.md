@@ -1,5 +1,10 @@
 # Patch Notes
 
+## 2.0.0
+
+-   Foundry v14 compatibility
+-   Project migration to JSDoc
+
 ## 1.0.1
 
 -   Fixes major bug related to the game object reference.

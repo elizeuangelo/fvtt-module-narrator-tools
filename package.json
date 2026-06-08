@@ -7,19 +7,10 @@
 	"main": "main.ts",
 	"author": "elizeuangelo",
 	"license": "ISC",
-	"devDependencies": {
-		"@types/jquery": "^3.5.29",
-		"fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
-		"handlebars": "^4.7.8",
-		"socket.io": "^4.7.5",
-		"tinymce": "^7.9.0",
-		"typedoc": "^0.25.13",
-		"typescript": "^5.4.4"
-	},
 	"scripts": {
 		"update-patch": "npm version patch && git push && git push --tags",
 		"update-minor": "npm version minor && git push && git push --tags",
 		"update-major": "npm version major && git push && git push --tags",
-		"foundry:release": "tsx ./scripts/foundry-release.ts"
+		"foundry:release": "node ./build.mjs"
 	}
 }

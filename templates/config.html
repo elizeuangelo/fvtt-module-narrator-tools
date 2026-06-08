@@ -74,7 +74,7 @@
 
     <div class="form-group">
 		<label>{{localize "NT.MessageType"}}</label>
-        <select name="MessageType">
+        <select name="MessageType" data-dtype="Number">
             {{selectOptions CHAT_MESSAGE_TYPES selected=MessageType localize=true}}
         </select>
 	</div>
@@ -84,28 +84,28 @@
 
     <div class="form-group">
 		<label>{{localize "NT.PERMScenery"}}</label>
-        <select name="PERMScenery">
+        <select name="PERMScenery" data-dtype="Number">
             {{selectOptions USER_ROLES selected=PERMScenery localize=true}}
         </select>
 	</div>
 
     <div class="form-group">
 		<label>/as</label>
-        <select name="PERMAs">
+        <select name="PERMAs" data-dtype="Number">
             {{selectOptions USER_ROLES selected=PERMAs localize=true}}
         </select>
 	</div>
 
     <div class="form-group">
 		<label>/describe</label>
-        <select name="PERMDescribe">
+        <select name="PERMDescribe" data-dtype="Number">
             {{selectOptions USER_ROLES selected=PERMDescribe localize=true}}
         </select>
 	</div>
 
     <div class="form-group">
 		<label>/narrate</label>
-        <select name="PERMNarrate">
+        <select name="PERMNarrate" data-dtype="Number">
             {{selectOptions USER_ROLES selected=PERMNarrate localize=true}}
         </select>
 	</div>
