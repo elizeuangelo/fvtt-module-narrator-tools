@@ -9,6 +9,7 @@ packs/macros
 package-lock.json
 narrator-tools.lock
 *.js
+*.mjs
 !scripts/*
 
 # Environment
