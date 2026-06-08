@@ -65,8 +65,8 @@ function bumpVersion(version) {
 	return arr.join('.');
 }
 
-function updateVersionInManifest(version) {
-	manifest.version = version;
+function updateVersionInManifest() {
+	manifest.version = newVersion;
 	fs.writeFileSync('./module.json', JSON.stringify(manifest, null, 4).replace(/\n/g, '\r\n'));
 }
 
@@ -79,7 +79,7 @@ function createRelease(latest = false) {
 		version: `v${newVersion}`,
 		manifest: `https://github.com/${repository}/releases/download/v${newVersion}/module.json`,
 		compatibility: manifest.compatibility,
-		notes: `https://raw.githubusercontent.com/${repository}/v${newVersion}/README.md`,
+		notes: `https://raw.githubusercontent.com/${repository}/refs/heads/master/releases.md`,
 	};
 }
 
@@ -89,7 +89,6 @@ function updateFoundryRelease(dryRun = true) {
 	if (dryRun) {
 		parameters['dry-run'] = true;
 	}
-	console.log(parameters);
 	return fetch('https://foundryvtt.com/_api/packages/release_version/', {
 		headers: {
 			'Content-Type': 'application/json',
@@ -159,14 +158,17 @@ try {
 		await execCommandAsPromise('git push --tags');
 		console.log('Pushed tags');
 	}
-	const response = await updateFoundryRelease(false);
-	if (!response.ok) {
-		console.error('Failed to update Foundry release');
-		console.error(await response.text());
-		throw new Error('Failed to update Foundry release');
+	const foundryRelease = !process.argv.includes('--no-foundry');
+	if (foundryRelease) {
+		const response = await updateFoundryRelease(false);
+		if (!response.ok) {
+			console.error('Failed to update Foundry release');
+			console.error(await response.text());
+			throw new Error('Failed to update Foundry release');
+		}
+		console.log('Updated Foundry release');
+		console.log('✅ Build successful');
 	}
-	console.log('Updated Foundry release');
-	console.log('✅ Build successful');
 	process.exit(0);
 } catch (error) {
 	console.error(error);
