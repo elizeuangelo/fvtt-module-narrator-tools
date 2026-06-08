@@ -14,18 +14,6 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: Install Dependencies
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-            - run: npm install
-
-            - name: Build Project
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 20
-            - run: tsc
-
             - name: Get the version
               id: get_version
               run: |
