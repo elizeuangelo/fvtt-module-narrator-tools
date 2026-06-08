@@ -1,6 +1,7 @@
 import { MODULE } from './const.mjs';
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+const { ColorField, NumberField } = foundry.data.fields;
 
 export class NarratorMenu extends HandlebarsApplicationMixin(ApplicationV2) {
 	static DEFAULT_OPTIONS = {
@@ -52,17 +53,35 @@ export class NarratorMenu extends HandlebarsApplicationMixin(ApplicationV2) {
 			FontSize: game.settings.get(MODULE, 'FontSize'),
 			WebFont: game.settings.get(MODULE, 'WebFont'),
 			TextColor: textColor,
-			TextColorPicker: NarratorMenu.#colorPickerValue(textColor),
 			TextShadow: game.settings.get(MODULE, 'TextShadow'),
 			TextCSS: game.settings.get(MODULE, 'TextCSS'),
 			Copy: game.settings.get(MODULE, 'Copy'),
 			Pause: game.settings.get(MODULE, 'Pause'),
 			DurationMultiplier: game.settings.get(MODULE, 'DurationMultiplier'),
+			DurationMultiplierField: new NumberField(
+				{ nullable: false, min: 0.5, max: 2, step: 0.05, label: 'NT.DurationMultiplier' },
+				{ name: 'DurationMultiplier' },
+			),
 			BGColor: bgColor,
-			BGColorPicker: NarratorMenu.#colorPickerValue(bgColor),
 			BGImage: game.settings.get(MODULE, 'BGImage'),
 			NarrationStartPaused: game.settings.get(MODULE, 'NarrationStartPaused'),
 			MessageType: game.settings.get(MODULE, 'MessageType'),
+			colors: {
+				background: {
+					field: new ColorField(
+						{ nullable: true, label: 'SCENE.FIELDS.backgroundColor.label' },
+						{ name: 'BGColor' },
+					),
+					value: bgColor,
+				},
+				text: {
+					field: new ColorField(
+						{ nullable: true, label: 'DRAWING.FIELDS.textColor.label' },
+						{ name: 'TextColor' },
+					),
+					value: textColor,
+				},
+			},
 			CHAT_MESSAGE_TYPES: {
 				0: 'Other',
 				1: 'Out of Character',
@@ -85,16 +104,6 @@ export class NarratorMenu extends HandlebarsApplicationMixin(ApplicationV2) {
 	}
 
 	/**
-	 * Get a valid value for an HTML color input from a configurable CSS color string.
-	 * @param {string} color
-	 * @returns {string}
-	 */
-	static #colorPickerValue(color) {
-		const match = /^#[0-9a-f]{6}(?:[0-9a-f]{2})?$/i.exec(color ?? '');
-		return match ? color.slice(0, 7) : '#000000';
-	}
-
-	/**
 	 * Persist settings from the configuration form.
 	 * @param {SubmitEvent} _event
 	 * @param {HTMLFormElement} _form
@@ -107,7 +116,14 @@ export class NarratorMenu extends HandlebarsApplicationMixin(ApplicationV2) {
 			NarrationStartPaused: false,
 			...formData.object,
 		};
-		for (const key of ['DurationMultiplier', 'MessageType', 'PERMScenery', 'PERMDescribe', 'PERMNarrate', 'PERMAs']) {
+		for (const key of [
+			'DurationMultiplier',
+			'MessageType',
+			'PERMScenery',
+			'PERMDescribe',
+			'PERMNarrate',
+			'PERMAs',
+		]) {
 			data[key] = Number(data[key]);
 		}
 		for (const [key, value] of Object.entries(data)) await game.settings.set(MODULE, key, value);

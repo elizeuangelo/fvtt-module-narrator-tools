@@ -3,11 +3,10 @@
 	<p class="hint">{{localize "NT.AppearanceHint"}}</p>
 
 	<div class="form-group">
-		<label>{{localize "SCENE.FIELDS.backgroundColor.label"}}</label>
-		<div class="form-fields">
-			<input class="color" type="text" name="BGColor" placeholder="#000000" value="{{BGColor}}">
-			<input type="color" value="{{BGColorPicker}}" data-edit="BGColor">
-		</div>
+		{{#with colors.background}}
+		<label>{{localize field.label}}</label>
+		{{formInput field value=value placeholder="#000000"}}
+		{{/with}}
 		<p class="hint">{{localize "NT.BGColorHint"}}</p>
 	</div>
 
@@ -19,22 +18,21 @@
 	</div>
 
 	<div class="form-group">
-		<label>{{localize "DRAWING.FIELDS.fontFamily"}}</label>
+		<label>{{localize "DRAWING.FIELDS.fontFamily.label"}}</label>
 		<div class="form-fields">
 			<file-picker name="WebFont" type="font" value="{{WebFont}}" placeholder="{{localize 'File Path'}}"></file-picker>
 		</div>
 	</div>
 
 	<div class="form-group">
-		<label>{{localize "DRAWING.FIELDS.textColor"}}</label>
-		<div class="form-fields">
-			<input class="color" type="text" name="TextColor" placeholder="white" value="{{TextColor}}">
-			<input type="color" value="{{TextColorPicker}}" data-edit="TextColor">
-		</div>
+		{{#with colors.text}}
+		<label>{{localize field.label}}</label>
+		{{formInput field value=value placeholder="white"}}
+		{{/with}}
 	</div>
 
 	<div class="form-group">
-		<label>{{localize "DRAWING.FIELDS.fontSize"}}</label>
+		<label>{{localize "DRAWING.FIELDS.fontSize.label"}}</label>
 		<div class="form-fields">
 			<input type="text" name="FontSize" placeholder="28px" value="{{FontSize}}">
 		</div>
@@ -80,11 +78,8 @@
 	</div>
 
 	<div class="form-group">
-		<label>{{localize "NT.DurationMultiplier"}}</label>
-		<div class="form-fields">
-			<input type="range" name="DurationMultiplier" min="0.5" max="2" step="0.05" value="{{DurationMultiplier}}">
-			<span class="range-value">{{DurationMultiplier}}</span>
-		</div>
+		<label>{{localize DurationMultiplierField.label}}</label>
+		{{formInput DurationMultiplierField value=DurationMultiplier}}
 		<p class="hint">{{localize "NT.DurationMultiplierHint"}}</p>
 	</div>
 
