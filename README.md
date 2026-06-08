@@ -28,19 +28,19 @@ The module currently adds chat commands and a new tool on the token toolbox (the
 -   `/note (or /notify or /notification) [message]` - displays a _note message_ in chat only visible to GMs
 -   `/as [speaker]` - makes the next messages be sent as the _speaker_. `/as` resets to standard behavior
 
-![img](https://cdn.discordapp.com/attachments/542495303929036824/750483802719125634/narrator-tools_2.jpg)
+![img](assets/narrator-tools.webp)
 
 ### Token Toolbox
 
 -   New Scenery Tool - dims the canvas and apply vignette
 
-![img](https://cdn.discordapp.com/attachments/542495303929036824/750424196806475866/Example_narrator_tools.jpg)
+![img](assets/scenery-tool.webp)
 
 ### Journal Context Menu
 
 -   Chat commands are now usable in the Journal with a simple right-click! Select the text you want to narrate and give the command. Simple and easy.
 
-![img](https://cdn.discordapp.com/attachments/542495303929036824/756978823077298177/unknown.png)
+![img](assets/journal-example.webp)
 
 ## License
 
