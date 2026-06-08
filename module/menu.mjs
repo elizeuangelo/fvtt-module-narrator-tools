@@ -5,12 +5,14 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 export class NarratorMenu extends HandlebarsApplicationMixin(ApplicationV2) {
 	static DEFAULT_OPTIONS = {
 		id: 'narrator-config',
-		classes: ['sheet'],
+		tag: 'form',
 		window: {
+			contentClasses: ['standard-form'],
+			icon: 'fa-solid fa-theater-masks',
 			title: 'NT.Title',
 		},
 		position: {
-			width: 800,
+			width: 560,
 		},
 		form: {
 			handler: NarratorMenu.#onSubmit,
@@ -19,25 +21,45 @@ export class NarratorMenu extends HandlebarsApplicationMixin(ApplicationV2) {
 	};
 
 	static PARTS = {
-		form: {
+		tabs: {
+			template: 'templates/generic/tab-navigation.hbs',
+		},
+		body: {
 			template: 'modules/narrator-tools/templates/config.hbs',
-			root: true,
+		},
+		footer: {
+			template: 'templates/generic/form-footer.hbs',
+		},
+	};
+
+	static TABS = {
+		sheet: {
+			tabs: [
+				{ id: 'appearance', icon: 'fa-regular fa-image', label: 'NT.NarrationNav' },
+				{ id: 'behavior', icon: 'fa-solid fa-microchip', label: 'NT.OthersNav' },
+				{ id: 'permissions', icon: 'fa-regular fa-address-card', label: 'Permissions' },
+			],
+			initial: 'appearance',
 		},
 	};
 
 	async _prepareContext(options) {
 		const context = await super._prepareContext(options);
+		const bgColor = game.settings.get(MODULE, 'BGColor');
+		const textColor = game.settings.get(MODULE, 'TextColor');
 		return {
 			...context,
 			FontSize: game.settings.get(MODULE, 'FontSize'),
 			WebFont: game.settings.get(MODULE, 'WebFont'),
-			TextColor: game.settings.get(MODULE, 'TextColor'),
+			TextColor: textColor,
+			TextColorPicker: NarratorMenu.#colorPickerValue(textColor),
 			TextShadow: game.settings.get(MODULE, 'TextShadow'),
 			TextCSS: game.settings.get(MODULE, 'TextCSS'),
 			Copy: game.settings.get(MODULE, 'Copy'),
 			Pause: game.settings.get(MODULE, 'Pause'),
 			DurationMultiplier: game.settings.get(MODULE, 'DurationMultiplier'),
-			BGColor: game.settings.get(MODULE, 'BGColor'),
+			BGColor: bgColor,
+			BGColorPicker: NarratorMenu.#colorPickerValue(bgColor),
 			BGImage: game.settings.get(MODULE, 'BGImage'),
 			NarrationStartPaused: game.settings.get(MODULE, 'NarrationStartPaused'),
 			MessageType: game.settings.get(MODULE, 'MessageType'),
@@ -58,7 +80,18 @@ export class NarratorMenu extends HandlebarsApplicationMixin(ApplicationV2) {
 				3: game.i18n.localize('USER.RoleAssistant'),
 				4: game.i18n.localize('USER.RoleGamemaster'),
 			},
+			buttons: [{ type: 'submit', icon: 'fa-solid fa-floppy-disk', label: 'SETTINGS.Save' }],
 		};
+	}
+
+	/**
+	 * Get a valid value for an HTML color input from a configurable CSS color string.
+	 * @param {string} color
+	 * @returns {string}
+	 */
+	static #colorPickerValue(color) {
+		const match = /^#[0-9a-f]{6}(?:[0-9a-f]{2})?$/i.exec(color ?? '');
+		return match ? color.slice(0, 7) : '#000000';
 	}
 
 	/**
@@ -68,9 +101,16 @@ export class NarratorMenu extends HandlebarsApplicationMixin(ApplicationV2) {
 	 * @param {FormDataExtended} formData
 	 */
 	static async #onSubmit(_event, _form, formData) {
-		for (const [key, value] of Object.entries(formData.object)) {
-			await game.settings.set(MODULE, key, value);
+		const data = {
+			Copy: false,
+			Pause: false,
+			NarrationStartPaused: false,
+			...formData.object,
+		};
+		for (const key of ['DurationMultiplier', 'MessageType', 'PERMScenery', 'PERMDescribe', 'PERMNarrate', 'PERMAs']) {
+			data[key] = Number(data[key]);
 		}
+		for (const [key, value] of Object.entries(data)) await game.settings.set(MODULE, key, value);
 		NarratorTools._updateContentStyle();
 		game.socket?.emit(`module.${MODULE}`, { command: 'style' });
 	}

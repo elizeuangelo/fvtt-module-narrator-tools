@@ -1,114 +1,140 @@
-<form autocomplete="off">
-	<!-- BACKGROUND AND APPEARANCE -->
-	<h3 class="form-header"><i class="far fa-image"></i> {{localize "NT.NarrationNav"}}</h3>
-	<p class="notes">{{localize "NT.AppearanceHint"}}</p>
-
-    <div class="form-group">
-		<label>{{localize "SCENE.FIELDS.backgroundColor.label"}}</label>
-		<input class="color" type="text" name="BGColor" placeholder="#000000" value="{{BGColor}}" />
-        <input type="color" value="{{BGColor}}" data-edit="BGColor"/>
-        <p class="notes">{{localize "NT.BGColorHint"}}</p>
-    </div>
-
-    <div class="form-group">
-        <label>{{localize "SCENE.FIELDS.background.src.label"}}</label>
-        <div class="form-fields">
-            {{filePicker target="BGImage" type="imagevideo"}}
-            <input class="image" type="text" name="BGImage" placeholder="{{localize 'File Path'}}" value="{{BGImage}}"/>
-        </div>
-    </div>
-
-    <div class="form-group">
-		<label>{{localize "DRAWING.FontFamily"}}</label>
-        <div class="form-fields">
-            {{filePicker target="WebFont" type="font"}}
-            <input class="image" type="text" name="WebFont" placeholder="{{localize 'File Path'}}" value="{{WebFont}}"/>
-        </div>
-    </div>
-
-    <div class="form-group">
-		<label>{{localize "DRAWING.TextColor"}}</label>
-		<input class="color" type="text" name="TextColor" placeholder="white" value="{{TextColor}}" />
-        <input type="color" value="{{TextColor}}" data-edit="TextColor"/>
-    </div>
+<div class="tab-body">
+<section class="tab scrollable {{tabs.appearance.cssClass}}" data-group="{{tabs.appearance.group}}" data-tab="{{tabs.appearance.id}}">
+	<p class="hint">{{localize "NT.AppearanceHint"}}</p>
 
 	<div class="form-group">
-		<label>{{localize "DRAWING.FontSize"}}</label>
-		<input type="text" name="FontSize" placeholder="28px" value="{{FontSize}}" />
+		<label>{{localize "SCENE.FIELDS.backgroundColor.label"}}</label>
+		<div class="form-fields">
+			<input class="color" type="text" name="BGColor" placeholder="#000000" value="{{BGColor}}">
+			<input type="color" value="{{BGColorPicker}}" data-edit="BGColor">
+		</div>
+		<p class="hint">{{localize "NT.BGColorHint"}}</p>
 	</div>
-    
-    <div class="form-group">
-		<label>{{localize "NT.TextShadow"}}</label>
-		<input type="text" name="TextShadow" placeholder="3px 3px 2px black" value="{{TextShadow}}" />
-    </div>
 
-    <div class="form-group">
+	<div class="form-group">
+		<label>{{localize "SCENE.FIELDS.background.src.label"}}</label>
+		<div class="form-fields">
+			<file-picker name="BGImage" type="imagevideo" value="{{BGImage}}" placeholder="{{localize 'File Path'}}"></file-picker>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize "DRAWING.FIELDS.fontFamily"}}</label>
+		<div class="form-fields">
+			<file-picker name="WebFont" type="font" value="{{WebFont}}" placeholder="{{localize 'File Path'}}"></file-picker>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize "DRAWING.FIELDS.textColor"}}</label>
+		<div class="form-fields">
+			<input class="color" type="text" name="TextColor" placeholder="white" value="{{TextColor}}">
+			<input type="color" value="{{TextColorPicker}}" data-edit="TextColor">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize "DRAWING.FIELDS.fontSize"}}</label>
+		<div class="form-fields">
+			<input type="text" name="FontSize" placeholder="28px" value="{{FontSize}}">
+		</div>
+	</div>
+
+	<div class="form-group stacked">
+		<label>{{localize "NT.TextShadow"}}</label>
+		<div class="form-fields">
+			<input type="text" name="TextShadow" placeholder="3px 3px 2px black" value="{{TextShadow}}">
+		</div>
+	</div>
+
+	<div class="form-group stacked">
 		<label>{{localize "NT.TextCSS"}}</label>
-		<input type="text" name="TextCSS" placeholder="color: white; text-shadow: 3px 3px 2px black" value="{{TextCSS}}" />
-    </div>
+		<div class="form-fields">
+			<input type="text" name="TextCSS" placeholder="color: white; text-shadow: 3px 3px 2px black" value="{{TextCSS}}">
+		</div>
+	</div>
 
 	<div class="form-group">
 		<label>{{localize "NT.CopyButton"}}</label>
-		<input type="checkbox" name="Copy" {{checked Copy}} />
-    </div>
-    
-	<h3 class="form-header"><i class="fas fa-microchip"></i> {{localize "NT.OthersNav"}}</h3>
-	<p class="notes">{{localize "NT.OthersHint"}}</p>
+		<div class="form-fields">
+			<input type="checkbox" name="Copy" {{checked Copy}}>
+		</div>
+	</div>
+</section>
+
+<section class="tab scrollable {{tabs.behavior.cssClass}}" data-group="{{tabs.behavior.group}}" data-tab="{{tabs.behavior.id}}">
+	<p class="hint">{{localize "NT.OthersHint"}}</p>
 
 	<div class="form-group">
 		<label>{{localize "NT.Pause"}}</label>
-		<input type="checkbox" name="Pause" {{checked Pause}} />
-    </div>
+		<div class="form-fields">
+			<input type="checkbox" name="Pause" {{checked Pause}}>
+		</div>
+	</div>
 
-    <div class="form-group">
+	<div class="form-group">
 		<label>{{localize "NT.NarrationStartPaused"}}</label>
-		<input type="checkbox" name="NarrationStartPaused" {{checked NarrationStartPaused}} />
-    </div>
-    
-    <div class="form-group">
+		<div class="form-fields">
+			<input type="checkbox" name="NarrationStartPaused" {{checked NarrationStartPaused}}>
+		</div>
+	</div>
+
+	<div class="form-group">
 		<label>{{localize "NT.DurationMultiplier"}}</label>
-        <input type="range" name="DurationMultiplier" min="0.5" max="2" step="0.05" value="{{DurationMultiplier}}" />
-        <span class="range-value"></span>
-        <p class="notes">{{localize "NT.DurationMultiplierHint"}}</p>
+		<div class="form-fields">
+			<input type="range" name="DurationMultiplier" min="0.5" max="2" step="0.05" value="{{DurationMultiplier}}">
+			<span class="range-value">{{DurationMultiplier}}</span>
+		</div>
+		<p class="hint">{{localize "NT.DurationMultiplierHint"}}</p>
 	</div>
 
-    <div class="form-group">
+	<div class="form-group">
 		<label>{{localize "NT.MessageType"}}</label>
-        <select name="MessageType" data-dtype="Number">
-            {{selectOptions CHAT_MESSAGE_TYPES selected=MessageType localize=true}}
-        </select>
+		<div class="form-fields">
+			<select name="MessageType" data-dtype="Number">
+				{{selectOptions CHAT_MESSAGE_TYPES selected=MessageType localize=true}}
+			</select>
+		</div>
 	</div>
+</section>
 
-    <h3 class="form-header"><i class="far fa-address-card"></i> {{localize "Permissions"}}</h3>
-    <p class="notes">{{localize "NT.PermissionsHint"}}</p>
+<section class="tab scrollable {{tabs.permissions.cssClass}}" data-group="{{tabs.permissions.group}}" data-tab="{{tabs.permissions.id}}">
+	<p class="hint">{{localize "NT.PermissionsHint"}}</p>
 
-    <div class="form-group">
+	<div class="form-group">
 		<label>{{localize "NT.PERMScenery"}}</label>
-        <select name="PERMScenery" data-dtype="Number">
-            {{selectOptions USER_ROLES selected=PERMScenery localize=true}}
-        </select>
+		<div class="form-fields">
+			<select name="PERMScenery" data-dtype="Number">
+				{{selectOptions USER_ROLES selected=PERMScenery localize=true}}
+			</select>
+		</div>
 	</div>
 
-    <div class="form-group">
+	<div class="form-group">
 		<label>/as</label>
-        <select name="PERMAs" data-dtype="Number">
-            {{selectOptions USER_ROLES selected=PERMAs localize=true}}
-        </select>
+		<div class="form-fields">
+			<select name="PERMAs" data-dtype="Number">
+				{{selectOptions USER_ROLES selected=PERMAs localize=true}}
+			</select>
+		</div>
 	</div>
 
-    <div class="form-group">
+	<div class="form-group">
 		<label>/describe</label>
-        <select name="PERMDescribe" data-dtype="Number">
-            {{selectOptions USER_ROLES selected=PERMDescribe localize=true}}
-        </select>
+		<div class="form-fields">
+			<select name="PERMDescribe" data-dtype="Number">
+				{{selectOptions USER_ROLES selected=PERMDescribe localize=true}}
+			</select>
+		</div>
 	</div>
 
-    <div class="form-group">
+	<div class="form-group">
 		<label>/narrate</label>
-        <select name="PERMNarrate" data-dtype="Number">
-            {{selectOptions USER_ROLES selected=PERMNarrate localize=true}}
-        </select>
+		<div class="form-fields">
+			<select name="PERMNarrate" data-dtype="Number">
+				{{selectOptions USER_ROLES selected=PERMNarrate localize=true}}
+			</select>
+		</div>
 	</div>
-
-	<button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{localize "Save Changes"}}</button>
-</form>
+</section>
+</div>
