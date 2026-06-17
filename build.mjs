@@ -76,7 +76,7 @@ function createRelease(latest = false) {
 	// download: https://github.com/${{ github.repository }}/releases/download/v${{ steps.get_version.outputs.VERSION_NUMBER }}/module.zip
 	const repository = manifest.url.match(/github\.com\/([^\/]+\/[^\/]+)/)[1];
 	return {
-		version: `v${newVersion}`,
+		version: newVersion,
 		manifest: `https://github.com/${repository}/releases/download/v${newVersion}/module.json`,
 		compatibility: manifest.compatibility,
 		notes: `https://raw.githubusercontent.com/${repository}/refs/heads/master/releases.md`,
