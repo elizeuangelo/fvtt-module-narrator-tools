@@ -21,5 +21,6 @@
 	"NT.TextShadow": "Ombre",
 	"NT.Title": "Outils du narrateur",
 	"NT.Copy": "Copier",
-	"NT.CopyClipboard": "Narration copiée dans le presse-papiers"
+	"NT.CopyClipboard": "Narration copiée dans le presse-papiers",
+	"NT.CopyButton": "Activer le bouton Copier"
 }

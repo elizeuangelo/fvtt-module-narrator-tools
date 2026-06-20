@@ -19,5 +19,8 @@
 	"NT.SpeakingAs": "Mówiąc jako",
 	"NT.TextCSS": "CSS (zastępuje inne style)",
 	"NT.TextShadow": "Cień",
-	"NT.Title": "Narzędzia Narratora"
+	"NT.Title": "Narzędzia Narratora",
+	"NT.Copy": "Kopiuj",
+	"NT.CopyClipboard": "Narracja skopiowana do schowka",
+	"NT.CopyButton": "Włącz przycisk kopiowania"
 }

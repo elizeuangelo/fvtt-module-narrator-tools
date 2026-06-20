@@ -21,5 +21,6 @@
 	"NT.TextShadow": "Schatten",
 	"NT.Title": "Erzähler Werkzeuge",
 	"NT.Copy": "Kopieren",
-	"NT.CopyClipboard": "Kommentar kopiert"
+	"NT.CopyClipboard": "Kommentar kopiert",
+	"NT.CopyButton": "Kopierschaltfläche aktivieren"
 }

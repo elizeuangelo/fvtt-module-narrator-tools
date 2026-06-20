@@ -21,5 +21,6 @@
 	"NT.TextShadow": "阴影",
 	"NT.Title": "旁白工具",
 	"NT.Copy": "复制",
-	"NT.CopyClipboard": "旁白复制到剪贴板"
+	"NT.CopyClipboard": "旁白复制到剪贴板",
+	"NT.CopyButton": "启用复制按钮"
 }

@@ -21,5 +21,6 @@
 	"NT.TextShadow": "เงา",
 	"NT.Title": "เครื่องมือผู้บรรยาย",
 	"NT.Copy": "ลอกไหมค่ะ",
-	"NT.CopyClipboard": "คัดลอกไปยังคลิปบอร์ด"
+	"NT.CopyClipboard": "คัดลอกไปยังคลิปบอร์ด",
+	"NT.CopyButton": "เปิดใช้ปุ่มคัดลอก"
 }

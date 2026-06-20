@@ -19,5 +19,8 @@
 	"NT.SpeakingAs": "말하기",
 	"NT.TextCSS": "CSS (다른 스타일 무시)",
 	"NT.TextShadow": "그림자",
-	"NT.Title": "내레이터 도구"
+	"NT.Title": "내레이터 도구",
+	"NT.Copy": "복사",
+	"NT.CopyClipboard": "내레이션이 클립보드에 복사되었습니다",
+	"NT.CopyButton": "복사 버튼 활성화"
 }

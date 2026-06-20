@@ -19,5 +19,8 @@
 	"NT.SpeakingAs": "話す",
 	"NT.TextCSS": "CSS（他のスタイルを上書きします）",
 	"NT.TextShadow": "影",
-	"NT.Title": "字幕ツール"
+	"NT.Title": "字幕ツール",
+	"NT.Copy": "コピー",
+	"NT.CopyClipboard": "ナレーションをクリップボードにコピーしました",
+	"NT.CopyButton": "コピーボタンを有効化"
 }

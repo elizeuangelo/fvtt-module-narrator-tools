@@ -21,5 +21,6 @@
 	"NT.TextShadow": "Ombra",
 	"NT.Title": "Strumenti dell'Assistente vocale",
 	"NT.Copy": "Copiare",
-	"NT.CopyClipboard": "Narrazione copiata negli appunti"
+	"NT.CopyClipboard": "Narrazione copiata negli appunti",
+	"NT.CopyButton": "Abilita pulsante Copia"
 }
