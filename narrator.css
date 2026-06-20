@@ -160,9 +160,9 @@
 	flex-direction: column;
 	min-width: 140px;
 	padding: 4px;
-	background: #1f1f1f;
-	border: 1px solid #555;
-	color: #e7d1b1;
+	background: #1f1f1f !important;
+	border: 1px solid #555 !important;
+	color: #e7d1b1 !important;
 	box-shadow: 0 2px 8px rgb(0 0 0 / 35%);
 }
 
