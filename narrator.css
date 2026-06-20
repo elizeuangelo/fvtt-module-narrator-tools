@@ -160,9 +160,8 @@
 	flex-direction: column;
 	min-width: 140px;
 	padding: 4px;
-	background: #1f1f1f !important;
-	border: 1px solid #555 !important;
-	color: #e7d1b1 !important;
+	background: #1f1f1f;
+	border: 1px solid #555;
 	box-shadow: 0 2px 8px rgb(0 0 0 / 35%);
 }
 
@@ -178,4 +177,9 @@
 	width: 100%;
 	border: 0;
 	background: transparent;
+	color: #e7d1b1;
+}
+
+.nt-selection-menu button:hover {
+	color: #f7f3e8;
 }

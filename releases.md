@@ -1,5 +1,9 @@
 # Patch Notes
 
+## 2.0.5
+
+-   Fixes foundry theme related issues
+
 ## 2.0.0
 
 -   Foundry v14 compatibility
